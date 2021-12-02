@@ -1,8 +1,7 @@
 ---
 title: wpf-control window 范围内默认样式对第一个控件无效
-date: 2020-04-12 23:31:01
-tags:wpf;style
-
+date: 2021-12-02 15:12:32
+tags:WPF; Style
 ---
 
 [toc]
