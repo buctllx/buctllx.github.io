@@ -1,7 +1,12 @@
 ---
 title: WPF 在 Trigger 中修改 Button Content 注意事项
 date: 2021-12-02 16:52:58
+categories:
+- WPF
+
 tags:
+- .Net
+- C#
 - WPF
 - Style
 ---

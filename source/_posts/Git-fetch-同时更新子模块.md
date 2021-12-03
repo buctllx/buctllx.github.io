@@ -1,6 +1,9 @@
 ---
 title: Git fetch 同时更新子模块
 date: 2021-12-02 18:25:13
+categories:
+- Git 相关
+
 tags:
 - Git
 ---
