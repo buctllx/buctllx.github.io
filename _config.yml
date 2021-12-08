@@ -86,7 +86,7 @@ updated_option: 'mtime'
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## Use post's date for updated date unless set in front-matter
-updated_option: false
+# updated_option: false
 
 # Pagination
 ## Set per_page to 0 to disable pagination
