@@ -125,3 +125,91 @@ vi /etc/sysctl.conf
 
 
 
+# 4. ES 索引 primary shard is unassigned 解决方法
+
+```apl
+POST /_cluster/reroute
+{
+  "commands" : [
+  {
+    "allocate_stale_primary" : {
+    "index" : ".monitoring-kibana-6-2021.12.17", 
+    "shard" : 0,
+    "node" : "es-node-2",
+    "accept_data_loss" : true
+    }
+  }
+  ]
+}
+```
+
+[ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客](https://blog.csdn.net/weixin_34050519/article/details/85936609)
+
+[解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned](https://blog.csdn.net/dlm_bk/article/details/102840031)
+
+
+
+
+
+```json
+{
+  "name": "admin_dev-cbim-rvt-log-colt",
+  "batch_size": 2097152,
+  "batch_interval": 60,
+  "errors_list_cap": 0,
+  "createtime": "2020-12-13T19:28:00.92283427+08:00",
+  "extra_info": false,
+  "log_audit": false,
+  "send_raw": false,
+  "sourceData": "",
+  "reader": {
+    "kafka_groupid": "dev-cbim-rvt-tool",
+    "kafka_version": "2.0.0.0",
+    "datasource_tag": "datasource",
+    "runner_name": "admin_dev-cbim-rvt-log-colt",
+    "kafka_maxprocessing_time": "1s",
+    "client_id": "logkit",
+    "kafka_brokers": "10.80.253.133:9092",
+    "kafka_topic": "dev-cbim-rvt-tool-log",
+    "name": "admin_dev-cbim-rvt-log-colt",
+    "read_from": "oldest",
+    "insecure_skip_verify": "false",
+    "mode": "newkafka"
+  },
+  "parser": {
+    "runner_name": "admin_dev-cbim-rvt-log-colt",
+    "type": "json",
+    "name": "parser",
+    "disable_record_errdata": "false",
+    "keep_raw_data": "false"
+  },
+  "senders": [
+    {
+      "ft_long_data_discard": "false",
+      "runner_name": "admin_dev-cbim-rvt-log-colt",
+      "elastic_version": "6.x",
+      "max_disk_used_bytes": "34359738368",
+      "logkit_send_time": "true",
+      "max_size_per_file": "104857600",
+      "elastic_index_strategy": "default",
+      "ft_memory_channel": "false",
+      "sender_type": "elasticsearch",
+      "ft_strategy": "backup_only",
+      "elastic_time_zone": "UTC",
+      "ft_discard_failed_data": "false",
+      "enable_gzip": "false",
+      "elastic_type": "cbim_tool_log",
+      "elastic_index": "dev_cbim_tool_log",
+      "elastic_host": "10.80.253.135:9200"
+    }
+  ],
+  "router": {
+    "router_key_name": "",
+    "router_match_type": "",
+    "router_default_sender": 0,
+    "router_routes": {}
+  },
+  "web_folder": true
+}
+```
+

@@ -3,12 +3,15 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
-keywords:
+title: ConorLuo 博客
+subtitle: 胆小认生，不易相处
+description: 北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。
 author: ConorLuo
-language: en
+email: buctllx@163.com
+keywords: "开发者,程序猿,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,用户体验"
+language:
+  - zh-CN
+  - en
 timezone: ''
 
 # URL
@@ -45,9 +48,9 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: false
-  line_number: true
+  enable: true
   auto_detect: false
+  line_number: false
   tab_replace: ''
   wrap: true
   hljs: false
@@ -99,10 +102,19 @@ include:
 exclude:
 ignore:
 
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: 3-hexo
+# theme: 3-hexo
+# theme: yilia
+theme: next
+
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -110,3 +122,23 @@ deploy:
   type: git
   repo: https://github.com/buctllx/buctllx.github.io.git
   branch: master
+
+# theme: yilia 需要的额外设置，其他主题不需要
+# jsonContent:
+#   meta: false
+#   pages: false
+#   posts:
+#     title: true
+#     date: true
+#     path: true
+#     text: false
+#     raw: false
+#     content: false
+#     slug: false
+#     updated: false
+#     comments: false
+#     link: false
+#     permalink: false
+#     excerpt: false
+#     categories: false
+#     tags: true
