@@ -92,13 +92,6 @@
 
   
   <url>
-    <loc>http://yoursite.com/tags/Git/</loc>
-    <lastmod>2021-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/ElasticSearch/</loc>
     <lastmod>2021-12-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -113,14 +106,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Typora/</loc>
-    <lastmod>2021-12-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/PicGo/</loc>
+    <loc>http://yoursite.com/tags/Git/</loc>
     <lastmod>2021-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -154,14 +140,21 @@
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>http://yoursite.com/categories/Git-%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/tags/Typora/</loc>
     <lastmod>2021-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/PicGo/</loc>
+    <lastmod>2021-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
   
   <url>
     <loc>http://yoursite.com/categories/ElasticSearch/</loc>
@@ -171,7 +164,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/Markdown/</loc>
+    <loc>http://yoursite.com/categories/Git-%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -179,6 +172,13 @@
   
   <url>
     <loc>http://yoursite.com/categories/WPF/</loc>
+    <lastmod>2021-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/Markdown/</loc>
     <lastmod>2021-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
