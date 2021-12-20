@@ -1,726 +1,994 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>Hexo</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[toc] 1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error &amp;#123;     &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,     &amp;quot">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ElasticSearch-操作异常总结">
-<meta property="og:url" content="http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="[toc] 1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error &amp;#123;     &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,     &amp;quot">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-15T09:41:01.000Z">
-<meta property="article:modified_time" content="2021-12-16T07:32:44.209Z">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ConorLuo 博客">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="ConorLuo 博客">
+<meta property="og:description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="ConorLuo">
-<meta property="article:tag" content="ElasticSearch">
-<meta property="article:tag" content="ES">
+<meta property="article:tag" content="开发者,程序猿,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,用户体验">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="icon" href="/img/avatar.jpg">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+<link rel="canonical" href="http://yoursite.com/">
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ConorLuo 博客</title>
+  
 
-<meta name="generator" content="Hexo 5.4.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">ConorLuo 博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
 
 
 
-<body>
-<aside class="nav mobile">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/avatar.jpg"/>
-</a>
-<div class="author">
-    <span>ConorLuo</span>
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
 </div>
 
-<div class="icon">
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
     
-        
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
-            </a>
-        
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner index posts-expand">
+
     
-        
-            <a title="github"
-               href="https://github.com/yelog"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
-            </a>
-        
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">ElasticSearch-操作异常总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-15 17:41:01" itemprop="dateCreated datePublished" datetime="2021-12-15T17:41:01+08:00">2021-12-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-17 17:05:13" itemprop="dateModified" datetime="2021-12-17T17:05:13+08:00">2021-12-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
     
-        
-            <a title="facebook"
-               href="https://www.facebook.com/faker.tops"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-facebook"></use>
-                    </svg>
-                
-            </a>
-        
     
-        
     
-        
+    <div class="post-body" itemprop="articleBody">
+          <p>[toc]</p>
+<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
+
+<p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<h2 id="1-2-原因分析"><a href="#1-2-原因分析" class="headerlink" title="1.2 原因分析"></a>1.2 原因分析</h2><p>从字面意思看，ES 禁止数据写入；</p>
+<p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
+<p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
+<p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
+<h2 id="1-3-解决方法"><a href="#1-3-解决方法" class="headerlink" title="1.3 解决方法"></a>1.3 解决方法</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p> 参考链接：[如何修复 ElasticSearch <a target="_blank" rel="noopener" href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
+<h1 id="2-ElasticSearch-启动参数问题"><a href="#2-ElasticSearch-启动参数问题" class="headerlink" title="2. ElasticSearch 启动参数问题"></a>2. ElasticSearch 启动参数问题</h1><p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
+<p>这里主要说明常见的各种 es 设置问题</p>
+<h2 id="2-1-unknown-setting-discovery-seed-hosts"><a href="#2-1-unknown-setting-discovery-seed-hosts" class="headerlink" title="2.1 unknown setting [discovery.seed_hosts]"></a>2.1 unknown setting [discovery.seed_hosts]</h2><h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p>使用2019年的老脚本启动 es 的 docker 实例；</p>
+<p>注：笔者是 2021.12.15 pull 最新的 es 镜像启动实例的，启动实例使用的参数是 2019 年底时的；</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
+<p>可以通过 dock inspect elasticsearch 查看</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用下面的配置替代</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
+<h3 id="类似的问题"><a href="#类似的问题" class="headerlink" title="类似的问题"></a>类似的问题</h3><p>unknown setting [cluster.initial_master_nodes] </p>
+<h2 id="2-2-ES-缓存设置"><a href="#2-2-ES-缓存设置" class="headerlink" title="2.2 ES 缓存设置"></a>2.2 ES 缓存设置</h2><p>默认设置：ES_JAVA_OPTS=”-Xms256m -Xmx256m”</p>
+<p>启动的时候可以加 -e 指定参数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
+
+<p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
+<blockquote>
+<p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
+</blockquote>
+<p>解决方法：修改 centos 系统的缓存设置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-ElasticSearch-集群状态排查"><a href="#3-ElasticSearch-集群状态排查" class="headerlink" title="3. ElasticSearch 集群状态排查"></a>3. ElasticSearch 集群状态排查</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
+<h1 id="4-ES-索引-primary-shard-is-unassigned-解决方法"><a href="#4-ES-索引-primary-shard-is-unassigned-解决方法" class="headerlink" title="4. ES 索引 primary shard is unassigned 解决方法"></a>4. ES 索引 primary shard is unassigned 解决方法</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34050519/article/details/85936609">ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;batch_size&quot;</span>: <span class="number">2097152</span>,</span><br><span class="line">  <span class="attr">&quot;batch_interval&quot;</span>: <span class="number">60</span>,</span><br><span class="line">  <span class="attr">&quot;errors_list_cap&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;createtime&quot;</span>: <span class="string">&quot;2020-12-13T19:28:00.92283427+08:00&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;extra_info&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;log_audit&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;send_raw&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;sourceData&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;reader&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;kafka_groupid&quot;</span>: <span class="string">&quot;dev-cbim-rvt-tool&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_version&quot;</span>: <span class="string">&quot;2.0.0.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;datasource_tag&quot;</span>: <span class="string">&quot;datasource&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_maxprocessing_time&quot;</span>: <span class="string">&quot;1s&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;client_id&quot;</span>: <span class="string">&quot;logkit&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_brokers&quot;</span>: <span class="string">&quot;10.80.253.133:9092&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_topic&quot;</span>: <span class="string">&quot;dev-cbim-rvt-tool-log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;read_from&quot;</span>: <span class="string">&quot;oldest&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;insecure_skip_verify&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;mode&quot;</span>: <span class="string">&quot;newkafka&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;parser&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;parser&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;disable_record_errdata&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;keep_raw_data&quot;</span>: <span class="string">&quot;false&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;senders&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;ft_long_data_discard&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_version&quot;</span>: <span class="string">&quot;6.x&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;max_disk_used_bytes&quot;</span>: <span class="string">&quot;34359738368&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;logkit_send_time&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;max_size_per_file&quot;</span>: <span class="string">&quot;104857600&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_index_strategy&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_memory_channel&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;sender_type&quot;</span>: <span class="string">&quot;elasticsearch&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_strategy&quot;</span>: <span class="string">&quot;backup_only&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_time_zone&quot;</span>: <span class="string">&quot;UTC&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_discard_failed_data&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;enable_gzip&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_type&quot;</span>: <span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_index&quot;</span>: <span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_host&quot;</span>: <span class="string">&quot;10.80.253.135:9200&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">&quot;router&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;router_key_name&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;router_match_type&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;router_default_sender&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">&quot;router_routes&quot;</span>: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;web_folder&quot;</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
     
-        
-            <a title="instagram"
-               href="https://www.facebook.com/faker.tops"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-instagram"></use>
-                    </svg>
-                
-            </a>
-        
     
-        
-            <a title="reddit"
-               href="https://www.reddit.com/user/yelog/"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-reddit"></use>
-                    </svg>
-                
-            </a>
-        
     
-        
-            <a title="weibo"
-               href="http://weibo.com/u/2307534817"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-weibo"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="jianshu"
-               href="https://www.jianshu.com/u/ff56736de7cf"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-jianshu"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="zhihu"
-               href="https://www.zhihu.com/people/jaytp/activities"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-zhihu"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-    
-        
-            <a title="oschina"
-               href="https://my.oschina.net/yelog"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-oschina"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-    
-        
-            <a title="email"
-               href="mailto:buctllx@163.com"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-email"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="qq"
-               href="http://wpa.qq.com/msgrd?v=3&uin=1364377558&site=qq&menu=yes"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-qq"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="kugou"
-               href="https://www.kugou.com/"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-kugou"></use>
-                    </svg>
-                
-            </a>
-        
-    
-        
-            <a title="neteasemusic"
-               href="https://music.163.com/#/user/home?id=88151013"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-neteasemusic"></use>
-                    </svg>
-                
-            </a>
-        
-    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
 </div>
 
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/" class="post-title-link" itemprop="url">Typora 设置关联七牛云图床</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-06 14:46:25" itemprop="dateCreated datePublished" datetime="2021-12-06T14:46:25+08:00">2021-12-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-08 13:42:23" itemprop="dateModified" datetime="2021-12-08T13:42:23+08:00">2021-12-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Markdown/" itemprop="url" rel="index"><span itemprop="name">Markdown</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a target="_blank" rel="noopener" href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
+<p>注册流程不在这里详细说明；</p>
+<p>说一下注意事项：</p>
+<ol>
+<li>注册后，需要实名认证</li>
+<li>个人认证 即可</li>
+</ol>
+<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
+<li>登录后，通过“管理控制台”进入管理页面；</li>
+<li>点击“对象存储 Kodo”；</li>
+<li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
+<li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
+</ol>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
+<p>注意事项：</p>
+<ol>
+<li>访问权限选择“公开”</li>
+<li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
+</ol>
+<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
+<ol>
+<li>PicGo App（应用程序）</li>
+<li>PicGo-Core（命令行版本）</li>
+</ol>
+<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
+<p>选择对应系统的安装包安装即可</p>
+<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a target="_blank" rel="noopener" href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
 <ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(7)</small>
-            
-        </div>
-    </li>
-    
-        
-            
-                <li>
-                    <div data-rel="ElasticSearch">
-                        
-                        ElasticSearch
-                        <small>(1)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="Git 相关">
-                        
-                        Git 相关
-                        <small>(1)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="Markdown">
-                        
-                        Markdown
-                        <small>(1)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="WPF">
-                        
-                        WPF
-                        <small>(2)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
+<li>没有nodejs环境，使用typora一键安装即可</li>
+<li>本机有nodjs环境，直接npm全局安装</li>
 </ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-            <a class="about  hasFriend  site_url"
-               
-               href="/about">About</a>
-        
-        <a style="width: 50%"
-                
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="7">
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
 
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="https://buctllx.github.io/">ConorLuo</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
 
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>.Net</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>C#</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>ElasticSearch</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>ES</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>Git</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>PicGo</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>Style</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>Typora</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>WPF</a>
-            </li>
-        
-    </div>
+<p>插件安装</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
+<p>这是一款可以上传自定义图床的插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
 
-</div>
+
+
+<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
+<p>具体参考：<a target="_blank" rel="noopener" href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
+<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
+<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
+<p>如下图所示：</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
+<ol>
+<li>插入图片时：选择：上传图片；</li>
+<li>上传服务设定<ol>
+<li>上传服务：选择：PicGo（app）</li>
+<li>PicGo 路径：选择：自己安装时候的路径</li>
+</ol>
+</li>
+</ol>
+<p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
+<p>设置成功后，会出现“验证成功”的提示，如下图：</p>
+<p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
+
+      
+    </div>
 
     
-    <nav id="title-list-nav">
-        
-        <a  class="All ElasticSearch "
-           href="/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/"
-           data-tag="ElasticSearch,ES"
-           data-author="" >
-            <span class="post-title" title="ElasticSearch-操作异常总结">ElasticSearch-操作异常总结</span>
-            <span class="post-date" title="2021-12-15 17:41:01">2021/12/15</span>
-        </a>
-        
-        <a  class="All Markdown "
-           href="/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/"
-           data-tag="Typora,PicGo"
-           data-author="" >
-            <span class="post-title" title="Typora 设置关联七牛云图床">Typora 设置关联七牛云图床</span>
-            <span class="post-date" title="2021-12-06 14:46:25">2021/12/06</span>
-        </a>
-        
-        <a  class="All Git 相关 "
-           href="/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/"
-           data-tag="Git"
-           data-author="" >
-            <span class="post-title" title="Git fetch 同时更新子模块">Git fetch 同时更新子模块</span>
-            <span class="post-date" title="2021-12-02 18:25:13">2021/12/02</span>
-        </a>
-        
-        <a  class="All WPF "
-           href="/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"
-           data-tag="WPF,Style,.Net,C#"
-           data-author="" >
-            <span class="post-title" title="WPF 在 Trigger 中修改 Button Content 注意事项">WPF 在 Trigger 中修改 Button Content 注意事项</span>
-            <span class="post-date" title="2021-12-02 16:52:58">2021/12/02</span>
-        </a>
-        
-        <a  class="All WPF "
-           href="/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/"
-           data-tag="WPF,Style,.Net,C#"
-           data-author="" >
-            <span class="post-title" title="wpf-control window 范围内默认样式对第一个控件无效">wpf-control window 范围内默认样式对第一个控件无效</span>
-            <span class="post-date" title="2021-12-02 15:12:32">2021/12/02</span>
-        </a>
-        
-        <a  class="All "
-           href="/2020/04/12/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2020-04-12 23:42:50">2020/04/12</span>
-        </a>
-        
-        <a  class="All "
-           href="/2020/04/12/test-my-site/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="test_my_site">test_my_site</span>
-            <span class="post-date" title="2020-04-12 23:31:01">2020/04/12</span>
-        </a>
-        
-        <div id="no-item-tips">
-
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
-
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post" class="index">
-    <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%B6%E8%90%BD%E9%98%81"><span class="toc-text">关于叶落阁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
     
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
-<blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
-</blockquote>
-<blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
-</blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<h2 id="关于叶落阁"><a href="#关于叶落阁" class="headerlink" title="关于叶落阁"></a>关于叶落阁</h2><p><strong>叶落阁</strong> 是阁主（杨玉杰）的个人站。</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
-<p><code>3-hexo</code> 主题使用交流可以加 Q群: <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e8cf083cc097141eaf323396f1766809b8e90ff00c67bb441898f672892f6904"><img data-ignore border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="3-hexo使用交流" title="3-hexo使用交流"></a></p>
-<p>主要功能：</p>
-<ul>
-<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
-<li>pad/手机等移动端适配</li>
-<li>页面全局快捷键 <a target="_blank" rel="noopener" href='http://yelog.org/2017/03/24/3-hexo-shortcuts/'>3-hexo快捷键说明</a></li>
-</ul>
 
-        </article>
-        
-        <p>
-            <a  class="dashang" onclick="dashangToggle()">赏</a>
-        </p>
-        
-        
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2019-2021 ConorLuo
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
 </div>
 
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/" class="post-title-link" itemprop="url">Git fetch 同时更新子模块</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-02 18:25:13" itemprop="dateCreated datePublished" datetime="2021-12-02T18:25:13+08:00">2021-12-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-03 11:45:11" itemprop="dateModified" datetime="2021-12-03T11:45:11+08:00">2021-12-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Git-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">Git 相关</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
         </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>@[toc]</p>
+<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
+<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：<a target="_blank" rel="noopener" href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
+
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
-    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
 </div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">WPF 在 Trigger 中修改 Button Content 注意事项</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-02 16:52:58" itemprop="dateCreated datePublished" datetime="2021-12-02T16:52:58+08:00">2021-12-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-03 11:44:28" itemprop="dateModified" datetime="2021-12-03T11:44:28+08:00">2021-12-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/WPF/" itemprop="url" rel="index"><span itemprop="name">WPF</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>@[toc]</p>
+<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
+<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
+<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/" class="post-title-link" itemprop="url">wpf-control window 范围内默认样式对第一个控件无效</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-02 15:12:32" itemprop="dateCreated datePublished" datetime="2021-12-02T15:12:32+08:00">2021-12-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-03 11:45:29" itemprop="dateModified" datetime="2021-12-03T11:45:29+08:00">2021-12-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/WPF/" itemprop="url" rel="index"><span itemprop="name">WPF</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>[toc]</p>
+<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+<p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
+<p>通常我们使用下面的代码是没问题的；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、原因和解决方法"><a href="#2、原因和解决方法" class="headerlink" title="2、原因和解决方法"></a>2、原因和解决方法</h2><h3 id="2-1-原因"><a href="#2-1-原因" class="headerlink" title="2.1 原因"></a>2.1 原因</h3><p>因为把 Button 默认样式放在了 ResourceDictionary.MergedDictionaries 内部的ResourceDictionary 内了，这样在解析引用样式的时候会跳过第一个元素；</p>
+<h3 id="2-2-解决方案"><a href="#2-2-解决方案" class="headerlink" title="2.2 解决方案"></a>2.2 解决方案</h3><p>将 style 提到 ResourceDictionary.MergedDictionaries 之外</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window.Resources&gt;</span><br><span class="line">    &lt;ResourceDictionary&gt;</span><br><span class="line">        &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">            &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">        &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/ResourceDictionary&gt;</span><br><span class="line">&lt;/Window.Resources&gt;</span><br><span class="line">&lt;Grid&gt;</span><br><span class="line">    &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">    &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">&lt;/Grid&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考链接：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4811884/wpf-doesnt-apply-style-to-first-element">resources - WPF doesn’t apply style to first element - Stack Overflow</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/12/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/12/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-12 23:42:50" itemprop="dateCreated datePublished" datetime="2020-04-12T23:42:50+08:00">2020-04-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/12/test-my-site/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/12/test-my-site/" class="post-title-link" itemprop="url">test_my_site</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-12 23:31:01" itemprop="dateCreated datePublished" datetime="2020-04-12T23:31:01+08:00">2020-04-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-02 14:37:19" itemprop="dateModified" datetime="2021-12-02T14:37:19+08:00">2021-12-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/index.html" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/index.html" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
 
 
 </body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
-
-<script src="/js/script.js?v=1.1.0" ></script>
-<script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
-
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
-    }
-
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
-</script>
-
-<!--加入行号的高亮代码块样式-->
-
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
-    }
-    .nav.fullscreen {
-        margin-left: -542px;
-    }
-    .nav-left {
-        width: 120px;
-    }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
-        }
-        .nav.fullscreen {
-            margin-left: -492px;
-        }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
-        border: #e2dede solid 1px;
-        border-radius: 10px;
-        padding: 10px 32px 10px 56px;
-    }
-    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
-        margin-bottom: auto;
-        margin-left: auto;
-    }
-    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
-        margin-bottom: auto;
-        margin-left: auto;
-    }
-    
-
-    /* 背景图样式 */
-    
-    
-
-
-    /*引用块样式*/
-    
-
-    /*文章列表背景图*/
-    
-
-    
-</style>
-
-
-
-
-
-
-
 </html>

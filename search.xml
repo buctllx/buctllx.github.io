@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>ElasticSearch-操作异常总结</title>
+    <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
+
+<p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<h2 id="1-2-原因分析"><a href="#1-2-原因分析" class="headerlink" title="1.2 原因分析"></a>1.2 原因分析</h2><p>从字面意思看，ES 禁止数据写入；</p>
+<p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
+<p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
+<p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
+<h2 id="1-3-解决方法"><a href="#1-3-解决方法" class="headerlink" title="1.3 解决方法"></a>1.3 解决方法</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p> 参考链接：[如何修复 ElasticSearch <a href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
+<h1 id="2-ElasticSearch-启动参数问题"><a href="#2-ElasticSearch-启动参数问题" class="headerlink" title="2. ElasticSearch 启动参数问题"></a>2. ElasticSearch 启动参数问题</h1><p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
+<p>这里主要说明常见的各种 es 设置问题</p>
+<h2 id="2-1-unknown-setting-discovery-seed-hosts"><a href="#2-1-unknown-setting-discovery-seed-hosts" class="headerlink" title="2.1 unknown setting [discovery.seed_hosts]"></a>2.1 unknown setting [discovery.seed_hosts]</h2><h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p>使用2019年的老脚本启动 es 的 docker 实例；</p>
+<p>注：笔者是 2021.12.15 pull 最新的 es 镜像启动实例的，启动实例使用的参数是 2019 年底时的；</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
+<p>可以通过 dock inspect elasticsearch 查看</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用下面的配置替代</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
+<h3 id="类似的问题"><a href="#类似的问题" class="headerlink" title="类似的问题"></a>类似的问题</h3><p>unknown setting [cluster.initial_master_nodes] </p>
+<h2 id="2-2-ES-缓存设置"><a href="#2-2-ES-缓存设置" class="headerlink" title="2.2 ES 缓存设置"></a>2.2 ES 缓存设置</h2><p>默认设置：ES_JAVA_OPTS=”-Xms256m -Xmx256m”</p>
+<p>启动的时候可以加 -e 指定参数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
+
+<p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
+<blockquote>
+<p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
+</blockquote>
+<p>解决方法：修改 centos 系统的缓存设置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-ElasticSearch-集群状态排查"><a href="#3-ElasticSearch-集群状态排查" class="headerlink" title="3. ElasticSearch 集群状态排查"></a>3. ElasticSearch 集群状态排查</h1><p><a href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
+<h1 id="4-ES-索引-primary-shard-is-unassigned-解决方法"><a href="#4-ES-索引-primary-shard-is-unassigned-解决方法" class="headerlink" title="4. ES 索引 primary shard is unassigned 解决方法"></a>4. ES 索引 primary shard is unassigned 解决方法</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/weixin_34050519/article/details/85936609">ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客</a></p>
+<p><a href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;batch_size&quot;</span>: <span class="number">2097152</span>,</span><br><span class="line">  <span class="attr">&quot;batch_interval&quot;</span>: <span class="number">60</span>,</span><br><span class="line">  <span class="attr">&quot;errors_list_cap&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;createtime&quot;</span>: <span class="string">&quot;2020-12-13T19:28:00.92283427+08:00&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;extra_info&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;log_audit&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;send_raw&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;sourceData&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;reader&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;kafka_groupid&quot;</span>: <span class="string">&quot;dev-cbim-rvt-tool&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_version&quot;</span>: <span class="string">&quot;2.0.0.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;datasource_tag&quot;</span>: <span class="string">&quot;datasource&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_maxprocessing_time&quot;</span>: <span class="string">&quot;1s&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;client_id&quot;</span>: <span class="string">&quot;logkit&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_brokers&quot;</span>: <span class="string">&quot;10.80.253.133:9092&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kafka_topic&quot;</span>: <span class="string">&quot;dev-cbim-rvt-tool-log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;read_from&quot;</span>: <span class="string">&quot;oldest&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;insecure_skip_verify&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;mode&quot;</span>: <span class="string">&quot;newkafka&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;parser&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;parser&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;disable_record_errdata&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;keep_raw_data&quot;</span>: <span class="string">&quot;false&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;senders&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;ft_long_data_discard&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;runner_name&quot;</span>: <span class="string">&quot;admin_dev-cbim-rvt-log-colt&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_version&quot;</span>: <span class="string">&quot;6.x&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;max_disk_used_bytes&quot;</span>: <span class="string">&quot;34359738368&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;logkit_send_time&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;max_size_per_file&quot;</span>: <span class="string">&quot;104857600&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_index_strategy&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_memory_channel&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;sender_type&quot;</span>: <span class="string">&quot;elasticsearch&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_strategy&quot;</span>: <span class="string">&quot;backup_only&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_time_zone&quot;</span>: <span class="string">&quot;UTC&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ft_discard_failed_data&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;enable_gzip&quot;</span>: <span class="string">&quot;false&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_type&quot;</span>: <span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_index&quot;</span>: <span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;elastic_host&quot;</span>: <span class="string">&quot;10.80.253.135:9200&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">&quot;router&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;router_key_name&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;router_match_type&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;router_default_sender&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">&quot;router_routes&quot;</span>: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;web_folder&quot;</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git fetch 同时更新子模块</title>
+    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<p>@[toc]</p>
+<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
+<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
+]]></content>
+      <categories>
+        <category>Git 相关</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
+    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+    <content><![CDATA[<p>@[toc]</p>
+<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
+<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
+<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora 设置关联七牛云图床</title>
+    <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
+<p>注册流程不在这里详细说明；</p>
+<p>说一下注意事项：</p>
+<ol>
+<li>注册后，需要实名认证</li>
+<li>个人认证 即可</li>
+</ol>
+<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
+<li>登录后，通过“管理控制台”进入管理页面；</li>
+<li>点击“对象存储 Kodo”；</li>
+<li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
+<li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
+</ol>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
+<p>注意事项：</p>
+<ol>
+<li>访问权限选择“公开”</li>
+<li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
+</ol>
+<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
+<ol>
+<li>PicGo App（应用程序）</li>
+<li>PicGo-Core（命令行版本）</li>
+</ol>
+<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
+<p>选择对应系统的安装包安装即可</p>
+<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
+<ul>
+<li>没有nodejs环境，使用typora一键安装即可</li>
+<li>本机有nodjs环境，直接npm全局安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
+
+
+
+<p>插件安装</p>
+<p><a href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
+<p>这是一款可以上传自定义图床的插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
+<p>具体参考：<a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
+<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
+<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
+<p>如下图所示：</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
+<ol>
+<li>插入图片时：选择：上传图片；</li>
+<li>上传服务设定<ol>
+<li>上传服务：选择：PicGo（app）</li>
+<li>PicGo 路径：选择：自己安装时候的路径</li>
+</ol>
+</li>
+</ol>
+<p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
+<p>设置成功后，会出现“验证成功”的提示，如下图：</p>
+<p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
+]]></content>
+      <categories>
+        <category>Markdown</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>PicGo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/04/12/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2020/04/12/test-my-site/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>wpf-control window 范围内默认样式对第一个控件无效</title>
+    <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+<p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
+<p>通常我们使用下面的代码是没问题的；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、原因和解决方法"><a href="#2、原因和解决方法" class="headerlink" title="2、原因和解决方法"></a>2、原因和解决方法</h2><h3 id="2-1-原因"><a href="#2-1-原因" class="headerlink" title="2.1 原因"></a>2.1 原因</h3><p>因为把 Button 默认样式放在了 ResourceDictionary.MergedDictionaries 内部的ResourceDictionary 内了，这样在解析引用样式的时候会跳过第一个元素；</p>
+<h3 id="2-2-解决方案"><a href="#2-2-解决方案" class="headerlink" title="2.2 解决方案"></a>2.2 解决方案</h3><p>将 style 提到 ResourceDictionary.MergedDictionaries 之外</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window.Resources&gt;</span><br><span class="line">    &lt;ResourceDictionary&gt;</span><br><span class="line">        &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">            &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">        &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/ResourceDictionary&gt;</span><br><span class="line">&lt;/Window.Resources&gt;</span><br><span class="line">&lt;Grid&gt;</span><br><span class="line">    &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">    &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">&lt;/Grid&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考链接：<a href="https://stackoverflow.com/questions/4811884/wpf-doesnt-apply-style-to-first-element">resources - WPF doesn’t apply style to first element - Stack Overflow</a></p>
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+</search>
