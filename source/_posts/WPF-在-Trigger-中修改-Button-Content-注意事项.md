@@ -11,10 +11,6 @@ tags:
 - Style
 ---
 
-@[toc]
-
-
-
 ## 1. 问题描述
 
 xaml 代码块如下：
@@ -37,7 +33,7 @@ xaml 代码块如下：
 
 运行后，触发 DataTrigger 发现 Button 的 Content 没有变化
 
-
+<!--more-->
 
 ## 2. 原因和解决方法
 

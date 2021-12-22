@@ -1,5 +1,5 @@
 ---
-title: ElasticSearch-操作异常总结
+title: ElasticSearch 操作异常总结
 date: 2021-12-15 17:41:01
 categories:
 - ElasticSearch
@@ -7,8 +7,6 @@ tags:
 - ElasticSearch
 - ES
 ---
-
-[toc]
 
 # 1. Index 写入数据 FORBIDDEN 问题
 
@@ -32,6 +30,8 @@ tags:
 ```
 
 其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]
+
+<!--more-->
 
 ## 1.2 原因分析
 

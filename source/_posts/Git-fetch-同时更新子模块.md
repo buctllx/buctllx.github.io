@@ -8,17 +8,11 @@ tags:
 - Git
 ---
 
-
-
-@[toc]
-
-
-
 ## 1. 问题描述
 
 默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；
 
-
+<!--more-->
 
 ## 2. 传统解决方法：
 

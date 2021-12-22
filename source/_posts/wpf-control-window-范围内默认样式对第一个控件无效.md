@@ -1,5 +1,5 @@
 ---
-title: wpf-control window 范围内默认样式对第一个控件无效
+title: wpf control window 范围内默认样式对第一个控件无效
 date: 2021-12-02 15:12:32
 
 categories:
@@ -12,13 +12,11 @@ tags:
 - Style
 ---
 
-[toc]
-
-
-
 ## 1、问题描述
 
 wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：
+
+<!--more-->
 
 ```xaml
 <Window x:Class="TestApp.TestWindow"
