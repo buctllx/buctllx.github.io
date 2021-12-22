@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ElasticSearch-操作异常总结</title>
+    <title>Git fetch 同时更新子模块</title>
+    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
+<span id="more"></span>
+
+<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
+]]></content>
+      <categories>
+        <category>Git 相关</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch 操作异常总结</title>
     <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+    <content><![CDATA[<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
 <figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
 
 <p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<span id="more"></span>
+
 <h2 id="1-2-原因分析"><a href="#1-2-原因分析" class="headerlink" title="1.2 原因分析"></a>1.2 原因分析</h2><p>从字面意思看，ES 禁止数据写入；</p>
 <p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
 <p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
@@ -56,6 +86,92 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo Next Theme 使用问题总结</title>
+    <url>/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<div class="note info"><p>两个路径说明：</p>
+<p>site root directory：博客站点根目录</p>
+<p>theme root directory：博客主题根目录</p>
+<p>后面说明问题会一直沿用这中叫法；</p>
+</div>
+
+<h1 id="1-部署后“搜索”功能无法使用"><a href="#1-部署后“搜索”功能无法使用" class="headerlink" title="1. 部署后“搜索”功能无法使用"></a>1. 部署后“搜索”功能无法使用</h1><p><strong>原因</strong></p>
+<p>使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定</p>
+<span id="more"></span>
+
+<p><strong>解决方法</strong></p>
+<p>拉去稳定版本的分支，主要看最新的 Tag</p>
+<p>参考 Issues 链接：<a href="https://github.com/hexojs/hexo/issues/4654">https://github.com/hexojs/hexo/issues/4654</a></p>
+<h1 id="2-替换图片资源路径"><a href="#2-替换图片资源路径" class="headerlink" title="2. 替换图片资源路径"></a>2. 替换图片资源路径</h1><p>主题涉及到的，各种图片资源都是可以替换的，</p>
+<p><strong>替换路径：theme root directory\theme\next\source\images</strong></p>
+<p>为了显示效果，注意替换的图片最好是对应像素的，而且不易过大，图片类型可以自己修改</p>
+<p>可替换图片说明：</p>
+<table>
+<thead>
+<tr>
+<th>图片名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>avatar</td>
+<td>博主图像</td>
+</tr>
+<tr>
+<td>favicon-16x16-next</td>
+<td>网站图标 16x16 像素</td>
+</tr>
+<tr>
+<td>favicon-32x32-next</td>
+<td>网站图标 32x32 像素</td>
+</tr>
+<tr>
+<td>logo</td>
+<td>log</td>
+</tr>
+<tr>
+<td>apple-touch-icon-next</td>
+<td>触摸图标</td>
+</tr>
+<tr>
+<td>alipay</td>
+<td>支付宝收款二维码</td>
+</tr>
+<tr>
+<td>weixin</td>
+<td>微信收款二维码</td>
+</tr>
+</tbody></table>
+<h1 id="3-增加自定义的“标签”，“分类”页面"><a href="#3-增加自定义的“标签”，“分类”页面" class="headerlink" title="3. 增加自定义的“标签”，“分类”页面"></a>3. 增加自定义的“标签”，“分类”页面</h1><p>默认安装好的 next 主题，是没有“标签”，“分类”页面的；</p>
+<p>需要使用者自己新增页面：</p>
+<p>新增方法：以“标签”也为例说明：</p>
+<ol>
+<li><p>使用 hexo 命令新建 tags.md页面</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
+<li><p>打开 tags.md 并修改页面类型 type 信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: Tags</span><br><span class="line">date: 2021-12-22 12:00:00</span><br><span class="line">type: tags</span><br></pre></td></tr></table></figure></li>
+<li><p>修改主题配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd next/_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="4-开启首页文章部分显示"><a href="#4-开启首页文章部分显示" class="headerlink" title="4. 开启首页文章部分显示"></a>4. 开启首页文章部分显示</h1><p>next 主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
+<p>想要让文章部分显示，并出现“阅读全文的按钮”，只需要在个人的文章 Markdown 源文件中添加一行代码就行</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--more--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>具体位置，自己确定，在自己想要显示的文章部分下面加上即可只在首页显示所需的文章部分。</p>
+<p>参考文档：</p>
+<p><a href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-%C2%ABTags%C2%BB-Page">Custom Pages | NexT (theme-next.js.org)</a></p>
+<p><a href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2">创建分类页面 · iissnan/hexo-theme-next Wiki (github.com)</a></p>
+<p><a href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo + Theme Next – 写作 | Knner.Wang’s Blog</a></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+        <category>Hexo Theme</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Theme</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora 设置关联七牛云图床</title>
     <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
     <content><![CDATA[<h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
@@ -65,6 +181,8 @@
 <li>注册后，需要实名认证</li>
 <li>个人认证 即可</li>
 </ol>
+<span id="more"></span>
+
 <h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
 <li>登录后，通过“管理控制台”进入管理页面；</li>
 <li>点击“对象存储 Kodo”；</li>
@@ -135,41 +253,14 @@
       </tags>
   </entry>
   <entry>
-    <title>Git fetch 同时更新子模块</title>
-    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
-    <content><![CDATA[<p>@[toc]</p>
-<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
-<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
-<p>git checkout / fetch；</p>
-<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
-<table>
-<thead>
-<tr>
-<th align="left">1</th>
-<th align="left">git config –global submodule.recurse true</th>
-</tr>
-</thead>
-</table>
-<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
-<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
-<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
-<p>submodule.recurse 选项已添加到 git 2.14</p>
-]]></content>
-      <categories>
-        <category>Git 相关</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
     <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
-    <content><![CDATA[<p>@[toc]</p>
-<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
 
 <p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+<span id="more"></span>
+
 <h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
 <p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
 <p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
@@ -189,10 +280,34 @@
       </tags>
   </entry>
   <entry>
-    <title>wpf-control window 范围内默认样式对第一个控件无效</title>
+    <title>Hello World</title>
+    <url>/2020/04/12/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2020/04/12/test-my-site/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>wpf control window 范围内默认样式对第一个控件无效</title>
     <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+    <content><![CDATA[<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+<span id="more"></span>
+
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
 
 <p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
@@ -218,28 +333,5 @@
         <tag>WPF</tag>
         <tag>Style</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test_my_site</title>
-    <url>/2020/04/12/test-my-site/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/04/12/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
 </search>

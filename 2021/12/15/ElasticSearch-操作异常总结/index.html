@@ -20,16 +20,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="[toc] 1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_t">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_type&amp;qu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ElasticSearch-操作异常总结">
+<meta property="og:title" content="ElasticSearch 操作异常总结">
 <meta property="og:url" content="http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="[toc] 1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_t">
+<meta property="og:description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_type&amp;qu">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-15T09:41:01.000Z">
-<meta property="article:modified_time" content="2021-12-17T09:05:13.459Z">
+<meta property="article:modified_time" content="2021-12-22T05:39:55.179Z">
 <meta property="article:author" content="ConorLuo">
 <meta property="article:tag" content="ElasticSearch">
 <meta property="article:tag" content="ES">
@@ -40,10 +40,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/","path":"2021/12/15/ElasticSearch-操作异常总结/","title":"ElasticSearch-操作异常总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/","path":"2021/12/15/ElasticSearch-操作异常总结/","title":"ElasticSearch 操作异常总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>ElasticSearch-操作异常总结 | ConorLuo 博客</title>
+<title>ElasticSearch 操作异常总结 | ConorLuo 博客</title>
   
 
 
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Index-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE-FORBIDDEN-%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">1. Index 写入数据 FORBIDDEN 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 原因分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 解决方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-ElasticSearch-%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">2. ElasticSearch 启动参数问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-unknown-setting-discovery-seed-hosts"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 unknown setting [discovery.seed_hosts]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A7%E7%94%9F%E8%83%8C%E6%99%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">产生背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">2.1.2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.3.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.4.</span> <span class="nav-text">类似的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-ES-%E7%BC%93%E5%AD%98%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ES 缓存设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-ElasticSearch-%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81%E6%8E%92%E6%9F%A5"><span class="nav-number">3.</span> <span class="nav-text">3. ElasticSearch 集群状态排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-ES-%E7%B4%A2%E5%BC%95-primary-shard-is-unassigned-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">4. ES 索引 primary shard is unassigned 解决方法</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Index-%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE-FORBIDDEN-%E9%97%AE%E9%A2%98"><span class="nav-text">1. Index 写入数据 FORBIDDEN 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-text">1.1 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-text">1.2 原因分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">1.3 解决方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-ElasticSearch-%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-text">2. ElasticSearch 启动参数问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-unknown-setting-discovery-seed-hosts"><span class="nav-text">2.1 unknown setting [discovery.seed_hosts]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A7%E7%94%9F%E8%83%8C%E6%99%AF"><span class="nav-text">产生背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-text">原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">类似的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-ES-%E7%BC%93%E5%AD%98%E8%AE%BE%E7%BD%AE"><span class="nav-text">2.2 ES 缓存设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-ElasticSearch-%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81%E6%8E%92%E6%9F%A5"><span class="nav-text">3. ElasticSearch 集群状态排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-ES-%E7%B4%A2%E5%BC%95-primary-shard-is-unassigned-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">4. ES 索引 primary shard is unassigned 解决方法</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -242,7 +242,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ElasticSearch-操作异常总结
+          ElasticSearch 操作异常总结
         </h1>
 
         <div class="post-meta-container">
@@ -260,7 +260,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-17 17:05:13" itemprop="dateModified" datetime="2021-12-17T17:05:13+08:00">2021-12-17</time>
+        <time title="修改时间：2021-12-22 13:39:55" itemprop="dateModified" datetime="2021-12-22T13:39:55+08:00">2021-12-22</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -280,6 +280,21 @@
       <span class="post-meta-item-text">阅读次数：</span>
       <span id="busuanzi_value_page_pv"></span>
     </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
 </div>
 
         </div>
@@ -289,11 +304,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>[toc]</p>
-<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+        <h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
 <figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
 
 <p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<span id="more"></span>
+
 <h2 id="1-2-原因分析"><a href="#1-2-原因分析" class="headerlink" title="1.2 原因分析"></a>1.2 原因分析</h2><p>从字面意思看，ES 禁止数据写入；</p>
 <p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
 <p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
@@ -340,6 +356,24 @@
     
 
     <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
           
 
 <div class="post-copyright">
@@ -349,7 +383,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/" title="ElasticSearch-操作异常总结">http://yoursite.com/2021/12/15/ElasticSearch-操作异常总结/</a>
+      <a href="http://yoursite.com/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/" title="ElasticSearch 操作异常总结">http://yoursite.com/2021/12/15/ElasticSearch-操作异常总结/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -358,8 +392,8 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/ElasticSearch/" rel="tag"># ElasticSearch</a>
-              <a href="/tags/ES/" rel="tag"># ES</a>
+              <a href="/tags/ElasticSearch/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch</a>
+              <a href="/tags/ES/" rel="tag"><i class="fa fa-tag"></i> ES</a>
           </div>
 
         
@@ -371,6 +405,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" rel="next" title="Hexo Next Theme 使用问题总结">
+                  Hexo Next Theme 使用问题总结 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -382,6 +419,7 @@
 
 
 
+    <div class="comments gitalk-container"></div>
 </div>
   </main>
 
@@ -408,12 +446,28 @@
 
 
 <div class="copyright">
-  &copy; 2020 – 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">12k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11 分钟</span>
+  </span>
 </div>
 <div class="busuanzi-count">
     <span class="post-meta-item" id="busuanzi_container_site_uv">
@@ -457,6 +511,10 @@
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"66ccb91adb2b1d08e2672dc9a6d66137"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
 </html>
