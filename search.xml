@@ -363,6 +363,9 @@
 <h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
 <p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
 <p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<p>这里不做详细说明</p>
 ]]></content>
       <categories>
         <category>Termianl</category>
