@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Git fetch 同时更新子模块</title>
+    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
+<span id="more"></span>
+
+<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
+]]></content>
+      <categories>
+        <category>Git 相关</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch 操作异常总结</title>
+    <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
+
+<p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<span id="more"></span>
+
+<h2 id="1-2-原因分析"><a href="#1-2-原因分析" class="headerlink" title="1.2 原因分析"></a>1.2 原因分析</h2><p>从字面意思看，ES 禁止数据写入；</p>
+<p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
+<p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
+<p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
+<h2 id="1-3-解决方法"><a href="#1-3-解决方法" class="headerlink" title="1.3 解决方法"></a>1.3 解决方法</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p> 参考链接：[如何修复 ElasticSearch <a href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
+<h1 id="2-ElasticSearch-启动参数问题"><a href="#2-ElasticSearch-启动参数问题" class="headerlink" title="2. ElasticSearch 启动参数问题"></a>2. ElasticSearch 启动参数问题</h1><p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
+<p>这里主要说明常见的各种 es 设置问题</p>
+<h2 id="2-1-unknown-setting-discovery-seed-hosts"><a href="#2-1-unknown-setting-discovery-seed-hosts" class="headerlink" title="2.1 unknown setting [discovery.seed_hosts]"></a>2.1 unknown setting [discovery.seed_hosts]</h2><h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p>使用2019年的老脚本启动 es 的 docker 实例；</p>
+<p>注：笔者是 2021.12.15 pull 最新的 es 镜像启动实例的，启动实例使用的参数是 2019 年底时的；</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
+<p>可以通过 dock inspect elasticsearch 查看</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用下面的配置替代</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
+<h3 id="类似的问题"><a href="#类似的问题" class="headerlink" title="类似的问题"></a>类似的问题</h3><p>unknown setting [cluster.initial_master_nodes] </p>
+<h2 id="2-2-ES-缓存设置"><a href="#2-2-ES-缓存设置" class="headerlink" title="2.2 ES 缓存设置"></a>2.2 ES 缓存设置</h2><p>默认设置：ES_JAVA_OPTS=”-Xms256m -Xmx256m”</p>
+<p>启动的时候可以加 -e 指定参数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
+
+<p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
+<blockquote>
+<p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
+</blockquote>
+<p>解决方法：修改 centos 系统的缓存设置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="3-ElasticSearch-集群状态排查"><a href="#3-ElasticSearch-集群状态排查" class="headerlink" title="3. ElasticSearch 集群状态排查"></a>3. ElasticSearch 集群状态排查</h1><p><a href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
+<h1 id="4-ES-索引-primary-shard-is-unassigned-解决方法"><a href="#4-ES-索引-primary-shard-is-unassigned-解决方法" class="headerlink" title="4. ES 索引 primary shard is unassigned 解决方法"></a>4. ES 索引 primary shard is unassigned 解决方法</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/weixin_34050519/article/details/85936609">ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客</a></p>
+<p><a href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo Next Theme 使用问题总结</title>
+    <url>/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<div class="note info"><p>两个路径说明：</p>
+<p>site root directory：博客站点根目录</p>
+<p>theme root directory：博客主题根目录</p>
+<p>后面说明问题会一直沿用这中叫法；</p>
+</div>
+
+<h1 id="1-部署后“搜索”功能无法使用"><a href="#1-部署后“搜索”功能无法使用" class="headerlink" title="1. 部署后“搜索”功能无法使用"></a>1. 部署后“搜索”功能无法使用</h1><p><strong>原因</strong></p>
+<p>使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定</p>
+<span id="more"></span>
+
+<p><strong>解决方法</strong></p>
+<p>拉去稳定版本的分支，主要看最新的 Tag</p>
+<p>参考 Issues 链接：<a href="https://github.com/hexojs/hexo/issues/4654">https://github.com/hexojs/hexo/issues/4654</a></p>
+<h1 id="2-替换图片资源路径"><a href="#2-替换图片资源路径" class="headerlink" title="2. 替换图片资源路径"></a>2. 替换图片资源路径</h1><p>主题涉及到的，各种图片资源都是可以替换的，</p>
+<p><strong>替换路径：theme root directory\theme\next\source\images</strong></p>
+<p>为了显示效果，注意替换的图片最好是对应像素的，而且不易过大，图片类型可以自己修改</p>
+<p>可替换图片说明：</p>
+<table>
+<thead>
+<tr>
+<th>图片名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>avatar</td>
+<td>博主图像</td>
+</tr>
+<tr>
+<td>favicon-16x16-next</td>
+<td>网站图标 16x16 像素</td>
+</tr>
+<tr>
+<td>favicon-32x32-next</td>
+<td>网站图标 32x32 像素</td>
+</tr>
+<tr>
+<td>logo</td>
+<td>log</td>
+</tr>
+<tr>
+<td>apple-touch-icon-next</td>
+<td>触摸图标</td>
+</tr>
+<tr>
+<td>alipay</td>
+<td>支付宝收款二维码</td>
+</tr>
+<tr>
+<td>weixin</td>
+<td>微信收款二维码</td>
+</tr>
+</tbody></table>
+<h1 id="3-增加自定义的“标签”，“分类”页面"><a href="#3-增加自定义的“标签”，“分类”页面" class="headerlink" title="3. 增加自定义的“标签”，“分类”页面"></a>3. 增加自定义的“标签”，“分类”页面</h1><p>默认安装好的 next 主题，是没有“标签”，“分类”页面的；</p>
+<p>需要使用者自己新增页面：</p>
+<p>新增方法：以“标签”也为例说明：</p>
+<ol>
+<li><p>使用 hexo 命令新建 tags.md页面</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
+<li><p>打开 tags.md 并修改页面类型 type 信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: Tags</span><br><span class="line">date: 2021-12-22 12:00:00</span><br><span class="line">type: tags</span><br></pre></td></tr></table></figure></li>
+<li><p>修改主题配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd next/_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="4-开启首页文章部分显示"><a href="#4-开启首页文章部分显示" class="headerlink" title="4. 开启首页文章部分显示"></a>4. 开启首页文章部分显示</h1><p>next 主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
+<p>想要让文章部分显示，并出现“阅读全文的按钮”，只需要在个人的文章 Markdown 源文件中添加一行代码就行</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--more--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>具体位置，自己确定，在自己想要显示的文章部分下面加上即可只在首页显示所需的文章部分。</p>
+<p>参考文档：</p>
+<p><a href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-%C2%ABTags%C2%BB-Page">Custom Pages | NexT (theme-next.js.org)</a></p>
+<p><a href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2">创建分类页面 · iissnan/hexo-theme-next Wiki (github.com)</a></p>
+<p><a href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo + Theme Next – 写作 | Knner.Wang’s Blog</a></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+        <category>Hexo Theme</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Theme</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora 设置关联七牛云图床</title>
+    <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
+<p>注册流程不在这里详细说明；</p>
+<p>说一下注意事项：</p>
+<ol>
+<li>注册后，需要实名认证</li>
+<li>个人认证 即可</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
+<li>登录后，通过“管理控制台”进入管理页面；</li>
+<li>点击“对象存储 Kodo”；</li>
+<li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
+<li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
+</ol>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
+<p>注意事项：</p>
+<ol>
+<li>访问权限选择“公开”</li>
+<li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
+</ol>
+<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
+<ol>
+<li>PicGo App（应用程序）</li>
+<li>PicGo-Core（命令行版本）</li>
+</ol>
+<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
+<p>选择对应系统的安装包安装即可</p>
+<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
+<ul>
+<li>没有nodejs环境，使用typora一键安装即可</li>
+<li>本机有nodjs环境，直接npm全局安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
+
+
+
+<p>插件安装</p>
+<p><a href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
+<p>这是一款可以上传自定义图床的插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
+<p>具体参考：<a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
+<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
+<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
+<p>如下图所示：</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
+<ol>
+<li>插入图片时：选择：上传图片；</li>
+<li>上传服务设定<ol>
+<li>上传服务：选择：PicGo（app）</li>
+<li>PicGo 路径：选择：自己安装时候的路径</li>
+</ol>
+</li>
+</ol>
+<p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
+<p>设置成功后，会出现“验证成功”的提示，如下图：</p>
+<p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
+]]></content>
+      <categories>
+        <category>Markdown</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>PicGo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
+    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+<span id="more"></span>
+
+<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
+<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
+<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/04/12/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2020/04/12/test-my-site/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>wpf control window 范围内默认样式对第一个控件无效</title>
+    <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
+    <content><![CDATA[<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+<p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
+<p>通常我们使用下面的代码是没问题的；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、原因和解决方法"><a href="#2、原因和解决方法" class="headerlink" title="2、原因和解决方法"></a>2、原因和解决方法</h2><h3 id="2-1-原因"><a href="#2-1-原因" class="headerlink" title="2.1 原因"></a>2.1 原因</h3><p>因为把 Button 默认样式放在了 ResourceDictionary.MergedDictionaries 内部的ResourceDictionary 内了，这样在解析引用样式的时候会跳过第一个元素；</p>
+<h3 id="2-2-解决方案"><a href="#2-2-解决方案" class="headerlink" title="2.2 解决方案"></a>2.2 解决方案</h3><p>将 style 提到 ResourceDictionary.MergedDictionaries 之外</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window.Resources&gt;</span><br><span class="line">    &lt;ResourceDictionary&gt;</span><br><span class="line">        &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">            &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">        &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/ResourceDictionary&gt;</span><br><span class="line">&lt;/Window.Resources&gt;</span><br><span class="line">&lt;Grid&gt;</span><br><span class="line">    &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">    &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">&lt;/Grid&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考链接：<a href="https://stackoverflow.com/questions/4811884/wpf-doesnt-apply-style-to-first-element">resources - WPF doesn’t apply style to first element - Stack Overflow</a></p>
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows Terminal 集成 Oh My Posh</title>
+    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
+    <content><![CDATA[<h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
+<ul>
+<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
+<li> <a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
+</ul>
+<p>具体安装这里不做详细说明</p>
+<span id="more"></span>
+
+<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
+<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
+<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
+</div>
+
+<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
+<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
+<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
+
+<p>参考链接：</p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
+<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
+<p>下载自定后安装方法：</p>
+<p>解压、进入字体目录、全选、右键、安装 即可</p>
+<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
+<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
+<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<p>这里不做详细说明</p>
+]]></content>
+      <categories>
+        <category>Termianl</category>
+        <category>PowerShell</category>
+      </categories>
+      <tags>
+        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
+      </tags>
+  </entry>
+</search>
