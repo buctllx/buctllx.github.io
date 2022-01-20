@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</loc>
     
     <lastmod>2021-12-29</lastmod>
@@ -103,7 +112,7 @@
 
   <url>
     <loc>http://yoursite.com/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -111,84 +120,84 @@
   
   <url>
     <loc>http://yoursite.com/tags/Git/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/ElasticSearch/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/ES/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Hexo/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Theme/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Typora/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/PicGo/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Net/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/C/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/WPF/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Style/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Termianl-PowerShell-Oh-My-Posh/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -197,56 +206,63 @@
   
   <url>
     <loc>http://yoursite.com/categories/Git-%E7%9B%B8%E5%85%B3/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/ElasticSearch/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Hexo/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Markdown/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/WPF/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Hexo/Hexo-Theme/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Termianl/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Termianl/PowerShell/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <lastmod>2022-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/Hexo/PicGo/</loc>
+    <lastmod>2022-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
