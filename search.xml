@@ -433,51 +433,129 @@
     <url>/2022/01/20/Revit-%E6%9E%84%E4%BB%B6%E5%8F%82%E6%95%B0%E4%BD%93%E7%B3%BB%E8%AF%B4%E6%98%8E/</url>
     <content><![CDATA[<h1 id="1、Revit-构件分类说明"><a href="#1、Revit-构件分类说明" class="headerlink" title="1、Revit 构件分类说明"></a>1、Revit 构件分类说明</h1><p>从不同的维度 Revit 构件（图元）有不同的分类；</p>
 <p>对用用户来说：最为熟悉的就是“项目浏览器”中“族”节点的三级分类：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121142116181.png" alt="image-20220121142116181"></p>
 <p>这里主要介绍以下几种分类维度；</p>
+<span id="more"></span>
+
 <h2 id="1-1-常见的三级分类"><a href="#1-1-常见的三级分类" class="headerlink" title="1.1 常见的三级分类"></a>1.1 常见的三级分类</h2><p>三级分类，一般用于用户分类管理各种构件，方便用户快速检索使用；</p>
+<p>每一级分类都有自己的参数，只不过用户经常关注的时：类型参数、实例参数而已</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121142116181.png" alt="image-20220121142116181"></p>
 <h3 id="一级分类-类别"><a href="#一级分类-类别" class="headerlink" title="一级分类 - 类别"></a>一级分类 - 类别</h3><p>英文名字也是 API 的名字：Category</p>
 <p>Category 是 Revit 软件内置的基础数据，不能被用户和开发者“增删改”，用户只有使用权限；</p>
 <p>对于某个确定的 Revit 版本 Category 数量是固定的，只有在 Revit 版本的变化的时候 Category 才可能变化（一般是新增）</p>
 <p>Category 内部也是有联系的，具体变现为子类别 SubCategory，这一点一般用户是看不到的；</p>
 <p>下面是 Revit API 暴露出来的所有的 Category，可以通过切花版本查看；</p>
 <p><a href="https://www.revitapidocs.com/2020/ba1c5b30-242f-5fdc-8ea9-ec3b61e6e722.htm">Revit API BuiltInCategory Enumeration (revitapidocs.com)</a></p>
-<h3 id="二级分类-族"><a href="#二级分类-族" class="headerlink" title="二级分类 - 族"></a>二级分类 - 族</h3><p>在类别之下的二级分类；</p>
+<p>经过个人统计 Category 发现：</p>
+<p>总数：2000+</p>
+<p>一般项目中用到的：900左右</p>
+<p>实际建模常用的：不超过100</p>
+<h3 id="二级分类-族"><a href="#二级分类-族" class="headerlink" title="二级分类 - 族"></a>二级分类 - 族</h3><p>Family</p>
+<p>在类别之下的二级分类；</p>
 <p>所有添加到 Revit 项目中的图元都是使用族创建的。</p>
 <p>族 在 Revit 中也分为多种类型，具有一定的可扩展性，但并不是所有的族都能扩展，后面 1.2 章节会说明</p>
 <p>这里需要特殊说明的是：族并不是单一的构件，它是可以嵌套，复合的，从而生成更加复杂高级的族；</p>
 <p>更多详细说明参见 Autodesk Revit 官方文档：<a href="https://help.autodesk.com/view/RVT/2016/CHS/?guid=GUID-4EBB97AD-C7B6-4828-91EB-BC0E99B81E43">帮助: Revit 族 (autodesk.com)</a></p>
-<h3 id="三级分类-类型"><a href="#三级分类-类型" class="headerlink" title="三级分类 - 类型"></a>三级分类 - 类型</h3><p>类别</p>
+<h3 id="三级分类-类型"><a href="#三级分类-类型" class="headerlink" title="三级分类 - 类型"></a>三级分类 - 类型</h3><p>xxx_Type，FamilySymbol</p>
+<p>一个族，可以有多个类型；一般叫：族类型；</p>
+<p>类型是用户建模的时候必须指定的信息，</p>
+<p>指定了类型，就只定了族和类别；</p>
+<p>类型下面就是“图元”了，也可以叫构件；所谓图元，就是在模型视图中实实在在看到的对象，但被选中时，会高亮显示，并且会在“属性”窗口中显示图元的参数信息；</p>
+<p><font color="red">“属性”窗口中显示的并不是图元所有的属性信息</font></p>
 <h2 id="1-2-按族类型分类"><a href="#1-2-按族类型分类" class="headerlink" title="1.2 按族类型分类"></a>1.2 按族类型分类</h2><h3 id="系统族"><a href="#系统族" class="headerlink" title="系统族"></a>系统族</h3><p>特点：</p>
 <ol>
 <li>Revit 软件内置的，所有的 rvt 文件都是一样的；</li>
 <li>有限的；</li>
 <li>用户不能自己添加 / 删除（Revit 升级的时候或许会新增）；</li>
 </ol>
+<p>常见的系统族：墙，楼板、各种管线、屋顶、……</p>
 <h3 id="载入族"><a href="#载入族" class="headerlink" title="载入族"></a>载入族</h3><p>特点：</p>
 <ol>
 <li>以 rfa 文件的形式存在；</li>
 <li>可以载入不同的 rvt 文件中复用；</li>
 <li>用户可以自己新增或者删除；</li>
 </ol>
+<p>常见的系统族：梁、柱、管件、管道附件、末端、家具、设备……</p>
 <h3 id="内建族"><a href="#内建族" class="headerlink" title="内建族"></a>内建族</h3><p>特点：</p>
 <ol>
 <li>只存在于某一个 rvt 文件内，不能被复用；</li>
-<li>只包含单个类型</li>
+<li>只包含一个类型且类型名称和族名称一样</li>
 <li>用户可以自己新增或者删除；</li>
 </ol>
-<h2 id="1-3-按构件类型"><a href="#1-3-按构件类型" class="headerlink" title="1.3 按构件类型"></a>1.3 按构件类型</h2><h3 id="模型类构件"><a href="#模型类构件" class="headerlink" title="模型类构件"></a>模型类构件</h3><h3 id="注释类构件"><a href="#注释类构件" class="headerlink" title="注释类构件"></a>注释类构件</h3><h3 id="分析类构件"><a href="#分析类构件" class="headerlink" title="分析类构件"></a>分析类构件</h3><h1 id="2、Revit-参数分类说明"><a href="#2、Revit-参数分类说明" class="headerlink" title="2、Revit 参数分类说明"></a>2、Revit 参数分类说明</h1><p>Revit 参数也有多个分类的维度，</p>
+<p>可以随意指定，创建的时候只需要指定 类别，输入一个族名称，Revit 就会自动创建一个内建族</p>
+<h2 id="1-3-按-Category-类型分类"><a href="#1-3-按-Category-类型分类" class="headerlink" title="1.3 按 Category 类型分类"></a>1.3 按 Category 类型分类</h2><p>这种分类是按照 Category 的属性信息 Category Type 进行划分的</p>
+<p>一般较少关注</p>
+<h3 id="模型类构件-模型族"><a href="#模型类构件-模型族" class="headerlink" title="模型类构件(模型族)"></a>模型类构件(模型族)</h3><p>可以在三维视图中进行查看的；</p>
+<p>例如：墙、梁、板、柱、……</p>
+<h3 id="详图类构件-注释族"><a href="#详图类构件-注释族" class="headerlink" title="详图类构件(注释族)"></a>详图类构件(注释族)</h3><p>在平面视图中进行辅助查看，不能在三维视图中看到；</p>
+<p>例如：标记、尺寸标注、……</p>
+<h3 id="分析类构件-分析族"><a href="#分析类构件-分析族" class="headerlink" title="分析类构件(分析族)"></a>分析类构件(分析族)</h3><p>Revit 中有一个单独的分析模块，分析族用来展示分析结果的</p>
+<p>例如：分析墙、分析柱、……</p>
+<h3 id="内部类构件-内部族"><a href="#内部类构件-内部族" class="headerlink" title="内部类构件(内部族)"></a>内部类构件(内部族)</h3><p>Revit 内部使用的；</p>
+<p>用户一般不直接使用，通常起到辅助类的构件；</p>
+<p>例如：结构连接处理程序、部件、……</p>
+<h1 id="2、Revit-参数分类说明"><a href="#2、Revit-参数分类说明" class="headerlink" title="2、Revit 参数分类说明"></a>2、Revit 参数分类说明</h1><p>Revit 参数也有多个分类的维度，</p>
 <p>这里主要介绍以下几种分类维度</p>
-<h2 id="2-1-按作用的层级"><a href="#2-1-按作用的层级" class="headerlink" title="2.1 按作用的层级"></a>2.1 按作用的层级</h2><h3 id="项目级参数"><a href="#项目级参数" class="headerlink" title="项目级参数"></a>项目级参数</h3><h3 id="族级参数"><a href="#族级参数" class="headerlink" title="族级参数"></a>族级参数</h3><h3 id="类型级参数"><a href="#类型级参数" class="headerlink" title="类型级参数"></a>类型级参数</h3><h3 id="实例级参数"><a href="#实例级参数" class="headerlink" title="实例级参数"></a>实例级参数</h3><h2 id="2-1-按参数的定义"><a href="#2-1-按参数的定义" class="headerlink" title="2.1 按参数的定义"></a>2.1 按参数的定义</h2><p>只是定义参数，不关心这个参数将会被用于描述哪个对象</p>
-<h3 id="内置参数"><a href="#内置参数" class="headerlink" title="内置参数"></a>内置参数</h3><h3 id="共享参数"><a href="#共享参数" class="headerlink" title="共享参数"></a>共享参数</h3><h3 id="族参数"><a href="#族参数" class="headerlink" title="族参数"></a>族参数</h3><p>这类参数比较特殊，该类型的参数只能在族文件范围内定义，</p>
-<p>简单来说就是，只能在编辑 rfa 文件的时候进行定义；且有效的使用范围只能在 rfa 文件内部；</p>
-<p>这也是造成 revit 参数被滥用的一个原因：</p>
-<p>在不同的 rfa 文件中可以同一个具有相同含义的参数，但是彼此之间却没有任何关系，只能靠参数名称进行区分；</p>
-<p>族参数，在族内部作用的层级，还可以划分为不同的参数</p>
-<h4 id="类型-级-参数"><a href="#类型-级-参数" class="headerlink" title="类型(级)参数"></a>类型(级)参数</h4><h4 id="实例-级-参数"><a href="#实例-级-参数" class="headerlink" title="实例(级)参数"></a>实例(级)参数</h4><h3 id="全局参数"><a href="#全局参数" class="headerlink" title="全局参数"></a>全局参数</h3><h1 id="3、Revit-参数管理体系"><a href="#3、Revit-参数管理体系" class="headerlink" title="3、Revit 参数管理体系"></a>3、Revit 参数管理体系</h1><p>在 Revit 中所有的参数都必须先定义，然后才能被使用；</p>
+<h2 id="2-1-按作用的层级"><a href="#2-1-按作用的层级" class="headerlink" title="2.1 按作用的层级"></a>2.1 按作用的层级</h2><p>作用层级包含了三级分类，在 1.1 中说明过，每一级都有自己的描述参数；</p>
+<p>除了三级分类，这里补充说明了“项目参数”和“实例参数”</p>
+<h3 id="项目级参数"><a href="#项目级参数" class="headerlink" title="项目级参数"></a>项目级参数</h3><p>这里项目有别于建筑设计的项目，意思是 rvt 文件，Revit 默认一个 rvt 文件就是一个项目文件，rvt 文件级别的参数就是项目参数，不同的 rvt 文件可以定义不同数量的参数；</p>
+<p>所有的项目参数集合在一起，叫做“项目信息”，也是一个 Category 类别</p>
+<p>符合 Revit 添加参数的统一流程</p>
+<h3 id="族级参数"><a href="#族级参数" class="headerlink" title="族级参数"></a>族级参数</h3><p>被用来描述族 Family 的相关信息；</p>
+<p>一边较少使用，且不能增删改</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121181936225.png" alt="image-20220121181936225"></p>
+<h3 id="类型级参数"><a href="#类型级参数" class="headerlink" title="类型级参数"></a>类型级参数</h3><p>一个族一般有多个类型，一个类型之所以区别于另一个类型，就是因为类型参数的参数值不一样（如果一样，那么就可以认为是相同的类型，就没必要新建这个类型了）</p>
+<p>为了描述族下面的多个类型，因此产生了类型参数；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121182705093.png" alt="image-20220121182705093"></p>
+<h3 id="实例级参数"><a href="#实例级参数" class="headerlink" title="实例级参数"></a>实例级参数</h3><p>视图中看到的每一个图元，都有自己的属性信息，这些属性信息都是通过实例参数描述的；</p>
+<p>具体变现为：Revit “属性”窗口中看到的参数（上面截图，左侧部分）</p>
+<h2 id="2-1-按参数的定义"><a href="#2-1-按参数的定义" class="headerlink" title="2.1 按参数的定义"></a>2.1 按参数的定义</h2><p>这种分类方式，只关心参数是如何定义的，不关心这个参数将会被用于描述哪个对象；</p>
+<p>通过不同不同的定义方式，可以将参数分为以下几类；</p>
+<h3 id="内置参数"><a href="#内置参数" class="headerlink" title="内置参数"></a>内置参数</h3><p>BuiltinParameter</p>
+<p>在 Revit 中通过枚举的方式暴露出来，用户不能做任何修改；</p>
+<p><a href="https://www.revitapidocs.com/2020/fb011c91-be7e-f737-28c7-3f1e1917a0e0.htm">BuiltInParameter Enumeration (revitapidocs.com)</a></p>
+<h3 id="共享参数"><a href="#共享参数" class="headerlink" title="共享参数"></a>共享参数</h3><p>用户通过共享参数文件定义；</p>
+<p>一般情况下一个用户定义并使用一个共享参数文件，也可以做到多个用户使用同一个共享参数文件；</p>
+<h3 id="族参数"><a href="#族参数" class="headerlink" title="族参数"></a>族参数</h3><p>在编辑 rfa 文件过程中定义的参数；</p>
+<p>根据创建方式的不同，还可以划分为：</p>
+<ol>
+<li>共享参数</li>
+<li>一般族参数<ol>
+<li>这类参数比较特殊，该类型的参数只能在族文件范围内定义，</li>
+<li>简单来说就是，只能在编辑 rfa 文件的时候进行定义；且有效的使用范围只能在 rfa 文件内部；</li>
+<li>这中参数是造成 revit 参数被滥用的一个原因</li>
+</ol>
+</li>
+</ol>
+<p>族参数，在族内部作用的层级，还可以划分为：</p>
+<ul>
+<li>类型参数</li>
+<li>实例参数；</li>
+</ul>
+<p>参考：2.1 中的类型参数和实例参数；</p>
+<h3 id="全局参数"><a href="#全局参数" class="headerlink" title="全局参数"></a>全局参数</h3><h1 id="3、Revit-参数管理体系"><a href="#3、Revit-参数管理体系" class="headerlink" title="3、Revit 参数管理体系"></a>3、Revit 参数管理体系</h1><p>在 Revit 中所有的参数都必须先定义，然后才能被使用；</p>
 <p>关于参数定义，Revit 有自己的一套管理体系；</p>
 <p>下面截图是各种参数的定义截图</p>
 <div class="tabs" id="各种参数定义"><ul class="nav-tabs"><li class="tab active"><a href="#各种参数定义-1">[共享参数定义]</a></li><li class="tab"><a href="#各种参数定义-2">[项目参数定义]</a></li><li class="tab"><a href="#各种参数定义-3">[项目参数使用共享参数定义]</a></li><li class="tab"><a href="#各种参数定义-4">[族参数定义]</a></li></ul><div class="tab-content"><div class="tab-pane active" id="各种参数定义-1"><p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121145632974.png" alt="image-20220121145632974"></p></div><div class="tab-pane" id="各种参数定义-2"><p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121150553052.png" alt="image-20220121150553052"></p></div><div class="tab-pane" id="各种参数定义-3"><p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121151733095.png" alt="image-20220121151733095"></p></div><div class="tab-pane" id="各种参数定义-4"><p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121151930344.png" alt="image-20220121151930344"></p></div></div></div>
+
+
+
+<p>从上面的截图可以看出来，用于参数管理的主要有以下几个信息：</p>
+<ul>
+<li>规程</li>
+<li>参数类型</li>
+<li>参数分组</li>
+<li>参数分组方式</li>
+<li>类型 or 实例</li>
+<li>是否报告参数</li>
+</ul>
+<p>这些信息，主要用于描述一个参数，方便 Revit 对参数进行管理；</p>
+<p><font color="red">“参数定义”并不关注这个参数将会被用于描述什么对象，或者单位是什么；</font>参数的 描述对象，单位信息，则是通过一种关联关系进行使用</p>
+<p>因为：</p>
+<ol>
+<li>一个参数的定义可以被用于描述一个或者多个对象，在给对象添加参数的时候，去选择已经定义好的参数就行了；【添加项目参数的后最右侧会有关联对象的选择】</li>
+<li>一个参数可能没有单位或者有多个单位；具体选择哪个单位，在显示或者使用的时候确定就可以了，如下图所示；</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220121174516331.png" alt="image-20220121174516331"></p>
 ]]></content>
       <categories>
         <category>Revit</category>
