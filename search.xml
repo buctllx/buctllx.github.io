@@ -84,6 +84,59 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo 集成 PicGo Github 图床</title>
+    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="0、背景说明"><a href="#0、背景说明" class="headerlink" title="0、背景说明"></a>0、背景说明</h1><p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
+<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
+<p>使用 Github 图床的好处：</p>
+<ol>
+<li>没有域名限制；</li>
+<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
+<li>有人说慢，但是可以设置加速</li>
+<li>稳定，不用担心挂了或者失效</li>
+</ol>
+<span id="more"></span>
+
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
+<h1 id="1、新建一个仓库"><a href="#1、新建一个仓库" class="headerlink" title="1、新建一个仓库"></a>1、新建一个仓库</h1><ol>
+<li>名字自定义，例如：pic_bed</li>
+<li>选择 Public</li>
+<li>勾选初始化复选框： Initialize this repository with a README</li>
+<li>点击 Create repository 创建成功</li>
+<li> <a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
+<li>Note下面的文本框内容自定义</li>
+<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
+<li>最下面点击Generate token即可生成</li>
+<li>下面要用，如果忘记了可以在重新生成</li>
+</ol>
+<h1 id="2、安装配置-PicGo"><a href="#2、安装配置-PicGo" class="headerlink" title="2、安装配置 PicGo"></a>2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1><p>下载安装，这里不再说明，</p>
+<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709"></p>
+<p>填写第一步中创建的 仓库名，分支名，以及 Token </p>
+<p>然后“确定”，并设置为默认图床即可</p>
+<h1 id="3、配置-JsDeliv，给图片镶上加速器"><a href="#3、配置-JsDeliv，给图片镶上加速器" class="headerlink" title="3、配置 JsDeliv，给图片镶上加速器"></a>3、配置 JsDeliv，给图片镶上加速器</h1><ul>
+<li>比如在GitHub的图片路径是：<a href="https://github.com/user/pic_bed/img/test_image.png">https://github.com/user/pic_bed/img/test_image.png</a></li>
+<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</a></li>
+<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</a></li>
+</ul>
+<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
+<ul>
+<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</a></li>
+<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/">https://cdn.jsdelivr.net/gh/user/pic_bed/</a></li>
+</ul>
+<h1 id="4、再-Typora-中选择-PicGo-app-作为图片上传服务"><a href="#4、再-Typora-中选择-PicGo-app-作为图片上传服务" class="headerlink" title="4、再 Typora 中选择 PicGo app 作为图片上传服务"></a>4、再 Typora 中选择 PicGo app 作为图片上传服务</h1><p><a href="https://buctllx.github.io/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/#3-Typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+        <category>PicGo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>PicGo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo Next Theme 使用问题总结</title>
     <url>/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<div class="note info"><p>两个路径说明：</p>
@@ -146,7 +199,7 @@
 <li><p>使用 hexo 命令新建 tags.md页面</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
 <li><p>打开 tags.md 并修改页面类型 type 信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: Tags</span><br><span class="line">date: 2021-12-22 12:00:00</span><br><span class="line">type: tags</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">title</span>: Tags</span><br><span class="line"><span class="attribute">date</span>: <span class="number">2021</span>-<span class="number">12</span>-<span class="number">22</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="attribute">type</span>: tags</span><br></pre></td></tr></table></figure></li>
 <li><p>修改主题配置文件</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd next/_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure></li>
 </ol>
@@ -246,186 +299,8 @@
         <category>Markdown</category>
       </categories>
       <tags>
+        <tag>PicGo</tag>
         <tag>Typora</tag>
-        <tag>PicGo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
-    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
-    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
-
-<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
-<span id="more"></span>
-
-<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
-<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
-<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>WPF</category>
-      </categories>
-      <tags>
-        <tag>.Net</tag>
-        <tag>C#</tag>
-        <tag>WPF</tag>
-        <tag>Style</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/04/12/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>test_my_site</title>
-    <url>/2020/04/12/test-my-site/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>wpf control window 范围内默认样式对第一个控件无效</title>
-    <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
-    <content><![CDATA[<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
-
-<p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
-<p>通常我们使用下面的代码是没问题的；</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2、原因和解决方法"><a href="#2、原因和解决方法" class="headerlink" title="2、原因和解决方法"></a>2、原因和解决方法</h2><h3 id="2-1-原因"><a href="#2-1-原因" class="headerlink" title="2.1 原因"></a>2.1 原因</h3><p>因为把 Button 默认样式放在了 ResourceDictionary.MergedDictionaries 内部的ResourceDictionary 内了，这样在解析引用样式的时候会跳过第一个元素；</p>
-<h3 id="2-2-解决方案"><a href="#2-2-解决方案" class="headerlink" title="2.2 解决方案"></a>2.2 解决方案</h3><p>将 style 提到 ResourceDictionary.MergedDictionaries 之外</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window.Resources&gt;</span><br><span class="line">    &lt;ResourceDictionary&gt;</span><br><span class="line">        &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">            &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">        &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/ResourceDictionary&gt;</span><br><span class="line">&lt;/Window.Resources&gt;</span><br><span class="line">&lt;Grid&gt;</span><br><span class="line">    &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">    &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">&lt;/Grid&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>参考链接：<a href="https://stackoverflow.com/questions/4811884/wpf-doesnt-apply-style-to-first-element">resources - WPF doesn’t apply style to first element - Stack Overflow</a></p>
-]]></content>
-      <categories>
-        <category>WPF</category>
-      </categories>
-      <tags>
-        <tag>.Net</tag>
-        <tag>C#</tag>
-        <tag>WPF</tag>
-        <tag>Style</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows Terminal 集成 Oh My Posh</title>
-    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
-    <content><![CDATA[<h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
-<ul>
-<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
-<li> <a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
-</ul>
-<p>具体安装这里不做详细说明</p>
-<span id="more"></span>
-
-<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
-<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
-<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
-</div>
-
-<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
-<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
-<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
-<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
-
-<p>参考链接：</p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
-<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
-<p>下载自定后安装方法：</p>
-<p>解压、进入字体目录、全选、右键、安装 即可</p>
-<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
-<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
-<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
-
-<p>这里不做详细说明</p>
-]]></content>
-      <categories>
-        <category>Termianl</category>
-        <category>PowerShell</category>
-      </categories>
-      <tags>
-        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo 集成 PicGo Github 图床</title>
-    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
-    <content><![CDATA[<h1 id="0、背景说明"><a href="#0、背景说明" class="headerlink" title="0、背景说明"></a>0、背景说明</h1><p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
-<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
-<p>使用 Github 图床的好处：</p>
-<ol>
-<li>没有域名限制；</li>
-<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
-<li>有人说慢，但是可以设置加速</li>
-<li>稳定，不用担心挂了或者失效</li>
-</ol>
-<span id="more"></span>
-
-<p>参考：</p>
-<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
-<h1 id="1、新建一个仓库"><a href="#1、新建一个仓库" class="headerlink" title="1、新建一个仓库"></a>1、新建一个仓库</h1><ol>
-<li>名字自定义，例如：pic_bed</li>
-<li>选择 Public</li>
-<li>勾选初始化复选框： Initialize this repository with a README</li>
-<li>点击 Create repository 创建成功</li>
-<li> <a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
-<li>Note下面的文本框内容自定义</li>
-<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
-<li>最下面点击Generate token即可生成</li>
-<li>下面要用，如果忘记了可以在重新生成</li>
-</ol>
-<h1 id="2、安装配置-PicGo"><a href="#2、安装配置-PicGo" class="headerlink" title="2、安装配置 PicGo"></a>2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1><p>下载安装，这里不再说明，</p>
-<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709"></p>
-<p>填写第一步中创建的 仓库名，分支名，以及 Token </p>
-<p>然后“确定”，并设置为默认图床即可</p>
-<h1 id="3、配置-JsDeliv，给图片镶上加速器"><a href="#3、配置-JsDeliv，给图片镶上加速器" class="headerlink" title="3、配置 JsDeliv，给图片镶上加速器"></a>3、配置 JsDeliv，给图片镶上加速器</h1><ul>
-<li>比如在GitHub的图片路径是：<a href="https://github.com/user/pic_bed/img/test_image.png">https://github.com/user/pic_bed/img/test_image.png</a></li>
-<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</a></li>
-<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</a></li>
-</ul>
-<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
-<ul>
-<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</a></li>
-<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/">https://cdn.jsdelivr.net/gh/user/pic_bed/</a></li>
-</ul>
-<h1 id="4、再-Typora-中选择-PicGo-app-作为图片上传服务"><a href="#4、再-Typora-中选择-PicGo-app-作为图片上传服务" class="headerlink" title="4、再 Typora 中选择 PicGo app 作为图片上传服务"></a>4、再 Typora 中选择 PicGo app 作为图片上传服务</h1><p><a href="https://buctllx.github.io/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/#3-Typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-        <category>PicGo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>PicGo</tag>
       </tags>
   </entry>
   <entry>
@@ -613,23 +488,39 @@
       </tags>
   </entry>
   <entry>
-    <title>使用 Windows Server 建立 Web Site 并关联 FTP Server</title>
-    <url>/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/</url>
-    <content><![CDATA[<p>本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容；</p>
-<p>系统环境：window server 2019</p>
+    <title>Visual Studio *.sln file 编辑 bug 记录</title>
+    <url>/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息；</p>
+<p>一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作；</p>
+<p>这里主要记录手动编辑 sln 文件遇到的问题：</p>
 <span id="more"></span>
 
-<h1 id="1、开启系统必备的服务组件"><a href="#1、开启系统必备的服务组件" class="headerlink" title="1、开启系统必备的服务组件"></a>1、开启系统必备的服务组件</h1><h1 id="2、新建-SSL-证书"><a href="#2、新建-SSL-证书" class="headerlink" title="2、新建 SSL 证书"></a>2、新建 SSL 证书</h1><h1 id="3、建立-web-site-并关联-FTP-Server"><a href="#3、建立-web-site-并关联-FTP-Server" class="headerlink" title="3、建立 web site 并关联 FTP Server"></a>3、建立 web site 并关联 FTP Server</h1><h1 id="4、其他设置"><a href="#4、其他设置" class="headerlink" title="4、其他设置"></a>4、其他设置</h1><h2 id="4-1-ftp-服务直通网络位置"><a href="#4-1-ftp-服务直通网络位置" class="headerlink" title="4.1 ftp 服务直通网络位置"></a>4.1 ftp 服务直通网络位置</h2><h2 id="4-2-web-site-开启浏览文件目录结构的功能"><a href="#4-2-web-site-开启浏览文件目录结构的功能" class="headerlink" title="4.2 web site 开启浏览文件目录结构的功能"></a>4.2 web site 开启浏览文件目录结构的功能</h2><h2 id="4-3-web-site-绑定-https-访问"><a href="#4-3-web-site-绑定-https-访问" class="headerlink" title="4.3 web site 绑定 https 访问"></a>4.3 web site 绑定 https 访问</h2><p>参考资料：</p>
+<h1 id="0-有关-sln-文件的介绍"><a href="#0-有关-sln-文件的介绍" class="headerlink" title="0. 有关 sln 文件的介绍"></a>0. 有关 sln 文件的介绍</h1><p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
+<p>有关 sln 文件可以参考官方文档：<a href="https://docs.microsoft.com/zh-cn/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022">解决方案 (。Sln) 文件 - Visual Studio (Windows) | Microsoft Docs</a></p>
+<p><a href="https://blog.walterlv.com/post/understand-the-sln-file">理解 Visual Studio 解决方案文件格式（.sln） - walterlv</a></p>
+<h1 id="1-sln-修改后不起效的-bug"><a href="#1-sln-修改后不起效的-bug" class="headerlink" title="1. sln 修改后不起效的 bug"></a>1. sln 修改后不起效的 bug</h1><p>软件环境：visual studio 2022，sublime 3</p>
+<h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555"></p>
+<p>红框里面是新增的内容；</p>
+<p>修改后保存，然后再 visual studio 中重新载入，发现：新增的解决方案配置项，并没有出现，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034"></p>
+<p>注：一开始编辑，全部没有出现，这里为了说明问题，故意显示 出 Release R21 Store，便于后面分析问题</p>
+<h2 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h2><p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
+<p>唯一的区别是：31 行使用的 缩进是 tab 键，32~40 行使用的是空格 space；</p>
+<p>注释：截图中的 ——  代表 Tab 键，……  代表 Space 空格键 </p>
+<p>难道竟然是缩进符号的问题？？？</p>
+<p>通过验证发现：果然是缩进符号导致的</p>
+<h2 id="1-3-问题总结"><a href="#1-3-问题总结" class="headerlink" title="1.3 问题总结"></a>1.3 问题总结</h2><p>产生问题的原因：</p>
+<p>笔者再根据 githu 上一篇技术文档的介绍，进行 sln 文件的编辑修改，文档中建议使用编辑器打开手动修改，而且附加上了修改的内容，于是我便很轻易的点击 copy 按钮，进行复制、粘贴，发现没有任何效果。</p>
+<p>浪费了半天的事件才发现是 缩进符号导致的，</p>
+<p>而且还是在 Sublime 中选中状态下才能发现的</p>
+<p>复制粘贴代码害死人，一定要注意。</p>
 ]]></content>
       <categories>
-        <category>windwos</category>
-        <category>web site</category>
-        <category>ftp server</category>
+        <category>VisualStudio</category>
       </categories>
       <tags>
-        <tag>windwos</tag>
-        <tag>web site</tag>
-        <tag>ftp</tag>
+        <tag>VisualStudio</tag>
       </tags>
   </entry>
   <entry>
@@ -740,39 +631,73 @@
       </tags>
   </entry>
   <entry>
-    <title>Visual Studio *.sln file 编辑 bug 记录</title>
-    <url>/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息；</p>
-<p>一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作；</p>
-<p>这里主要记录手动编辑 sln 文件遇到的问题：</p>
+    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
+    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
 <span id="more"></span>
 
-<h1 id="0-有关-sln-文件的介绍"><a href="#0-有关-sln-文件的介绍" class="headerlink" title="0. 有关 sln 文件的介绍"></a>0. 有关 sln 文件的介绍</h1><p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
-<p>有关 sln 文件可以参考官方文档：<a href="https://docs.microsoft.com/zh-cn/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022">解决方案 (。Sln) 文件 - Visual Studio (Windows) | Microsoft Docs</a></p>
-<p><a href="https://blog.walterlv.com/post/understand-the-sln-file">理解 Visual Studio 解决方案文件格式（.sln） - walterlv</a></p>
-<h1 id="1-sln-修改后不起效的-bug"><a href="#1-sln-修改后不起效的-bug" class="headerlink" title="1. sln 修改后不起效的 bug"></a>1. sln 修改后不起效的 bug</h1><p>软件环境：visual studio 2022，sublime 3</p>
-<h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555"></p>
-<p>红框里面是新增的内容；</p>
-<p>修改后保存，然后再 visual studio 中重新载入，发现：新增的解决方案配置项，并没有出现，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034"></p>
-<p>注：一开始编辑，全部没有出现，这里为了说明问题，故意显示 出 Release R21 Store，便于后面分析问题</p>
-<h2 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h2><p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
-<p>唯一的区别是：31 行使用的 缩进是 tab 键，32~40 行使用的是空格 space；</p>
-<p>注释：截图中的 ——  代表 Tab 键，……  代表 Space 空格键 </p>
-<p>难道竟然是缩进符号的问题？？？</p>
-<p>通过验证发现：果然是缩进符号导致的</p>
-<h2 id="1-3-问题总结"><a href="#1-3-问题总结" class="headerlink" title="1.3 问题总结"></a>1.3 问题总结</h2><p>产生问题的原因：</p>
-<p>笔者再根据 githu 上一篇技术文档的介绍，进行 sln 文件的编辑修改，文档中建议使用编辑器打开手动修改，而且附加上了修改的内容，于是我便很轻易的点击 copy 按钮，进行复制、粘贴，发现没有任何效果。</p>
-<p>浪费了半天的事件才发现是 缩进符号导致的，</p>
-<p>而且还是在 Sublime 中选中状态下才能发现的</p>
-<p>复制粘贴代码害死人，一定要注意。</p>
+<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
+<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
+<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
-        <category>VisualStudio</category>
+        <category>WPF</category>
       </categories>
       <tags>
-        <tag>VisualStudio</tag>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows Terminal 集成 Oh My Posh</title>
+    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
+    <content><![CDATA[<h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
+<ul>
+<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
+<li> <a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
+</ul>
+<p>具体安装这里不做详细说明</p>
+<span id="more"></span>
+
+<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
+<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
+<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
+</div>
+
+<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
+<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
+<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
+
+<p>参考链接：</p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
+<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
+<p>下载自定后安装方法：</p>
+<p>解压、进入字体目录、全选、右键、安装 即可</p>
+<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
+<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
+<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<p>这里不做详细说明</p>
+]]></content>
+      <categories>
+        <category>Termianl</category>
+        <category>PowerShell</category>
+      </categories>
+      <tags>
+        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
       </tags>
   </entry>
   <entry>
@@ -825,6 +750,81 @@
       </categories>
       <tags>
         <tag>WPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/03/07/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2020/04/12/test-my-site/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>wpf control window 范围内默认样式对第一个控件无效</title>
+    <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
+    <content><![CDATA[<h2 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h2><p>wpf 页面设计中，有时候在 xaml 文件 Resource 中指定 window 范围的默认 control style，但是却发现对第一个控件不起作用，具体如下：</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;ResourceDictionary&gt;</span><br><span class="line">            &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">                &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">                &lt;ResourceDictionary&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/ResourceDictionary&gt;</span><br><span class="line">            &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;/ResourceDictionary&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+<p>button1 的 FontSize 并不是 100；但是 button2 却没问题；</p>
+<p>通常我们使用下面的代码是没问题的；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window x:Class=&quot;TestApp.TestWindow&quot;</span><br><span class="line">        xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span><br><span class="line">        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><br><span class="line">        Title=&quot;TestWindow&quot; Height=&quot;400&quot; Width=&quot;500&quot;</span><br><span class="line">        WindowStyle=&quot;None&quot; WindowState=&quot;Maximized&quot;&gt;</span><br><span class="line">    &lt;Window.Resources&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/Window.Resources&gt;</span><br><span class="line">    &lt;Grid&gt;</span><br><span class="line">        &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">            &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">        &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">    &lt;/Grid&gt;</span><br><span class="line">&lt;/Window&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、原因和解决方法"><a href="#2、原因和解决方法" class="headerlink" title="2、原因和解决方法"></a>2、原因和解决方法</h2><h3 id="2-1-原因"><a href="#2-1-原因" class="headerlink" title="2.1 原因"></a>2.1 原因</h3><p>因为把 Button 默认样式放在了 ResourceDictionary.MergedDictionaries 内部的ResourceDictionary 内了，这样在解析引用样式的时候会跳过第一个元素；</p>
+<h3 id="2-2-解决方案"><a href="#2-2-解决方案" class="headerlink" title="2.2 解决方案"></a>2.2 解决方案</h3><p>将 style 提到 ResourceDictionary.MergedDictionaries 之外</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Window.Resources&gt;</span><br><span class="line">    &lt;ResourceDictionary&gt;</span><br><span class="line">        &lt;ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">            &lt;ResourceDictionary Source=&quot;Resources/AllResources.xaml&quot;/&gt;</span><br><span class="line">        &lt;/ResourceDictionary.MergedDictionaries&gt;</span><br><span class="line">        &lt;Style TargetType=&quot;&#123;x:Type Button&#125;&quot;&gt;</span><br><span class="line">            &lt;Setter Property=&quot;FontSize&quot; Value=&quot;100&quot;/&gt;</span><br><span class="line">        &lt;/Style&gt;</span><br><span class="line">    &lt;/ResourceDictionary&gt;</span><br><span class="line">&lt;/Window.Resources&gt;</span><br><span class="line">&lt;Grid&gt;</span><br><span class="line">    &lt;Grid.ColumnDefinitions&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">        &lt;ColumnDefinition/&gt;</span><br><span class="line">    &lt;/Grid.ColumnDefinitions&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;0&quot; Content=&quot;1&quot; Name=&quot;Button1&quot;/&gt;</span><br><span class="line">    &lt;Button Grid.Column=&quot;1&quot; Content=&quot;2&quot; Name=&quot;Button2&quot;/&gt;</span><br><span class="line">&lt;/Grid&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考链接：<a href="https://stackoverflow.com/questions/4811884/wpf-doesnt-apply-style-to-first-element">resources - WPF doesn’t apply style to first element - Stack Overflow</a></p>
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 Windows Server 建立 Web Site 并关联 FTP Server</title>
+    <url>/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/</url>
+    <content><![CDATA[<p>本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容；</p>
+<p>系统环境：window server 2019</p>
+<span id="more"></span>
+
+<h1 id="1、开启系统必备的服务组件"><a href="#1、开启系统必备的服务组件" class="headerlink" title="1、开启系统必备的服务组件"></a>1、开启系统必备的服务组件</h1><h1 id="2、新建-SSL-证书"><a href="#2、新建-SSL-证书" class="headerlink" title="2、新建 SSL 证书"></a>2、新建 SSL 证书</h1><h1 id="3、建立-web-site-并关联-FTP-Server"><a href="#3、建立-web-site-并关联-FTP-Server" class="headerlink" title="3、建立 web site 并关联 FTP Server"></a>3、建立 web site 并关联 FTP Server</h1><h1 id="4、其他设置"><a href="#4、其他设置" class="headerlink" title="4、其他设置"></a>4、其他设置</h1><h2 id="4-1-ftp-服务直通网络位置"><a href="#4-1-ftp-服务直通网络位置" class="headerlink" title="4.1 ftp 服务直通网络位置"></a>4.1 ftp 服务直通网络位置</h2><h2 id="4-2-web-site-开启浏览文件目录结构的功能"><a href="#4-2-web-site-开启浏览文件目录结构的功能" class="headerlink" title="4.2 web site 开启浏览文件目录结构的功能"></a>4.2 web site 开启浏览文件目录结构的功能</h2><h2 id="4-3-web-site-绑定-https-访问"><a href="#4-3-web-site-绑定-https-访问" class="headerlink" title="4.3 web site 绑定 https 访问"></a>4.3 web site 绑定 https 访问</h2><p>参考资料：</p>
+]]></content>
+      <categories>
+        <category>windwos</category>
+        <category>web site</category>
+        <category>ftp server</category>
+      </categories>
+      <tags>
+        <tag>windwos</tag>
+        <tag>web site</tag>
+        <tag>ftp</tag>
       </tags>
   </entry>
 </search>
