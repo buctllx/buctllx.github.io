@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Git fetch 同时更新子模块</title>
-    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
-    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
-<span id="more"></span>
-
-<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
-<p>git checkout / fetch；</p>
-<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
-<table>
-<thead>
-<tr>
-<th align="left">1</th>
-<th align="left">git config –global submodule.recurse true</th>
-</tr>
-</thead>
-</table>
-<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
-<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
-<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
-<p>submodule.recurse 选项已添加到 git 2.14</p>
-]]></content>
-      <categories>
-        <category>Git 相关</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ElasticSearch 操作异常总结</title>
     <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
@@ -84,56 +55,32 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo 集成 PicGo Github 图床</title>
-    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
-    <content><![CDATA[<h1 id="0、背景说明"><a href="#0、背景说明" class="headerlink" title="0、背景说明"></a>0、背景说明</h1><p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
-<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
-<p>使用 Github 图床的好处：</p>
-<ol>
-<li>没有域名限制；</li>
-<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
-<li>有人说慢，但是可以设置加速</li>
-<li>稳定，不用担心挂了或者失效</li>
-</ol>
+    <title>Git fetch 同时更新子模块</title>
+    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>默认情况，git checkout;     git fetch   如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
 <span id="more"></span>
 
-<p>参考：</p>
-<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
-<h1 id="1、新建一个仓库"><a href="#1、新建一个仓库" class="headerlink" title="1、新建一个仓库"></a>1、新建一个仓库</h1><ol>
-<li>名字自定义，例如：pic_bed</li>
-<li>选择 Public</li>
-<li>勾选初始化复选框： Initialize this repository with a README</li>
-<li>点击 Create repository 创建成功</li>
-<li> <a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
-<li>Note下面的文本框内容自定义</li>
-<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
-<li>最下面点击Generate token即可生成</li>
-<li>下面要用，如果忘记了可以在重新生成</li>
-</ol>
-<h1 id="2、安装配置-PicGo"><a href="#2、安装配置-PicGo" class="headerlink" title="2、安装配置 PicGo"></a>2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1><p>下载安装，这里不再说明，</p>
-<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709"></p>
-<p>填写第一步中创建的 仓库名，分支名，以及 Token </p>
-<p>然后“确定”，并设置为默认图床即可</p>
-<h1 id="3、配置-JsDeliv，给图片镶上加速器"><a href="#3、配置-JsDeliv，给图片镶上加速器" class="headerlink" title="3、配置 JsDeliv，给图片镶上加速器"></a>3、配置 JsDeliv，给图片镶上加速器</h1><ul>
-<li>比如在GitHub的图片路径是：<a href="https://github.com/user/pic_bed/img/test_image.png">https://github.com/user/pic_bed/img/test_image.png</a></li>
-<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</a></li>
-<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</a></li>
-</ul>
-<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
-<ul>
-<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</a></li>
-<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/">https://cdn.jsdelivr.net/gh/user/pic_bed/</a></li>
-</ul>
-<h1 id="4、再-Typora-中选择-PicGo-app-作为图片上传服务"><a href="#4、再-Typora-中选择-PicGo-app-作为图片上传服务" class="headerlink" title="4、再 Typora 中选择 PicGo app 作为图片上传服务"></a>4、再 Typora 中选择 PicGo app 作为图片上传服务</h1><p><a href="https://buctllx.github.io/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/#3-Typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
+<h2 id="2-传统解决方法："><a href="#2-传统解决方法：" class="headerlink" title="2. 传统解决方法："></a>2. 传统解决方法：</h2><p>cd  submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="3-高级解决方法："><a href="#3-高级解决方法：" class="headerlink" title="3. 高级解决方法："></a>3. 高级解决方法：</h2><p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
 ]]></content>
       <categories>
-        <category>Hexo</category>
-        <category>PicGo</category>
+        <category>Git 相关</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
-        <tag>PicGo</tag>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -223,84 +170,164 @@
       </tags>
   </entry>
   <entry>
-    <title>Typora 设置关联七牛云图床</title>
-    <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
-    <content><![CDATA[<h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
-<p>注册流程不在这里详细说明；</p>
-<p>说一下注意事项：</p>
+    <title>Hexo 集成 PicGo Github 图床</title>
+    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="0、背景说明"><a href="#0、背景说明" class="headerlink" title="0、背景说明"></a>0、背景说明</h1><p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
+<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
+<p>使用 Github 图床的好处：</p>
 <ol>
-<li>注册后，需要实名认证</li>
-<li>个人认证 即可</li>
+<li>没有域名限制；</li>
+<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
+<li>有人说慢，但是可以设置加速</li>
+<li>稳定，不用担心挂了或者失效</li>
 </ol>
 <span id="more"></span>
 
-<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
-<li>登录后，通过“管理控制台”进入管理页面；</li>
-<li>点击“对象存储 Kodo”；</li>
-<li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
-<li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
+<h1 id="1、新建一个仓库"><a href="#1、新建一个仓库" class="headerlink" title="1、新建一个仓库"></a>1、新建一个仓库</h1><ol>
+<li>名字自定义，例如：pic_bed</li>
+<li>选择 Public</li>
+<li>勾选初始化复选框： Initialize this repository with a README</li>
+<li>点击 Create repository 创建成功</li>
+<li> <a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
+<li>Note下面的文本框内容自定义</li>
+<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
+<li>最下面点击Generate token即可生成</li>
+<li>下面要用，如果忘记了可以在重新生成</li>
 </ol>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
-<p>注意事项：</p>
-<ol>
-<li>访问权限选择“公开”</li>
-<li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
-</ol>
-<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
-<ol>
-<li>PicGo App（应用程序）</li>
-<li>PicGo-Core（命令行版本）</li>
-</ol>
-<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
-<p>选择对应系统的安装包安装即可</p>
-<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
-<ul>
-<li>没有nodejs环境，使用typora一键安装即可</li>
-<li>本机有nodjs环境，直接npm全局安装</li>
+<h1 id="2、安装配置-PicGo"><a href="#2、安装配置-PicGo" class="headerlink" title="2、安装配置 PicGo"></a>2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1><p>下载安装，这里不再说明，</p>
+<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709"></p>
+<p>填写第一步中创建的 仓库名，分支名，以及 Token </p>
+<p>然后“确定”，并设置为默认图床即可</p>
+<h1 id="3、配置-JsDeliv，给图片镶上加速器"><a href="#3、配置-JsDeliv，给图片镶上加速器" class="headerlink" title="3、配置 JsDeliv，给图片镶上加速器"></a>3、配置 JsDeliv，给图片镶上加速器</h1><ul>
+<li>比如在GitHub的图片路径是：<a href="https://github.com/user/pic_bed/img/test_image.png">https://github.com/user/pic_bed/img/test_image.png</a></li>
+<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</a></li>
+<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png">https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</a></li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
-
-
-
-<p>插件安装</p>
-<p><a href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
-<p>这是一款可以上传自定义图床的插件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
-<p>具体参考：<a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
-<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
-<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
-<p>如下图所示：</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
-<ol>
-<li>插入图片时：选择：上传图片；</li>
-<li>上传服务设定<ol>
-<li>上传服务：选择：PicGo（app）</li>
-<li>PicGo 路径：选择：自己安装时候的路径</li>
-</ol>
-</li>
-</ol>
-<p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
-<p>设置成功后，会出现“验证成功”的提示，如下图：</p>
-<p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
+<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
+<ul>
+<li>拼接链接方法1：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed@latest/">https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</a></li>
+<li>拼接链接方法2：<a href="https://cdn.jsdelivr.net/gh/user/pic_bed/">https://cdn.jsdelivr.net/gh/user/pic_bed/</a></li>
+</ul>
+<h1 id="4、再-Typora-中选择-PicGo-app-作为图片上传服务"><a href="#4、再-Typora-中选择-PicGo-app-作为图片上传服务" class="headerlink" title="4、再 Typora 中选择 PicGo app 作为图片上传服务"></a>4、再 Typora 中选择 PicGo app 作为图片上传服务</h1><p><a href="https://buctllx.github.io/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/#3-Typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
 ]]></content>
       <categories>
-        <category>Markdown</category>
+        <category>Hexo</category>
+        <category>PicGo</category>
       </categories>
       <tags>
+        <tag>Hexo</tag>
         <tag>PicGo</tag>
-        <tag>Typora</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Microsoft.Toolkit.Mvvm 使用记录</title>
+    <url>/2022/03/16/Microsoft-Toolkit-Mvvm-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="1-Microsoft-Toolkit-Mvvm-介绍"><a href="#1-Microsoft-Toolkit-Mvvm-介绍" class="headerlink" title="1. Microsoft.Toolkit.Mvvm 介绍"></a>1. Microsoft.Toolkit.Mvvm 介绍</h1><blockquote>
+<p>模型-视图-视图模型 (MVVM) 是用于解耦 UI 代码和非 UI 代码的 UI 体系结构设计模式。 借助 MVVM，可以在 XAML 中以声明方式定义 UI，并使用数据绑定标记将 UI 链接到包含数据和命令的其他层。</p>
+</blockquote>
+<p>MVVM 最早是 Microsoft 提出来的，但是官方一直没有提供框架；很多人会说 Prism 框架，但是 Prism 已经出走了，而且比较臃肿；至于 MVVMLight 也很久没有更新了，直到 2020 年 Windows Community Toolkit  开源了一套 MVVM 框架 Microsoft.Toolkit.Mvvm。</p>
+<span id="more"></span>
+
+<p>Windows Community Toolkit  除了提供开源框架，也贴心的在文档中提供了，基本的使用案例，以及从其他 MVVM 框架迁移到  Microsoft.Toolkit.Mvvm 框架的说明文档。</p>
+<p>官方文档：<a href="https://docs.microsoft.com/zh-cn/windows/communitytoolkit/mvvm/introduction">Introduction to the MVVM Toolkit - Windows Community Toolkit | Microsoft Docs</a></p>
+<p>[<a href="https://www.cnblogs.com/dino623/p/building_MVVM_programs_using_MVVM_Toolkit.html">WPF] 使用 MVVM Toolkit 构建 MVVM 程序 - dino.c - 博客园 (cnblogs.com)</a></p>
+<p>MVVM Toolkit 延续了 MVVMLight 的风格，是一个轻量级的组件，而且它基于 .NET Standard 2.0，可用于UWP, WinForms, WPF, Xamarin, Uno 等多个平台。相比它的前身 MVVMLight，它有以下特点：</p>
+<ul>
+<li>更高：版本号更高，一出手就是 7.0。</li>
+<li>更快：速度更快，MVVM Toolkit 从一开始就以高性能为实现目标。</li>
+<li>更强：后台更强，MVVM Toolkit 的全称是 ‘Microsoft.Toolkit.Mvvm’，根正苗红。</li>
+</ul>
+<h1 id="2-各个组件说明"><a href="#2-各个组件说明" class="headerlink" title="2. 各个组件说明"></a>2. 各个组件说明</h1><p>前面说到 MVVM Toolkit 延续了 MVVMLight 的风格，因此他们大部分的组件都是相同的</p>
+<h2 id="2-1-ObservableObject"><a href="#2-1-ObservableObject" class="headerlink" title="2.1 ObservableObject"></a>2.1 ObservableObject</h2><p>ObservableObject 实现了 <a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged"><code>INotifyPropertyChanged</code></a> 和<a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging"><code>INotifyPropertyChanging</code></a>，并触发 <code>PropertyChanged</code> 和 <code>PropertyChanging</code> 事件。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; name;</span><br><span class="line">        <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> name, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这段示例代码中，如果 name 和 value 的值不同，首先触发 <code>PropertyChanging</code> 事件，然后触发 <code>PropertyChanged</code>。</p>
+<h2 id="2-2-RelayCommand"><a href="#2-2-RelayCommand" class="headerlink" title="2.2 RelayCommand"></a>2.2 RelayCommand</h2><p><code>RelayCommand</code> 和 <code>RelayCommand&lt;T&gt;</code> 实现了 <code>ICommand</code> 接口，<code>INotifyPropertyChanged</code> 和 <code>ICommand</code> 是 MVVM 模式的基础。下面的代码使用 <code>ObservableObject</code> 和 <code>RelayCommand</code> 展示一个基本的 ViewModel：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IncrementCounterCommand = <span class="keyword">new</span> RelayCommand(IncrementCounter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Counter</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; counter;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> counter, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ICommand IncrementCounterCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">IncrementCounter</span>(<span class="params"></span>)</span> =&gt; Counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page</span></span></span><br><span class="line"><span class="tag">    <span class="attr">x:Class</span>=<span class="string">&quot;MyApp.Views.MyPage&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:viewModels</span>=<span class="string">&quot;using:MyApp.ViewModels&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">viewModels:MyViewModel</span> <span class="attr">x:Name</span>=<span class="string">&quot;ViewModel&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.Counter, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.IncrementCounterCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这段示例里 <code>IncrementCounterCommand</code> 包装了 <code>IncrementCounter</code> 函数提供给 Button 绑定。<code>IncrementCounter</code> 函数更改 <code>Counter</code> 的值并通过 <code>PropertyChanged</code> 事件通知绑定的 TextBlock。</p>
+<h2 id="2-3-AsyncRelayCommand"><a href="#2-3-AsyncRelayCommand" class="headerlink" title="2.3 AsyncRelayCommand"></a>2.3 AsyncRelayCommand</h2><p><code>AsyncRelayCommand</code> 和 <code>AsyncRelayCommand&lt;T&gt;</code> 也实现了 <code>ICommand</code>，不过它们支持异步操作，提供的 <code>ExecutionTask</code> 和 <code>IsRunning</code> 两个属性对监视任务运行状态十分有用。</p>
+<p>例如这个 ViewModel：</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    DownloadTextCommand = <span class="keyword">new</span> AsyncRelayCommand(DownloadTextAsync);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> IAsyncRelayCommand DownloadTextCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">string</span>&gt; <span class="title">DownloadTextAsync</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">3000</span>); <span class="comment">// Simulate a web request</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用相关的 UI 代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">converters:TaskResultConverter</span> <span class="attr">x:Key</span>=<span class="string">&quot;TaskResultConverter&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Task status:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask.Status, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">LineBreak</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Result:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask, Converter=&#123;StaticResource TaskResultConverter&#125;, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">muxc:ProgressRing</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Left&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">IsActive</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.IsRunning, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>点击 <code>Button</code> 后 <code>DownloadTextAsync</code> 开始运行，在 UI 上 TextBlock 和 ProgressRing 绑定到 <code>ExecutionTask</code> 和 <code>IsRunning</code> 并显示任务运行状态，最后通过 <code>TaskResultConverter</code> 显示任务结果。</p>
+<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221618229-510116488.gif"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221618229-510116488.gif" alt="img"></a></p>
+<h2 id="2-4-Messenger"><a href="#2-4-Messenger" class="headerlink" title="2.4 Messenger"></a>2.4 Messenger</h2><p>对于主要目的是松耦合的 MVVM 框架，提供一个用于消息交换的系统十分有必要。MVVM Toolkit 中用于消息交换的核心是 <code>WeakReferenceMessenger</code> 类。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create a message</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoggedInUserChangedMessage</span> : <span class="title">ValueChangedMessage</span>&lt;<span class="title">User</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoggedInUserChangedMessage</span>(<span class="params">User user</span>) : <span class="title">base</span>(<span class="params">user</span>)</span></span><br><span class="line">    &#123;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Register a message in some module</span></span><br><span class="line">WeakReferenceMessenger.Default.Register&lt;LoggedInUserChangedMessage&gt;(<span class="keyword">this</span>, (r, m) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Handle the message here, with r being the recipient and m being the</span></span><br><span class="line">    <span class="comment">// input messenger. Using the recipient passed as input makes it so that</span></span><br><span class="line">    <span class="comment">// the lambda expression doesn&#x27;t capture &quot;this&quot;, improving performance.</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Send a message from some other module</span></span><br><span class="line">WeakReferenceMessenger.Default.Send(<span class="keyword">new</span> LoggedInUserChangedMessage(user));</span><br></pre></td></tr></table></figure>
+
+<p>正如这段代码所示，<code>WeakReferenceMessenger</code> 主要通过 <code>Register</code> 和 <code>Send</code> 进行信息交换，它的使用方式类似于 MVVMLight 的 messenger 类。MVVM Toolkit 另外还提供了一个 <code>StrongReferenceMessenger</code> 类，更多使用方法可以参考这篇 <a href="https://github.com/CommunityToolkit/MVVM-Samples/blob/master/docs/mvvm/Messenger.md">文档</a>。<code>Messenger</code> 功能强大且简单易用，但也由于误用会带来风险而引发了一些争议，有必要更详细地理解它的原理和用法以避免它带来的其它风险，这篇文章只是简单地介绍一下它的用法。</p>
+<h2 id="2-5-ObservableRecipient"><a href="#2-5-ObservableRecipient" class="headerlink" title="2.5 ObservableRecipient"></a>2.5 ObservableRecipient</h2><p><code>ObservableRecipient</code> 继承了 <code>ObservableObject</code> 并支持从 <code>Messenger</code> 接收信息，可通过 <code>IsActive</code> 属性激活或停用。它可以用作 ViewModel 的基类，事实上它的作用基本上相遇于 MVVMLight 中的 [ViewModelBase](<a href="https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight">https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight</a> (PCL)/ViewModelBase.cs) ：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableRecipient</span>, <span class="title">IRecipient</span>&lt;<span class="title">LoggedInUserRequestMessage</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Receive</span>(<span class="params">LoggedInUserRequestMessage message</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Handle the message here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-6-ViewModelLocator"><a href="#2-6-ViewModelLocator" class="headerlink" title="2.6 ViewModelLocator"></a>2.6 ViewModelLocator</h2><p>在 MVVMLight 中，很多人使用 ViewModelLocator，然后在 xaml 中 binding View 的 DataContext，但是到了 Microsoft.Toolkit.Mvvm 中，却没有默认提供，这里根据官方的 Ioc 迁移说明，给出一个 WPF 应用程序的 ViewModelLocator 的实现方式。</p>
+<p>需要的 Package</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Extensions.DependencyInjection&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;6.0.0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Toolkit.Mvvm&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;7.1.2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>ViewModelLocator.cs 代码文件如下</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Toolkit.Mvvm.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ViewModelLocator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewModelLocator</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ConfigureServices();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Configures the services for the application.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IServiceProvider <span class="title">ConfigureServices</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> services = <span class="keyword">new</span> ServiceCollection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Services</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IContactsService, ContactsService&gt;();</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IPhoneService, PhoneService&gt;();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Viewmodels</span></span><br><span class="line">        services.AddTransient&lt;MainViewModel&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> serviceProvider = services.BuildServiceProvider();</span><br><span class="line">        Ioc.Default.ConfigureServices(serviceProvider);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> serviceProvider;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> MainViewModel? MainVM &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> Ioc.Default.GetService&lt;MainViewModel&gt;(); &#125; &#125;</span><br><span class="line"></span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+
+<p>App.xaml 添加以下资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">local:ViewModelLocator</span> <span class="attr">x:Key</span>=<span class="string">&quot;Locator&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Application.Resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 View xaml 中的使用方法</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">&quot;Test.MainWindow&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">DataContext</span>=<span class="string">&quot;&#123;Binding Source=&#123;StaticResource Locator&#125;, Path=MainVM&#125;&quot;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="attr">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样即可实现 MVVMLight 中 Locator 的效果。</p>
+<h1 id="3-The-性能"><a href="#3-The-性能" class="headerlink" title="3. The 性能"></a>3. The 性能</h1><p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221730002-1263673884.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221730002-1263673884.png" alt="img"></a></p>
+<p>MVVM Toolkit 在开发过程中为了追求卓越的性能做了很多努力，例如提供一个 <code>StrongReferenceMessenger</code> 类，性能如上图所示地有了大幅提升。又例如下面这篇文章所介绍的：</p>
+<p><a href="https://devblogs.microsoft.com/ifdef-windows/mvvm-toolkit-preview-3-the-journey-of-an-api/">MVVM Toolkit Preview 3 &amp; The Journey of an API</a></p>
+<p>有兴趣的话可以通过源码详细了解一下。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>MVVM</category>
+      </categories>
+      <tags>
+        <tag>MVVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Visual Studio *.sln file 编辑 bug 记录</title>
+    <url>/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息；</p>
+<p>一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作；</p>
+<p>这里主要记录手动编辑 sln 文件遇到的问题：</p>
+<span id="more"></span>
+
+<h1 id="0-有关-sln-文件的介绍"><a href="#0-有关-sln-文件的介绍" class="headerlink" title="0. 有关 sln 文件的介绍"></a>0. 有关 sln 文件的介绍</h1><p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
+<p>有关 sln 文件可以参考官方文档：<a href="https://docs.microsoft.com/zh-cn/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022">解决方案 (。Sln) 文件 - Visual Studio (Windows) | Microsoft Docs</a></p>
+<p><a href="https://blog.walterlv.com/post/understand-the-sln-file">理解 Visual Studio 解决方案文件格式（.sln） - walterlv</a></p>
+<h1 id="1-sln-修改后不起效的-bug"><a href="#1-sln-修改后不起效的-bug" class="headerlink" title="1. sln 修改后不起效的 bug"></a>1. sln 修改后不起效的 bug</h1><p>软件环境：visual studio 2022，sublime 3</p>
+<h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555"></p>
+<p>红框里面是新增的内容；</p>
+<p>修改后保存，然后再 visual studio 中重新载入，发现：新增的解决方案配置项，并没有出现，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034"></p>
+<p>注：一开始编辑，全部没有出现，这里为了说明问题，故意显示 出 Release R21 Store，便于后面分析问题</p>
+<h2 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h2><p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
+<p>唯一的区别是：31 行使用的 缩进是 tab 键，32~40 行使用的是空格 space；</p>
+<p>注释：截图中的 ——  代表 Tab 键，……  代表 Space 空格键 </p>
+<p>难道竟然是缩进符号的问题？？？</p>
+<p>通过验证发现：果然是缩进符号导致的</p>
+<h2 id="1-3-问题总结"><a href="#1-3-问题总结" class="headerlink" title="1.3 问题总结"></a>1.3 问题总结</h2><p>产生问题的原因：</p>
+<p>笔者再根据 githu 上一篇技术文档的介绍，进行 sln 文件的编辑修改，文档中建议使用编辑器打开手动修改，而且附加上了修改的内容，于是我便很轻易的点击 copy 按钮，进行复制、粘贴，发现没有任何效果。</p>
+<p>浪费了半天的事件才发现是 缩进符号导致的，</p>
+<p>而且还是在 Sublime 中选中状态下才能发现的</p>
+<p>复制粘贴代码害死人，一定要注意。</p>
+]]></content>
+      <categories>
+        <category>VisualStudio</category>
+      </categories>
+      <tags>
+        <tag>VisualStudio</tag>
       </tags>
   </entry>
   <entry>
@@ -488,39 +515,84 @@
       </tags>
   </entry>
   <entry>
-    <title>Visual Studio *.sln file 编辑 bug 记录</title>
-    <url>/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息；</p>
-<p>一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作；</p>
-<p>这里主要记录手动编辑 sln 文件遇到的问题：</p>
+    <title>Typora 设置关联七牛云图床</title>
+    <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
+<p>注册流程不在这里详细说明；</p>
+<p>说一下注意事项：</p>
+<ol>
+<li>注册后，需要实名认证</li>
+<li>个人认证 即可</li>
+</ol>
 <span id="more"></span>
 
-<h1 id="0-有关-sln-文件的介绍"><a href="#0-有关-sln-文件的介绍" class="headerlink" title="0. 有关 sln 文件的介绍"></a>0. 有关 sln 文件的介绍</h1><p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
-<p>有关 sln 文件可以参考官方文档：<a href="https://docs.microsoft.com/zh-cn/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022">解决方案 (。Sln) 文件 - Visual Studio (Windows) | Microsoft Docs</a></p>
-<p><a href="https://blog.walterlv.com/post/understand-the-sln-file">理解 Visual Studio 解决方案文件格式（.sln） - walterlv</a></p>
-<h1 id="1-sln-修改后不起效的-bug"><a href="#1-sln-修改后不起效的-bug" class="headerlink" title="1. sln 修改后不起效的 bug"></a>1. sln 修改后不起效的 bug</h1><p>软件环境：visual studio 2022，sublime 3</p>
-<h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555"></p>
-<p>红框里面是新增的内容；</p>
-<p>修改后保存，然后再 visual studio 中重新载入，发现：新增的解决方案配置项，并没有出现，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034"></p>
-<p>注：一开始编辑，全部没有出现，这里为了说明问题，故意显示 出 Release R21 Store，便于后面分析问题</p>
-<h2 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h2><p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
-<p>唯一的区别是：31 行使用的 缩进是 tab 键，32~40 行使用的是空格 space；</p>
-<p>注释：截图中的 ——  代表 Tab 键，……  代表 Space 空格键 </p>
-<p>难道竟然是缩进符号的问题？？？</p>
-<p>通过验证发现：果然是缩进符号导致的</p>
-<h2 id="1-3-问题总结"><a href="#1-3-问题总结" class="headerlink" title="1.3 问题总结"></a>1.3 问题总结</h2><p>产生问题的原因：</p>
-<p>笔者再根据 githu 上一篇技术文档的介绍，进行 sln 文件的编辑修改，文档中建议使用编辑器打开手动修改，而且附加上了修改的内容，于是我便很轻易的点击 copy 按钮，进行复制、粘贴，发现没有任何效果。</p>
-<p>浪费了半天的事件才发现是 缩进符号导致的，</p>
-<p>而且还是在 Sublime 中选中状态下才能发现的</p>
-<p>复制粘贴代码害死人，一定要注意。</p>
+<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
+<li>登录后，通过“管理控制台”进入管理页面；</li>
+<li>点击“对象存储 Kodo”；</li>
+<li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
+<li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
+</ol>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
+<p>注意事项：</p>
+<ol>
+<li>访问权限选择“公开”</li>
+<li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
+</ol>
+<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
+<ol>
+<li>PicGo App（应用程序）</li>
+<li>PicGo-Core（命令行版本）</li>
+</ol>
+<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
+<p>选择对应系统的安装包安装即可</p>
+<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
+<ul>
+<li>没有nodejs环境，使用typora一键安装即可</li>
+<li>本机有nodjs环境，直接npm全局安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
+
+
+
+<p>插件安装</p>
+<p><a href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
+<p>这是一款可以上传自定义图床的插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
+<p>具体参考：<a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
+<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
+<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
+<p>如下图所示：</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
+<ol>
+<li>插入图片时：选择：上传图片；</li>
+<li>上传服务设定<ol>
+<li>上传服务：选择：PicGo（app）</li>
+<li>PicGo 路径：选择：自己安装时候的路径</li>
+</ol>
+</li>
+</ol>
+<p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
+<p>设置成功后，会出现“验证成功”的提示，如下图：</p>
+<p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
+<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
 ]]></content>
       <categories>
-        <category>VisualStudio</category>
+        <category>Markdown</category>
       </categories>
       <tags>
-        <tag>VisualStudio</tag>
+        <tag>PicGo</tag>
+        <tag>Typora</tag>
       </tags>
   </entry>
   <entry>
@@ -622,8 +694,8 @@
 <p> <strong>Denied Extensions</strong> 设置项，只有在  <strong>Allowed Extensions</strong> 设置项为空的情况下才能生效，于是赶紧删除试一下，果然成功了。</p>
 ]]></content>
       <categories>
-        <category>VisualStudio</category>
         <category>工具</category>
+        <category>VisualStudio</category>
       </categories>
       <tags>
         <tag>VisualStudio</tag>
@@ -655,49 +727,6 @@
         <tag>C#</tag>
         <tag>WPF</tag>
         <tag>Style</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows Terminal 集成 Oh My Posh</title>
-    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
-    <content><![CDATA[<h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
-<ul>
-<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
-<li> <a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
-</ul>
-<p>具体安装这里不做详细说明</p>
-<span id="more"></span>
-
-<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
-<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
-<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
-</div>
-
-<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
-<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
-<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
-<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
-
-<p>参考链接：</p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
-<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
-<p>下载自定后安装方法：</p>
-<p>解压、进入字体目录、全选、右键、安装 即可</p>
-<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
-<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
-<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
-
-<p>这里不做详细说明</p>
-]]></content>
-      <categories>
-        <category>Termianl</category>
-        <category>PowerShell</category>
-      </categories>
-      <tags>
-        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
       </tags>
   </entry>
   <entry>
@@ -753,8 +782,51 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/03/07/hello-world/</url>
+    <title>Windows Terminal 集成 Oh My Posh</title>
+    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
+    <content><![CDATA[<h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
+<ul>
+<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
+<li> <a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
+</ul>
+<p>具体安装这里不做详细说明</p>
+<span id="more"></span>
+
+<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
+<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
+<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
+</div>
+
+<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
+<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
+<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
+
+<p>参考链接：</p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
+<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
+<p>下载自定后安装方法：</p>
+<p>解压、进入字体目录、全选、右键、安装 即可</p>
+<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
+<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
+<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<p>这里不做详细说明</p>
+]]></content>
+      <categories>
+        <category>Termianl</category>
+        <category>PowerShell</category>
+      </categories>
+      <tags>
+        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello Hexo</title>
+    <url>/2020/04/12/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -769,11 +841,24 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
   </entry>
   <entry>
-    <title>test_my_site</title>
+    <title>Fist Blog</title>
     <url>/2020/04/12/test-my-site/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>!<br>This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info.<br>If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
   </entry>
   <entry>
     <title>wpf control window 范围内默认样式对第一个控件无效</title>
@@ -825,78 +910,6 @@
         <tag>windwos</tag>
         <tag>web site</tag>
         <tag>ftp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Microsoft.Toolkit.Mvvm 使用记录</title>
-    <url>/2022/03/16/Microsoft-Toolkit-Mvvm-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h1 id="1-Microsoft-Toolkit-Mvvm-介绍"><a href="#1-Microsoft-Toolkit-Mvvm-介绍" class="headerlink" title="1. Microsoft.Toolkit.Mvvm 介绍"></a>1. Microsoft.Toolkit.Mvvm 介绍</h1><blockquote>
-<p>模型-视图-视图模型 (MVVM) 是用于解耦 UI 代码和非 UI 代码的 UI 体系结构设计模式。 借助 MVVM，可以在 XAML 中以声明方式定义 UI，并使用数据绑定标记将 UI 链接到包含数据和命令的其他层。</p>
-</blockquote>
-<p>MVVM 最早是 Microsoft 提出来的，但是官方一直没有提供框架；很多人会说 Prism 框架，但是 Prism 已经出走了，而且比较臃肿；至于 MVVMLight 也很久没有更新了，直到 2020 年 Windows Community Toolkit  开源了一套 MVVM 框架 Microsoft.Toolkit.Mvvm。</p>
-<span id="more"></span>
-
-<p>Windows Community Toolkit  除了提供开源框架，也贴心的在文档中提供了，基本的使用案例，以及从其他 MVVM 框架迁移到  Microsoft.Toolkit.Mvvm 框架的说明文档。</p>
-<p>官方文档：<a href="https://docs.microsoft.com/zh-cn/windows/communitytoolkit/mvvm/introduction">Introduction to the MVVM Toolkit - Windows Community Toolkit | Microsoft Docs</a></p>
-<p>[<a href="https://www.cnblogs.com/dino623/p/building_MVVM_programs_using_MVVM_Toolkit.html">WPF] 使用 MVVM Toolkit 构建 MVVM 程序 - dino.c - 博客园 (cnblogs.com)</a></p>
-<p>MVVM Toolkit 延续了 MVVMLight 的风格，是一个轻量级的组件，而且它基于 .NET Standard 2.0，可用于UWP, WinForms, WPF, Xamarin, Uno 等多个平台。相比它的前身 MVVMLight，它有以下特点：</p>
-<ul>
-<li>更高：版本号更高，一出手就是 7.0。</li>
-<li>更快：速度更快，MVVM Toolkit 从一开始就以高性能为实现目标。</li>
-<li>更强：后台更强，MVVM Toolkit 的全称是 ‘Microsoft.Toolkit.Mvvm’，根正苗红。</li>
-</ul>
-<h1 id="2-各个组件说明"><a href="#2-各个组件说明" class="headerlink" title="2. 各个组件说明"></a>2. 各个组件说明</h1><p>前面说到 MVVM Toolkit 延续了 MVVMLight 的风格，因此他们大部分的组件都是相同的</p>
-<h2 id="2-1-ObservableObject"><a href="#2-1-ObservableObject" class="headerlink" title="2.1 ObservableObject"></a>2.1 ObservableObject</h2><p>ObservableObject 实现了 <a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged"><code>INotifyPropertyChanged</code></a> 和<a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging"><code>INotifyPropertyChanging</code></a>，并触发 <code>PropertyChanged</code> 和 <code>PropertyChanging</code> 事件。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; name;</span><br><span class="line">        <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> name, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在这段示例代码中，如果 name 和 value 的值不同，首先触发 <code>PropertyChanging</code> 事件，然后触发 <code>PropertyChanged</code>。</p>
-<h2 id="2-2-RelayCommand"><a href="#2-2-RelayCommand" class="headerlink" title="2.2 RelayCommand"></a>2.2 RelayCommand</h2><p><code>RelayCommand</code> 和 <code>RelayCommand&lt;T&gt;</code> 实现了 <code>ICommand</code> 接口，<code>INotifyPropertyChanged</code> 和 <code>ICommand</code> 是 MVVM 模式的基础。下面的代码使用 <code>ObservableObject</code> 和 <code>RelayCommand</code> 展示一个基本的 ViewModel：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IncrementCounterCommand = <span class="keyword">new</span> RelayCommand(IncrementCounter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Counter</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; counter;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> counter, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ICommand IncrementCounterCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">IncrementCounter</span>(<span class="params"></span>)</span> =&gt; Counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page</span></span></span><br><span class="line"><span class="tag">    <span class="attr">x:Class</span>=<span class="string">&quot;MyApp.Views.MyPage&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:viewModels</span>=<span class="string">&quot;using:MyApp.ViewModels&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">viewModels:MyViewModel</span> <span class="attr">x:Name</span>=<span class="string">&quot;ViewModel&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.Counter, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.IncrementCounterCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在这段示例里 <code>IncrementCounterCommand</code> 包装了 <code>IncrementCounter</code> 函数提供给 Button 绑定。<code>IncrementCounter</code> 函数更改 <code>Counter</code> 的值并通过 <code>PropertyChanged</code> 事件通知绑定的 TextBlock。</p>
-<h2 id="2-3-AsyncRelayCommand"><a href="#2-3-AsyncRelayCommand" class="headerlink" title="2.3 AsyncRelayCommand"></a>2.3 AsyncRelayCommand</h2><p><code>AsyncRelayCommand</code> 和 <code>AsyncRelayCommand&lt;T&gt;</code> 也实现了 <code>ICommand</code>，不过它们支持异步操作，提供的 <code>ExecutionTask</code> 和 <code>IsRunning</code> 两个属性对监视任务运行状态十分有用。</p>
-<p>例如这个 ViewModel：</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    DownloadTextCommand = <span class="keyword">new</span> AsyncRelayCommand(DownloadTextAsync);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> IAsyncRelayCommand DownloadTextCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">string</span>&gt; <span class="title">DownloadTextAsync</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">3000</span>); <span class="comment">// Simulate a web request</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用相关的 UI 代码：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">converters:TaskResultConverter</span> <span class="attr">x:Key</span>=<span class="string">&quot;TaskResultConverter&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Task status:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask.Status, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">LineBreak</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Result:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask, Converter=&#123;StaticResource TaskResultConverter&#125;, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">muxc:ProgressRing</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Left&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">IsActive</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.IsRunning, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>点击 <code>Button</code> 后 <code>DownloadTextAsync</code> 开始运行，在 UI 上 TextBlock 和 ProgressRing 绑定到 <code>ExecutionTask</code> 和 <code>IsRunning</code> 并显示任务运行状态，最后通过 <code>TaskResultConverter</code> 显示任务结果。</p>
-<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221618229-510116488.gif"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221618229-510116488.gif" alt="img"></a></p>
-<h2 id="2-4-Messenger"><a href="#2-4-Messenger" class="headerlink" title="2.4 Messenger"></a>2.4 Messenger</h2><p>对于主要目的是松耦合的 MVVM 框架，提供一个用于消息交换的系统十分有必要。MVVM Toolkit 中用于消息交换的核心是 <code>WeakReferenceMessenger</code> 类。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create a message</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoggedInUserChangedMessage</span> : <span class="title">ValueChangedMessage</span>&lt;<span class="title">User</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoggedInUserChangedMessage</span>(<span class="params">User user</span>) : <span class="title">base</span>(<span class="params">user</span>)</span></span><br><span class="line">    &#123;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Register a message in some module</span></span><br><span class="line">WeakReferenceMessenger.Default.Register&lt;LoggedInUserChangedMessage&gt;(<span class="keyword">this</span>, (r, m) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Handle the message here, with r being the recipient and m being the</span></span><br><span class="line">    <span class="comment">// input messenger. Using the recipient passed as input makes it so that</span></span><br><span class="line">    <span class="comment">// the lambda expression doesn&#x27;t capture &quot;this&quot;, improving performance.</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Send a message from some other module</span></span><br><span class="line">WeakReferenceMessenger.Default.Send(<span class="keyword">new</span> LoggedInUserChangedMessage(user));</span><br></pre></td></tr></table></figure>
-
-<p>正如这段代码所示，<code>WeakReferenceMessenger</code> 主要通过 <code>Register</code> 和 <code>Send</code> 进行信息交换，它的使用方式类似于 MVVMLight 的 messenger 类。MVVM Toolkit 另外还提供了一个 <code>StrongReferenceMessenger</code> 类，更多使用方法可以参考这篇 <a href="https://github.com/CommunityToolkit/MVVM-Samples/blob/master/docs/mvvm/Messenger.md">文档</a>。<code>Messenger</code> 功能强大且简单易用，但也由于误用会带来风险而引发了一些争议，有必要更详细地理解它的原理和用法以避免它带来的其它风险，这篇文章只是简单地介绍一下它的用法。</p>
-<h2 id="2-5-ObservableRecipient"><a href="#2-5-ObservableRecipient" class="headerlink" title="2.5 ObservableRecipient"></a>2.5 ObservableRecipient</h2><p><code>ObservableRecipient</code> 继承了 <code>ObservableObject</code> 并支持从 <code>Messenger</code> 接收信息，可通过 <code>IsActive</code> 属性激活或停用。它可以用作 ViewModel 的基类，事实上它的作用基本上相遇于 MVVMLight 中的 [ViewModelBase](<a href="https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight">https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight</a> (PCL)/ViewModelBase.cs) ：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableRecipient</span>, <span class="title">IRecipient</span>&lt;<span class="title">LoggedInUserRequestMessage</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Receive</span>(<span class="params">LoggedInUserRequestMessage message</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Handle the message here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-6-ViewModelLocator"><a href="#2-6-ViewModelLocator" class="headerlink" title="2.6 ViewModelLocator"></a>2.6 ViewModelLocator</h2><p>在 MVVMLight 中，很多人使用 ViewModelLocator，然后在 xaml 中 binding View 的 DataContext，但是到了 Microsoft.Toolkit.Mvvm 中，却没有默认提供，这里根据官方的 Ioc 迁移说明，给出一个 WPF 应用程序的 ViewModelLocator 的实现方式。</p>
-<p>需要的 Package</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Extensions.DependencyInjection&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;6.0.0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Toolkit.Mvvm&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;7.1.2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>ViewModelLocator.cs 代码文件如下</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Toolkit.Mvvm.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ViewModelLocator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewModelLocator</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ConfigureServices();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Configures the services for the application.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IServiceProvider <span class="title">ConfigureServices</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> services = <span class="keyword">new</span> ServiceCollection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Services</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IContactsService, ContactsService&gt;();</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IPhoneService, PhoneService&gt;();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Viewmodels</span></span><br><span class="line">        services.AddTransient&lt;MainViewModel&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> serviceProvider = services.BuildServiceProvider();</span><br><span class="line">        Ioc.Default.ConfigureServices(serviceProvider);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> serviceProvider;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> MainViewModel? MainVM &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> Ioc.Default.GetService&lt;MainViewModel&gt;(); &#125; &#125;</span><br><span class="line"></span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
-
-<p>App.xaml 添加以下资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">local:ViewModelLocator</span> <span class="attr">x:Key</span>=<span class="string">&quot;Locator&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Application.Resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在 View xaml 中的使用方法</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">&quot;Test.MainWindow&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">DataContext</span>=<span class="string">&quot;&#123;Binding Source=&#123;StaticResource Locator&#125;, Path=MainVM&#125;&quot;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="attr">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这样即可实现 MVVMLight 中 Locator 的效果。</p>
-<h1 id="3-The-性能"><a href="#3-The-性能" class="headerlink" title="3. The 性能"></a>3. The 性能</h1><p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221730002-1263673884.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221730002-1263673884.png" alt="img"></a></p>
-<p>MVVM Toolkit 在开发过程中为了追求卓越的性能做了很多努力，例如提供一个 <code>StrongReferenceMessenger</code> 类，性能如上图所示地有了大幅提升。又例如下面这篇文章所介绍的：</p>
-<p><a href="https://devblogs.microsoft.com/ifdef-windows/mvvm-toolkit-preview-3-the-journey-of-an-api/">MVVM Toolkit Preview 3 &amp; The Journey of an API</a></p>
-<p>有兴趣的话可以通过源码详细了解一下。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-        <category>MVVM</category>
-      </categories>
-      <tags>
-        <tag>MVVM</tag>
       </tags>
   </entry>
 </search>
