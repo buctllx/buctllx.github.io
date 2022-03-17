@@ -49,8 +49,8 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  auto_detect: false
-  line_number: false
+  auto_detect: true
+  line_number: true
   tab_replace: ''
   wrap: true
   hljs: false
@@ -115,6 +115,10 @@ search:
 # theme: yilia
 theme: next
 
+admin:
+  username: luolx
+  password_hash: $2a$10$85i.c1HWlMkupAghVE7bm.7fA41LlxVkbIm513g4LneK1qEX98G2e
+  secret: ConorLuo
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

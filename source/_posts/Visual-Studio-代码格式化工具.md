@@ -2,8 +2,7 @@
 title: Visual Studio 代码格式化工具
 date: 2022-03-01 15:43:28
 categories:
-- VisualStudio
-- 工具
+- [工具, VisualStudio]
 tags:
 - VisualStudio
 - 工具
