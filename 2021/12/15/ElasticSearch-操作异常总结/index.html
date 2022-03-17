@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_type&amp;qu">
+<meta name="description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； 123456789101112# SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ElasticSearch 操作异常总结">
 <meta property="og:url" content="https://buctllx.github.io/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； # SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,    &quot;_type&amp;qu">
+<meta property="og:description" content="1. Index 写入数据 FORBIDDEN 问题1.1 问题描述在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息； 123456789101112# SendError: bulk failed with last error&amp;#123;    &quot;_index&quot;:&quot;dev_cbim_tool_log&quot;,">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-15T09:41:01.000Z">
 <meta property="article:modified_time" content="2021-12-22T10:33:37.292Z">
@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -330,7 +330,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="1-Index-写入数据-FORBIDDEN-问题"><a href="#1-Index-写入数据-FORBIDDEN-问题" class="headerlink" title="1. Index 写入数据 FORBIDDEN 问题"></a>1. Index 写入数据 FORBIDDEN 问题</h1><h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
 
 <p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
 <span id="more"></span>
@@ -339,7 +339,7 @@
 <p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
 <p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
 <p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
-<h2 id="1-3-解决方法"><a href="#1-3-解决方法" class="headerlink" title="1.3 解决方法"></a>1.3 解决方法</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-解决方法"><a href="#1-3-解决方法" class="headerlink" title="1.3 解决方法"></a>1.3 解决方法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
 
 <p> 参考链接：[如何修复 ElasticSearch <a target="_blank" rel="noopener" href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
 <h1 id="2-ElasticSearch-启动参数问题"><a href="#2-ElasticSearch-启动参数问题" class="headerlink" title="2. ElasticSearch 启动参数问题"></a>2. ElasticSearch 启动参数问题</h1><p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
@@ -349,25 +349,25 @@
 <h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
 <p>可以通过 dock inspect elasticsearch 查看</p>
 <h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>使用下面的配置替代</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
 
 <p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
 <h3 id="类似的问题"><a href="#类似的问题" class="headerlink" title="类似的问题"></a>类似的问题</h3><p>unknown setting [cluster.initial_master_nodes] </p>
 <h2 id="2-2-ES-缓存设置"><a href="#2-2-ES-缓存设置" class="headerlink" title="2.2 ES 缓存设置"></a>2.2 ES 缓存设置</h2><p>默认设置：ES_JAVA_OPTS=”-Xms256m -Xmx256m”</p>
 <p>启动的时候可以加 -e 指定参数</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
 
 <p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
 <blockquote>
 <p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
 </blockquote>
 <p>解决方法：修改 centos 系统的缓存设置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
 
 
 
 <h1 id="3-ElasticSearch-集群状态排查"><a href="#3-ElasticSearch-集群状态排查" class="headerlink" title="3. ElasticSearch 集群状态排查"></a>3. ElasticSearch 集群状态排查</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
-<h1 id="4-ES-索引-primary-shard-is-unassigned-解决方法"><a href="#4-ES-索引-primary-shard-is-unassigned-解决方法" class="headerlink" title="4. ES 索引 primary shard is unassigned 解决方法"></a>4. ES 索引 primary shard is unassigned 解决方法</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="4-ES-索引-primary-shard-is-unassigned-解决方法"><a href="#4-ES-索引-primary-shard-is-unassigned-解决方法" class="headerlink" title="4. ES 索引 primary shard is unassigned 解决方法"></a>4. ES 索引 primary shard is unassigned 解决方法</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34050519/article/details/85936609">ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
@@ -482,14 +482,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">34k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">22 分钟</span>
+    <span title="站点阅读时长">31 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

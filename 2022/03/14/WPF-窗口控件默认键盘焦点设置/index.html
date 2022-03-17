@@ -21,31 +21,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 问题描述xaml 代码块如下： 12345678910111213&lt;Button Content&#x3D;&quot;333&quot;&gt;                &lt;Button.Style&gt;                    &lt;Style TargetType&#x3D;&quot;Button&quot;&gt;                        &amp;lt">
+<meta name="description" content="大家经常能够看到 WPF 窗口加载显示后，用户按 Tab 键，就会有一个控价获得焦点，如果这个控件是 Button，那么表现为：在 Button 文本周围有个虚线框；如果是 TextBox，那么表现为：在 TextBox 内部会有光标在闪烁。那么如何在 View 加载后设置默认显示这个效果，本文将会说明。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WPF 在 Trigger 中修改 Button Content 注意事项">
-<meta property="og:url" content="https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
+<meta property="og:title" content="WPF 窗口控件默认键盘焦点设置">
+<meta property="og:url" content="https://buctllx.github.io/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="1. 问题描述xaml 代码块如下： 12345678910111213&lt;Button Content&#x3D;&quot;333&quot;&gt;                &lt;Button.Style&gt;                    &lt;Style TargetType&#x3D;&quot;Button&quot;&gt;                        &amp;lt">
+<meta property="og:description" content="大家经常能够看到 WPF 窗口加载显示后，用户按 Tab 键，就会有一个控价获得焦点，如果这个控件是 Button，那么表现为：在 Button 文本周围有个虚线框；如果是 TextBox，那么表现为：在 TextBox 内部会有光标在闪烁。那么如何在 View 加载后设置默认显示这个效果，本文将会说明。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-12-02T08:52:58.000Z">
-<meta property="article:modified_time" content="2021-12-22T03:34:31.422Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220314142837858.png">
+<meta property="article:published_time" content="2022-03-14T06:10:52.000Z">
+<meta property="article:modified_time" content="2022-03-14T07:15:21.083Z">
 <meta property="article:author" content="ConorLuo">
-<meta property="article:tag" content=".Net">
-<meta property="article:tag" content="C#">
 <meta property="article:tag" content="WPF">
-<meta property="article:tag" content="Style">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220314142837858.png">
 
 
-<link rel="canonical" href="https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+<link rel="canonical" href="https://buctllx.github.io/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/","path":"2021/12/02/WPF-在-Trigger-中修改-Button-Content-注意事项/","title":"WPF 在 Trigger 中修改 Button Content 注意事项"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/","path":"2022/03/14/WPF-窗口控件默认键盘焦点设置/","title":"WPF 窗口控件默认键盘焦点设置"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>WPF 在 Trigger 中修改 Button Content 注意事项 | ConorLuo 博客</title>
+<title>WPF 窗口控件默认键盘焦点设置 | ConorLuo 博客</title>
   
 
 
@@ -153,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-text">1. 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%8E%9F%E5%9B%A0%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">2. 原因和解决方法</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%B3%E4%BA%8E-%E7%84%A6%E7%82%B9-%E7%9A%84-%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-text">一、关于 焦点 的 基本知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88"><span class="nav-text">二、实现方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%A8%A1%E6%8B%9F%E6%8C%89%E9%94%AE%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.1 模拟按键实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%87%8D%E5%86%99%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E6%A0%B7%E5%BC%8F"><span class="nav-text">2.2 重写键盘焦点样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E8%BE%85%E5%8A%A9%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.3 辅助方法实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-text">三、总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -256,7 +255,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -269,7 +268,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          WPF 在 Trigger 中修改 Button Content 注意事项
+          WPF 窗口控件默认键盘焦点设置
         </h1>
 
         <div class="post-meta-container">
@@ -279,16 +278,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-12-02 16:52:58" itemprop="dateCreated datePublished" datetime="2021-12-02T16:52:58+08:00">2021-12-02</time>
+      <time title="创建时间：2022-03-14 14:10:52 / 修改时间：15:15:21" itemprop="dateCreated datePublished" datetime="2022-03-14T14:10:52+08:00">2022-03-14</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-22 11:34:31" itemprop="dateModified" datetime="2021-12-22T11:34:31+08:00">2021-12-22</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -313,14 +306,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>2.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -331,19 +324,47 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>xaml 代码块如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
-
-<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+        <p>大家经常能够看到 WPF 窗口加载显示后，用户按 Tab 键，就会有一个控价获得焦点，如果这个控件是 Button，那么表现为：在 Button 文本周围有个虚线框；如果是 TextBox，那么表现为：在 TextBox 内部会有光标在闪烁。那么如何在 View 加载后设置默认显示这个效果，本文将会说明。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220314142837858.png" alt="image-20220314142837858"></p>
 <span id="more"></span>
 
-<h2 id="2-原因和解决方法"><a href="#2-原因和解决方法" class="headerlink" title="2. 原因和解决方法"></a>2. 原因和解决方法</h2><p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
-<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
-<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="一、关于-焦点-的-基本知识"><a href="#一、关于-焦点-的-基本知识" class="headerlink" title="一、关于 焦点 的 基本知识"></a>一、关于 焦点 的 基本知识</h1><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/desktop/wpf/advanced/focus-overview?view=netframeworkdesktop-4.8">焦点概述 - WPF .NET Framework | Microsoft Docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/desktop/wpf/advanced/styling-for-focus-in-controls-and-focusvisualstyle?redirectedfrom=MSDN&view=netframeworkdesktop-4.8">为控件中的焦点设置样式以及 FocusVisualStyle - WPF .NET Framework | Microsoft Docs</a></p>
+<p>两种焦点：</p>
+<ol>
+<li>键盘焦点</li>
+<li>逻辑焦点</li>
+</ol>
+<p>这里有一段话明确说明了虚线框是键盘焦点的由来</p>
+<blockquote>
+<p><em>Focus visual styles act only when the focus action was initiated by the keyboard. Any mouse action or programmatic focus change disables the mode for focus visual styles.</em></p>
+</blockquote>
+<p>意思是：虚线框这种焦点效果，只能通过按 Tab 键进行触发</p>
+<h1 id="二、实现方案"><a href="#二、实现方案" class="headerlink" title="二、实现方案"></a>二、实现方案</h1><p>明白了焦点效果产生的缘由，我们就可以思考如何实现</p>
+<p>这里主要介绍如下实现方式；</p>
+<h2 id="2-1-模拟按键实现"><a href="#2-1-模拟按键实现" class="headerlink" title="2.1 模拟按键实现"></a>2.1 模拟按键实现</h2><p>既然只能通过按 Tab 键触发产生想要的效果，最直接的方法就是：</p>
+<p>在 View 加载后，通过编码实现模拟用户按键到达想要的键盘焦点效果；</p>
+<p>具体实现方式编码，可以通过 PInvoke SendInput 实现，</p>
+<p>也可以使用封装好的第三方包，<a target="_blank" rel="noopener" href="https://www.nuget.org/packages/InputSimulator/">NuGet Gallery | InputSimulator 1.0.4</a></p>
+<p>缺点：</p>
+<p>要提前计算好要按几次才能达到指定的控件；</p>
+<h2 id="2-2-重写键盘焦点样式"><a href="#2-2-重写键盘焦点样式" class="headerlink" title="2.2 重写键盘焦点样式"></a>2.2 重写键盘焦点样式</h2><p>在第一章节中了解了：想要的样式是通过那种 Style 控制产生的，那么我们就可以重新实现一种新的样式，默认显示我们想要的效果。</p>
+<p>确定：</p>
+<p>复杂，需要重写想过控件的样式</p>
+<h2 id="2-3-辅助方法实现"><a href="#2-3-辅助方法实现" class="headerlink" title="2.3 辅助方法实现"></a>2.3 辅助方法实现</h2><p>通过反射的方法，调用 ShowFocusVisual Internal 方法实现。</p>
+<p>笔者用的就是这种方法，因为我的需要没有复杂的样式要求，只需要显示默认的键盘焦点样式即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">public sealed class KeyboardHelper</span><br><span class="line">&#123;</span><br><span class="line">    private static KeyboardHelper _Instance;</span><br><span class="line"></span><br><span class="line">    private readonly PropertyInfo _AlwaysShowFocusVisual;</span><br><span class="line">    private readonly MethodInfo _ShowFocusVisual;</span><br><span class="line"></span><br><span class="line">    // Explicit static constructor to tell C# compiler</span><br><span class="line">    // not to mark type as beforefieldinit</span><br><span class="line">    static KeyboardHelper()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private KeyboardHelper()</span><br><span class="line">    &#123;</span><br><span class="line">        var type = typeof(KeyboardNavigation);</span><br><span class="line"></span><br><span class="line">        _AlwaysShowFocusVisual = type.GetProperty(&quot;AlwaysShowFocusVisual&quot;, BindingFlags.NonPublic | BindingFlags.Static);</span><br><span class="line">        _ShowFocusVisual = type.GetMethod(&quot;ShowFocusVisual&quot;, BindingFlags.NonPublic | BindingFlags.Static);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    internal static KeyboardHelper Instance =&gt; _Instance ?? (_Instance = new KeyboardHelper());</span><br><span class="line"></span><br><span class="line">    internal void ShowFocusVisualInternal()</span><br><span class="line">    &#123;</span><br><span class="line">        _ShowFocusVisual.Invoke(null, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    internal bool AlwaysShowFocusVisualInternal</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return (bool)_AlwaysShowFocusVisual.GetValue(null, null); &#125;</span><br><span class="line">        set &#123; _AlwaysShowFocusVisual.SetValue(null, value, null); &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void Focus(UIElement element)</span><br><span class="line">    &#123;</span><br><span class="line">        element?.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            var keybHack = KeyboardHelper.Instance;</span><br><span class="line">            var oldValue = keybHack.AlwaysShowFocusVisualInternal;</span><br><span class="line"></span><br><span class="line">            keybHack.AlwaysShowFocusVisualInternal = true;</span><br><span class="line"></span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                Keyboard.Focus(element);</span><br><span class="line">                keybHack.ShowFocusVisualInternal();</span><br><span class="line">            &#125;</span><br><span class="line">            finally</span><br><span class="line">            &#123;</span><br><span class="line">               keybHack.AlwaysShowFocusVisualInternal = oldValue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>使用方法: 在构造方法中的 InitializeComponent 方法 或者 Loaded 后添加下方代码即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KeyboardHelper.Focus(this.OkBtn); // Button Name</span><br></pre></td></tr></table></figure>
 
-
+<p>缺点：</p>
+<p>需要使用控件 Name；</p>
+<h1 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h1><p>这第二章节中介绍了三种方法，大家可以根据自己的需要，选择合适的方法</p>
+<p>笔者采用的是 2.3 ，目前没有发现什么问题；</p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5468419/wpf-button-to-have-keyboard-focus-dotted-border-around-during-the-startup-or-a/54332878#54332878?newreg=1c1894efcf124154aece9df9df062740">WPF Button to have Keyboard focus (dotted border around) during the startup or activation of window - Stack Overflow</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5400570/how-to-make-checkbox-focus-border-appear-when-calling-checkbox-focus/5401707#5401707">wpf - How to make CheckBox focus border appear when calling CheckBox.Focus()? - Stack Overflow</a></p>
 
     </div>
 
@@ -379,7 +400,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" title="WPF 在 Trigger 中修改 Button Content 注意事项">https://buctllx.github.io/2021/12/02/WPF-在-Trigger-中修改-Button-Content-注意事项/</a>
+      <a href="https://buctllx.github.io/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/" title="WPF 窗口控件默认键盘焦点设置">https://buctllx.github.io/2022/03/14/WPF-窗口控件默认键盘焦点设置/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -388,23 +409,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Net/" rel="tag"><i class="fa fa-tag"></i> .Net</a>
-              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C#</a>
               <a href="/tags/WPF/" rel="tag"><i class="fa fa-tag"></i> WPF</a>
-              <a href="/tags/Style/" rel="tag"><i class="fa fa-tag"></i> Style</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/" rel="prev" title="wpf control window 范围内默认样式对第一个控件无效">
-                  <i class="fa fa-chevron-left"></i> wpf control window 范围内默认样式对第一个控件无效
+                <a href="/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/" rel="prev" title="Visual Studio *.sln file 编辑 bug 记录">
+                  <i class="fa fa-chevron-left"></i> Visual Studio *.sln file 编辑 bug 记录
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/" rel="next" title="Git fetch 同时更新子模块">
-                  Git fetch 同时更新子模块 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/03/16/Microsoft-Toolkit-Mvvm-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" rel="next" title="Microsoft.Toolkit.Mvvm 使用记录">
+                  Microsoft.Toolkit.Mvvm 使用记录 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -431,11 +449,11 @@
     </label>
     <select class="lang-select" data-canonical="" aria-label="选择语言">
       
-        <option value="zh-CN" data-href="/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" selected="">
+        <option value="zh-CN" data-href="/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/" selected="">
           简体中文
         </option>
       
-        <option value="en" data-href="/en/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" selected="">
+        <option value="en" data-href="/en/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/" selected="">
           English
         </option>
       
@@ -511,7 +529,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"f6414220c3f3f54821a70f9e148896d8"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"e831b0852fcd4980cd5d553c78c83074"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
