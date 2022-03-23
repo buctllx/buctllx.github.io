@@ -800,6 +800,7 @@
 <p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
 <p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
 <h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<p><a href="https://zimmergren.net/making-windows-terminal-look-awesome-with-oh-my-posh/">Making Windows Terminal look awesome with oh-my-posh and new fonts. (zimmergren.net)</a></p>
 <h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
 
 <p>参考链接：</p>
@@ -910,6 +911,65 @@
         <tag>windwos</tag>
         <tag>web site</tag>
         <tag>ftp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx 反向代理 FileBrowser</title>
+    <url>/2022/03/23/Nginx-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-FileBrowser/</url>
+    <content><![CDATA[<p>本文主要说明如果使用 Nginx 方向代理已经启动的 FileBrowser 服务。</p>
+<span id="more"></span>
+
+<h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h1><p>开始本文的主要内容前，默认已经做好了以下准备工作</p>
+<ol>
+<li>使用 linux 系统，比如 centos；</li>
+<li>已安装并启动 nginx 服务</li>
+<li>已安装并启动 filebrowser 服务</li>
+</ol>
+<h1 id="2-有关-FileBrowser-的配置"><a href="#2-有关-FileBrowser-的配置" class="headerlink" title="2. 有关 FileBrowser 的配置"></a>2. 有关 FileBrowser 的配置</h1><p>如果不知道已经启动的 filebrowser 服务的相关配置，可以通过以下命令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 查看 filebrowser 服务的进程 (可以看到启动命令的相关参数，比如说配置文件，数据库文件等)</span></span><br><span class="line">ps -ef |grep filebrowser</span><br><span class="line">pstree -ap |grep filebrowser</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323190406153.png" alt="image-20220323190406153"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 2. 导出 filebrowser 的配置信息</span></span><br><span class="line">cd /etc/filebrowser  # 首先进入包含 filebrowser 可执行文件的目录</span><br><span class="line">filebrowser config cat # 临时查看</span><br><span class="line">filebrowser config export config.json # 导出 filebrowser 配置信息到 config.json 文件</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果存在多个 db 可以通过 -d 参数导出指定数据库中存储的配置信息(其他命令也是如此，后面不在重复说明举例)</span></span><br><span class="line">filebrowser -d /etc/filebrowser/filebrowser.db config export config.json</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可能用到的其他命令</span></span><br><span class="line">filebrowser users update admin -p admin # 更新 admin 用户的密码为 admin</span><br><span class="line">filebrowser config set --port 18080  # 重新设置端口信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以下 json 信息是我用到的配置</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;port&quot;</span>: <span class="number">18080</span>,</span><br><span class="line">    <span class="attr">&quot;root&quot;</span>:<span class="string">&quot;/data/file&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;database&quot;</span>:<span class="string">&quot;/etc/filebrowser/filebrowser.db&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;log&quot;</span>:<span class="string">&quot;/etc/filebrowser/log.log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;plugin&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;baseURL&quot;</span>: <span class="string">&quot;/files&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;allowCommands&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowEdit&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowNew&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;commands&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;ls&quot;</span>,</span><br><span class="line">        <span class="string">&quot;df&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="note info"><p>需要注意的问题：</p>
+<ol>
+<li><strong>baseURL</strong> 配置项的值在后面 nginx 的配置中要使用到，一定要记录下来；如果没有设置，默认值是 files， 强烈建议设置一下；</li>
+<li>使用 vi 或者 vim 写 json 配置文件的时候一定要注意，缩进符号是 空格，而且不能和 tab 混合用；尤其是从网页上面复制 json 文本的时候一定要确保是空格（有些网页上的缩进是 tab，但是默认空白看不到）</li>
+</ol>
+</div>
+
+
+
+<h1 id="3-在-Nginx-中配置-FileBrowser-服务"><a href="#3-在-Nginx-中配置-FileBrowser-服务" class="headerlink" title="3. 在 Nginx 中配置 FileBrowser 服务"></a>3. 在 Nginx 中配置 FileBrowser 服务</h1><p>核心配置如下：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  ai.cbim.com <span class="number">10.80.253.133</span>;</span><br><span class="line">    <span class="attribute">access_log</span>  /var/logs/nginx/filebrowser.access.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># file browser url</span></span><br><span class="line">    <span class="attribute">location</span><span class="regexp"> ^~</span> /files/ &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span>  http://127.0.0.1:18080/;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host $proxy_host;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP $remote_addr;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="note info"><p>需要注意的问题：</p>
+<ol>
+<li>server_name 不要和 nginx/conf.d 中其他的配置文件中的 server_name 重复，否则可能被忽略；</li>
+<li><strong>location</strong> 后面的匹配项，一定要和 前面 filebrowser 配置文件中的 <strong>baseURL</strong> 配置项保持一致，否则无法代理成功；</li>
+<li><strong>location</strong> 的具体匹配规则视情况而定，我这里通过 ^~ 匹配以 files 开头的所有 api；^~ 如果删除，而又没有其他 location 匹配规则，同样会导致代理失败，无法访问 filebrowser</li>
+</ol>
+</div>
+
+
+
+<h1 id="4-相关参考资料："><a href="#4-相关参考资料：" class="headerlink" title="4. 相关参考资料："></a>4. 相关参考资料：</h1><p><a href="http://nginx.org/en/docs/">nginx documentation</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser">filebrowser/filebrowser: 📂 Web File Browser (github.com)</a></p>
+<p><a href="https://filebrowser.org/">Welcome - File Browser</a></p>
+<p><a href="https://www.cnblogs.com/shanyu20/p/15477202.html">file browser介绍 - shanyu20 - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser/issues/627">timeout on commands that connect to a locked database · Issue #627 · filebrowser/filebrowser (github.com)</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser/issues/549">Usable configuration for executing command behind NGINX. · Issue #549 · filebrowser/filebrowser (github.com)</a></p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+        <tag>FileBrowsern</tag>
       </tags>
   </entry>
 </search>

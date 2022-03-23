@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://buctllx.github.io/2022/03/23/Nginx-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-FileBrowser/</loc>
+    
+    <lastmod>2022-03-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://buctllx.github.io/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</loc>
+    
+    <lastmod>2022-03-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://buctllx.github.io/2020/04/12/test-my-site/</loc>
     
     <lastmod>2022-03-17</lastmod>
@@ -75,15 +93,6 @@
   
   <url>
     <loc>https://buctllx.github.io/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</loc>
-    
-    <lastmod>2022-01-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://buctllx.github.io/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</loc>
     
     <lastmod>2022-01-20</lastmod>
     
@@ -166,7 +175,7 @@
 
   <url>
     <loc>https://buctllx.github.io/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -174,133 +183,147 @@
   
   <url>
     <loc>https://buctllx.github.io/tags/ElasticSearch/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/ES/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Git/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Hexo/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Theme/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/PicGo/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/MVVM/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/VisualStudio/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Revit/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Typora/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Net/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/C/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/WPF/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Style/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/Termianl-PowerShell-Oh-My-Posh/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/windwos/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/web-site/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/tags/ftp/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://buctllx.github.io/tags/Nginx/</loc>
+    <lastmod>2022-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://buctllx.github.io/tags/FileBrowsern/</loc>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -309,119 +332,126 @@
   
   <url>
     <loc>https://buctllx.github.io/categories/ElasticSearch/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Git-%E7%9B%B8%E5%85%B3/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Hexo/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/VisualStudio/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Revit/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Markdown/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Hexo/Hexo-Theme/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/WPF/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Hexo/PicGo/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Termianl/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/%E5%B7%A5%E5%85%B7/MVVM/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/%E5%B7%A5%E5%85%B7/VisualStudio/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/Termianl/PowerShell/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/windwos/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/windwos/web-site/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://buctllx.github.io/categories/windwos/ftp-server/</loc>
-    <lastmod>2022-03-17</lastmod>
+    <lastmod>2022-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://buctllx.github.io/categories/%E5%B7%A5%E5%85%B7/Nginx/</loc>
+    <lastmod>2022-03-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
