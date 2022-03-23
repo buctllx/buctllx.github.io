@@ -938,6 +938,7 @@
 <ol>
 <li><strong>baseURL</strong> 配置项的值在后面 nginx 的配置中要使用到，一定要记录下来；如果没有设置，默认值是 files， 强烈建议设置一下；</li>
 <li>使用 vi 或者 vim 写 json 配置文件的时候一定要注意，缩进符号是 空格，而且不能和 tab 混合用；尤其是从网页上面复制 json 文本的时候一定要确保是空格（有些网页上的缩进是 tab，但是默认空白看不到）</li>
+<li>如果在 filebrowser 启动后通过 ui 设置了一些操作，或者添加了一些用户，那么通过上面的命名可能获取不到最新的配置信息，或者出现 timeout 的问题，这时候需要关闭 filebrowser 服务，然后通过 -d 参数执行 db 就可以了；</li>
 </ol>
 </div>
 
@@ -946,11 +947,17 @@
 <h1 id="3-在-Nginx-中配置-FileBrowser-服务"><a href="#3-在-Nginx-中配置-FileBrowser-服务" class="headerlink" title="3. 在 Nginx 中配置 FileBrowser 服务"></a>3. 在 Nginx 中配置 FileBrowser 服务</h1><p>核心配置如下：</p>
 <figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  ai.cbim.com <span class="number">10.80.253.133</span>;</span><br><span class="line">    <span class="attribute">access_log</span>  /var/logs/nginx/filebrowser.access.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># file browser url</span></span><br><span class="line">    <span class="attribute">location</span><span class="regexp"> ^~</span> /files/ &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span>  http://127.0.0.1:18080/;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host $proxy_host;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP $remote_addr;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>新增或者修改完 nginx 的配置文件后，可以使用下面的命令测试 / 重新载入配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 测试 配置文件的语法是否正确</span></span><br><span class="line">nginx -t</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新载入修改后的 配置文件</span></span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>最后就可以通过设定的域名或者 IP 访问 filebrowser 了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323195000831.png" alt="image-20220323195000831"></p>
 <div class="note info"><p>需要注意的问题：</p>
 <ol>
 <li>server_name 不要和 nginx/conf.d 中其他的配置文件中的 server_name 重复，否则可能被忽略；</li>
 <li><strong>location</strong> 后面的匹配项，一定要和 前面 filebrowser 配置文件中的 <strong>baseURL</strong> 配置项保持一致，否则无法代理成功；</li>
 <li><strong>location</strong> 的具体匹配规则视情况而定，我这里通过 ^~ 匹配以 files 开头的所有 api；^~ 如果删除，而又没有其他 location 匹配规则，同样会导致代理失败，无法访问 filebrowser</li>
+<li>最后访问的时候，如果是局域网域名，访问前最好关掉 vpn 或者其他一类的代理软件，否则也可能会访问失败；</li>
 </ol>
 </div>
 
