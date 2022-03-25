@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 准备安装环境Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载  Windows Terminal (Windows 自带)  PowerShell  具体安装这里不做详细说明">
+<meta name="description" content="1. 准备安装环境 Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载  Windows Terminal (Windows 自带) PowerShell  具体安装这里不做详细说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows Terminal 集成 Oh My Posh">
 <meta property="og:url" content="https://buctllx.github.io/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="1. 准备安装环境Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载  Windows Terminal (Windows 自带)  PowerShell  具体安装这里不做详细说明">
+<meta property="og:description" content="1. 准备安装环境 Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载  Windows Terminal (Windows 自带) PowerShell  具体安装这里不做详细说明">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-29T03:52:56.000Z">
 <meta property="article:modified_time" content="2022-03-22T06:42:18.875Z">
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-text">1. 准备安装环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85-Oh-My-Posh"><span class="nav-text">2. 安装 Oh My Posh</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3%EF%BC%9A"><span class="nav-text">2.1 参考文档：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">2.2 可能使用到的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%AD%97%E4%BD%93%E9%80%89%E6%8B%A9"><span class="nav-text">2.3 字体选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Posh-Git-%E5%AE%89%E8%A3%85"><span class="nav-text">3. Posh-Git 安装</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-text">1. 准备安装环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-oh-my-posh"><span class="nav-text">2. 安装 Oh My Posh</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">2.1 参考文档：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">2.2 可能使用到的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93%E9%80%89%E6%8B%A9"><span class="nav-text">2.3 字体选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#posh-git-%E5%AE%89%E8%A3%85"><span class="nav-text">3. Posh-Git 安装</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,18 +165,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -332,37 +332,39 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-准备安装环境"><a href="#1-准备安装环境" class="headerlink" title="1. 准备安装环境"></a>1. 准备安装环境</h1><p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
+        <h1 id="准备安装环境">1. 准备安装环境</h1>
+<p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
-<li> <a target="_blank" rel="noopener" href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
 </ul>
 <p>具体安装这里不做详细说明</p>
 <span id="more"></span>
-
-<h1 id="2-安装-Oh-My-Posh"><a href="#2-安装-Oh-My-Posh" class="headerlink" title="2. 安装 Oh My Posh"></a>2. 安装 Oh My Posh</h1><div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
-<p>网上的大部分教程，存在时效性问题，因为  Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
+<h1 id="安装-oh-my-posh">2. 安装 Oh My Posh</h1>
+<div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
+<p>网上的大部分教程，存在时效性问题，因为 Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
 <p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
 </div>
-
 <p><a target="_blank" rel="noopener" href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
 <p><a target="_blank" rel="noopener" href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
-<h2 id="2-1-参考文档："><a href="#2-1-参考文档：" class="headerlink" title="2.1 参考文档："></a>2.1 参考文档：</h2><p><a target="_blank" rel="noopener" href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<h2 id="参考文档">2.1 参考文档：</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
 <p><a target="_blank" rel="noopener" href="https://zimmergren.net/making-windows-terminal-look-awesome-with-oh-my-posh/">Making Windows Terminal look awesome with oh-my-posh and new fonts. (zimmergren.net)</a></p>
-<h2 id="2-2-可能使用到的命令"><a href="#2-2-可能使用到的命令" class="headerlink" title="2.2 可能使用到的命令"></a>2.2 可能使用到的命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
-
+<h2 id="可能使用到的命令">2.2 可能使用到的命令</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
 <p>参考链接：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
-<h2 id="2-3-字体选择"><a href="#2-3-字体选择" class="headerlink" title="2.3 字体选择"></a>2.3 字体选择</h2><p>官方推荐 <a target="_blank" rel="noopener" href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a> </p>
+<h2 id="字体选择">2.3 字体选择</h2>
+<p>官方推荐 <a target="_blank" rel="noopener" href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a></p>
 <p>下载自定后安装方法：</p>
 <p>解压、进入字体目录、全选、右键、安装 即可</p>
-<h1 id="3-Posh-Git-安装"><a href="#3-Posh-Git-安装" class="headerlink" title="3. Posh-Git 安装"></a>3. Posh-Git 安装</h1><p><a target="_blank" rel="noopener" href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
+<h1 id="posh-git-安装">3. Posh-Git 安装</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
 <p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
-<p>官方文档安装方法： <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/%E9%99%84%E5%BD%95-A%3A-%E5%9C%A8%E5%85%B6%E5%AE%83%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-Git-%E5%9C%A8-PowerShell-%E4%B8%AD%E4%BD%BF%E7%94%A8-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<p>官方文档安装方法： <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/附录-A%3A-在其它环境中使用-Git-Git-在-PowerShell-中使用-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
-
 <p>这里不做详细说明</p>
 
     </div>
@@ -474,14 +476,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">44k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">33 分钟</span>
+    <span title="站点阅读时长">40 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -524,6 +526,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">

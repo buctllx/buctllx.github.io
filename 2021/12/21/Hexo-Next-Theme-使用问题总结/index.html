@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="两个路径说明： site root directory：博客站点根目录 theme root directory：博客主题根目录 后面说明问题会一直沿用这中叫法；   1. 部署后“搜索”功能无法使用原因 使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定">
+<meta name="description" content="两个路径说明： site root directory：博客站点根目录 theme root directory：博客主题根目录 后面说明问题会一直沿用这中叫法；  1. 部署后“搜索”功能无法使用 原因 使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo Next Theme 使用问题总结">
 <meta property="og:url" content="https://buctllx.github.io/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="两个路径说明： site root directory：博客站点根目录 theme root directory：博客主题根目录 后面说明问题会一直沿用这中叫法；   1. 部署后“搜索”功能无法使用原因 使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定">
+<meta property="og:description" content="两个路径说明： site root directory：博客站点根目录 theme root directory：博客主题根目录 后面说明问题会一直沿用这中叫法；  1. 部署后“搜索”功能无法使用 原因 使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-21T09:36:03.000Z">
 <meta property="article:modified_time" content="2021-12-22T03:35:02.306Z">
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%83%A8%E7%BD%B2%E5%90%8E%E2%80%9C%E6%90%9C%E7%B4%A2%E2%80%9D%E5%8A%9F%E8%83%BD%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="nav-text">1. 部署后“搜索”功能无法使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%9B%BF%E6%8D%A2%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E8%B7%AF%E5%BE%84"><span class="nav-text">2. 替换图片资源路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%A2%9E%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E2%80%9C%E6%A0%87%E7%AD%BE%E2%80%9D%EF%BC%8C%E2%80%9C%E5%88%86%E7%B1%BB%E2%80%9D%E9%A1%B5%E9%9D%A2"><span class="nav-text">3. 增加自定义的“标签”，“分类”页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%BC%80%E5%90%AF%E9%A6%96%E9%A1%B5%E6%96%87%E7%AB%A0%E9%83%A8%E5%88%86%E6%98%BE%E7%A4%BA"><span class="nav-text">4. 开启首页文章部分显示</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E5%90%8E%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="nav-text">1. 部署后“搜索”功能无法使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E8%B7%AF%E5%BE%84"><span class="nav-text">2. 替换图片资源路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E6%A0%87%E7%AD%BE%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2"><span class="nav-text">3. 增加自定义的“标签”，“分类”页面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E9%A6%96%E9%A1%B5%E6%96%87%E7%AB%A0%E9%83%A8%E5%88%86%E6%98%BE%E7%A4%BA"><span class="nav-text">4. 开启首页文章部分显示</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,18 +166,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -338,58 +338,61 @@
 <p>theme root directory：博客主题根目录</p>
 <p>后面说明问题会一直沿用这中叫法；</p>
 </div>
-
-<h1 id="1-部署后“搜索”功能无法使用"><a href="#1-部署后“搜索”功能无法使用" class="headerlink" title="1. 部署后“搜索”功能无法使用"></a>1. 部署后“搜索”功能无法使用</h1><p><strong>原因</strong></p>
+<h1 id="部署后搜索功能无法使用">1. 部署后“搜索”功能无法使用</h1>
+<p><strong>原因</strong></p>
 <p>使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定</p>
 <span id="more"></span>
-
 <p><strong>解决方法</strong></p>
 <p>拉去稳定版本的分支，主要看最新的 Tag</p>
-<p>参考 Issues 链接：<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues/4654">https://github.com/hexojs/hexo/issues/4654</a></p>
-<h1 id="2-替换图片资源路径"><a href="#2-替换图片资源路径" class="headerlink" title="2. 替换图片资源路径"></a>2. 替换图片资源路径</h1><p>主题涉及到的，各种图片资源都是可以替换的，</p>
-<p><strong>替换路径：theme root directory\theme\next\source\images</strong></p>
+<p>参考 Issues 链接：https://github.com/hexojs/hexo/issues/4654</p>
+<h1 id="替换图片资源路径">2. 替换图片资源路径</h1>
+<p>主题涉及到的，各种图片资源都是可以替换的，</p>
+<p>**替换路径：theme root directory*</p>
 <p>为了显示效果，注意替换的图片最好是对应像素的，而且不易过大，图片类型可以自己修改</p>
 <p>可替换图片说明：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>图片名称</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>avatar</td>
 <td>博主图像</td>
 </tr>
-<tr>
+<tr class="even">
 <td>favicon-16x16-next</td>
 <td>网站图标 16x16 像素</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>favicon-32x32-next</td>
 <td>网站图标 32x32 像素</td>
 </tr>
-<tr>
+<tr class="even">
 <td>logo</td>
 <td>log</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>apple-touch-icon-next</td>
 <td>触摸图标</td>
 </tr>
-<tr>
+<tr class="even">
 <td>alipay</td>
 <td>支付宝收款二维码</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>weixin</td>
 <td>微信收款二维码</td>
 </tr>
-</tbody></table>
-<h1 id="3-增加自定义的“标签”，“分类”页面"><a href="#3-增加自定义的“标签”，“分类”页面" class="headerlink" title="3. 增加自定义的“标签”，“分类”页面"></a>3. 增加自定义的“标签”，“分类”页面</h1><p>默认安装好的 next 主题，是没有“标签”，“分类”页面的；</p>
+</tbody>
+</table>
+<h1 id="增加自定义的标签分类页面">3. 增加自定义的“标签”，“分类”页面</h1>
+<p>默认安装好的 next 主题，是没有“标签”，“分类”页面的；</p>
 <p>需要使用者自己新增页面：</p>
 <p>新增方法：以“标签”也为例说明：</p>
-<ol>
+<ol type="1">
 <li><p>使用 hexo 命令新建 tags.md页面</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
 <li><p>打开 tags.md 并修改页面类型 type 信息</p>
@@ -397,15 +400,15 @@
 <li><p>修改主题配置文件</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd next/_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<h1 id="4-开启首页文章部分显示"><a href="#4-开启首页文章部分显示" class="headerlink" title="4. 开启首页文章部分显示"></a>4. 开启首页文章部分显示</h1><p>next 主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
+<h1 id="开启首页文章部分显示">4. 开启首页文章部分显示</h1>
+<p>next 主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
 <p>想要让文章部分显示，并出现“阅读全文的按钮”，只需要在个人的文章 Markdown 源文件中添加一行代码就行</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--more--&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>具体位置，自己确定，在自己想要显示的文章部分下面加上即可只在首页显示所需的文章部分。</p>
 <p>参考文档：</p>
-<p><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-%C2%ABTags%C2%BB-Page">Custom Pages | NexT (theme-next.js.org)</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2">创建分类页面 · iissnan/hexo-theme-next Wiki (github.com)</a></p>
-<p><a target="_blank" rel="noopener" href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo + Theme Next – 写作 | Knner.Wang’s Blog</a></p>
+<p><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-«Tags»-Page">Custom Pages | NexT (theme-next.js.org)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next/wiki/创建分类页面">创建分类页面 · iissnan/hexo-theme-next Wiki (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo + Theme Next -- 写作 | Knner.Wang's Blog</a></p>
 
     </div>
 
@@ -517,14 +520,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">44k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">33 分钟</span>
+    <span title="站点阅读时长">40 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -567,6 +570,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
