@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息； 一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作； 这里主要记录手动编辑 sln 文件遇到的问题：">
+<meta name="description" content="sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息； 一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作； 这里主要记录手动编辑 sln 文件遇到的问题：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Visual Studio *.sln file 编辑 bug 记录">
 <meta property="og:url" content="https://buctllx.github.io/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息； 一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作； 这里主要记录手动编辑 sln 文件遇到的问题：">
+<meta property="og:description" content="sln 是 Visual Studio 20xx 自动创建的解决方案文件，里面存放了有关解决方案的设置信息，以及有关解决方案下项目文件的组织、结构、配置信息； 一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作； 这里主要记录手动编辑 sln 文件遇到的问题：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png">
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E6%9C%89%E5%85%B3-sln-%E6%96%87%E4%BB%B6%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-text">0. 有关 sln 文件的介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-sln-%E4%BF%AE%E6%94%B9%E5%90%8E%E4%B8%8D%E8%B5%B7%E6%95%88%E7%9A%84-bug"><span class="nav-text">1. sln 修改后不起效的 bug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-text">1.1 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-text">1.2 问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93"><span class="nav-text">1.3 问题总结</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%89%E5%85%B3-sln-%E6%96%87%E4%BB%B6%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-text">0. 有关 sln 文件的介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sln-%E4%BF%AE%E6%94%B9%E5%90%8E%E4%B8%8D%E8%B5%B7%E6%95%88%E7%9A%84-bug"><span class="nav-text">1. sln 修改后不起效的 bug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-text">1.1 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-text">1.2 问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93"><span class="nav-text">1.3 问题总结</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,18 +168,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -307,7 +307,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>925</span>
+      <span>971</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -329,23 +329,31 @@
 <p>一般情况下，我们都是通过 Visual Studio 的可视化操作 对 sln 文件间接进行编辑修改的，但是有时候为了提高效果，需要手动进行编辑操作；</p>
 <p>这里主要记录手动编辑 sln 文件遇到的问题：</p>
 <span id="more"></span>
-
-<h1 id="0-有关-sln-文件的介绍"><a href="#0-有关-sln-文件的介绍" class="headerlink" title="0. 有关 sln 文件的介绍"></a>0. 有关 sln 文件的介绍</h1><p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
+<h1 id="有关-sln-文件的介绍">0. 有关 sln 文件的介绍</h1>
+<p>这里假设读者对 sln 文件有一定了解，因此不在详细说明，主要用来说明遇到的问题</p>
 <p>有关 sln 文件可以参考官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022">解决方案 (。Sln) 文件 - Visual Studio (Windows) | Microsoft Docs</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.walterlv.com/post/understand-the-sln-file">理解 Visual Studio 解决方案文件格式（.sln） - walterlv</a></p>
-<h1 id="1-sln-修改后不起效的-bug"><a href="#1-sln-修改后不起效的-bug" class="headerlink" title="1. sln 修改后不起效的 bug"></a>1. sln 修改后不起效的 bug</h1><p>软件环境：visual studio 2022，sublime 3</p>
-<h2 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h2><p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555"></p>
+<h1 id="sln-修改后不起效的-bug">1. sln 修改后不起效的 bug</h1>
+<p>软件环境：visual studio 2022，sublime 3</p>
+<h2 id="问题描述">1.1 问题描述</h2>
+<p>使用 sublime 打开 sln 文件，然后编辑 GlobalSection(SolutionConfigurationPlatforms) = preSolution 信息，如下图所示：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141026555.png" alt="image-20220303141026555" /><figcaption aria-hidden="true">image-20220303141026555</figcaption>
+</figure>
 <p>红框里面是新增的内容；</p>
 <p>修改后保存，然后再 visual studio 中重新载入，发现：新增的解决方案配置项，并没有出现，如下图所示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034"></p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303141324034.png" alt="image-20220303141324034" /><figcaption aria-hidden="true">image-20220303141324034</figcaption>
+</figure>
 <p>注：一开始编辑，全部没有出现，这里为了说明问题，故意显示 出 Release R21 Store，便于后面分析问题</p>
-<h2 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h2><p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
+<h2 id="问题分析">1.2 问题分析</h2>
+<p>根据 1.1 中的现象发现，已经显示的配置项是 Release R21 Store，对应 sln 文件中的是 31 行，没有显示的是 32~40 行，这其中有什么区别不难发现。</p>
 <p>唯一的区别是：31 行使用的 缩进是 tab 键，32~40 行使用的是空格 space；</p>
-<p>注释：截图中的 ——  代表 Tab 键，……  代表 Space 空格键 </p>
+<p>注释：截图中的 —— 代表 Tab 键，…… 代表 Space 空格键</p>
 <p>难道竟然是缩进符号的问题？？？</p>
 <p>通过验证发现：果然是缩进符号导致的</p>
-<h2 id="1-3-问题总结"><a href="#1-3-问题总结" class="headerlink" title="1.3 问题总结"></a>1.3 问题总结</h2><p>产生问题的原因：</p>
+<h2 id="问题总结">1.3 问题总结</h2>
+<p>产生问题的原因：</p>
 <p>笔者再根据 githu 上一篇技术文档的介绍，进行 sln 文件的编辑修改，文档中建议使用编辑器打开手动修改，而且附加上了修改的内容，于是我便很轻易的点击 copy 按钮，进行复制、粘贴，发现没有任何效果。</p>
 <p>浪费了半天的事件才发现是 缩进符号导致的，</p>
 <p>而且还是在 Sublime 中选中状态下才能发现的</p>
@@ -460,14 +468,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">78k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">31 分钟</span>
+    <span title="站点阅读时长">1:11</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -510,6 +518,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">

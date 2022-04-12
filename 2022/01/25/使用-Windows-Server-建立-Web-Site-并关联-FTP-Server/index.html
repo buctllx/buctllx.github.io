@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容； 系统环境：window server 2019">
+<meta name="description" content="本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容； 系统环境：window server 2019">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Windows Server 建立 Web Site 并关联 FTP Server">
 <meta property="og:url" content="https://buctllx.github.io/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容； 系统环境：window server 2019">
+<meta property="og:description" content="本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容； 系统环境：window server 2019">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-01-25T03:20:44.000Z">
 <meta property="article:modified_time" content="2022-01-25T03:41:16.430Z">
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E5%BC%80%E5%90%AF%E7%B3%BB%E7%BB%9F%E5%BF%85%E5%A4%87%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%BB%84%E4%BB%B6"><span class="nav-text">1、开启系统必备的服务组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E3%80%81%E6%96%B0%E5%BB%BA-SSL-%E8%AF%81%E4%B9%A6"><span class="nav-text">2、新建 SSL 证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%E3%80%81%E5%BB%BA%E7%AB%8B-web-site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server"><span class="nav-text">3、建立 web site 并关联 FTP Server</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4%E3%80%81%E5%85%B6%E4%BB%96%E8%AE%BE%E7%BD%AE"><span class="nav-text">4、其他设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-ftp-%E6%9C%8D%E5%8A%A1%E7%9B%B4%E9%80%9A%E7%BD%91%E7%BB%9C%E4%BD%8D%E7%BD%AE"><span class="nav-text">4.1 ftp 服务直通网络位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-web-site-%E5%BC%80%E5%90%AF%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-text">4.2 web site 开启浏览文件目录结构的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-web-site-%E7%BB%91%E5%AE%9A-https-%E8%AE%BF%E9%97%AE"><span class="nav-text">4.3 web site 绑定 https 访问</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E7%B3%BB%E7%BB%9F%E5%BF%85%E5%A4%87%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%BB%84%E4%BB%B6"><span class="nav-text">1、开启系统必备的服务组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA-ssl-%E8%AF%81%E4%B9%A6"><span class="nav-text">2、新建 SSL 证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-web-site-%E5%B9%B6%E5%85%B3%E8%81%94-ftp-server"><span class="nav-text">3、建立 web site 并关联 FTP Server</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AE%BE%E7%BD%AE"><span class="nav-text">4、其他设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ftp-%E6%9C%8D%E5%8A%A1%E7%9B%B4%E9%80%9A%E7%BD%91%E7%BB%9C%E4%BD%8D%E7%BD%AE"><span class="nav-text">4.1 ftp 服务直通网络位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-site-%E5%BC%80%E5%90%AF%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-text">4.2 web site 开启浏览文件目录结构的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-site-%E7%BB%91%E5%AE%9A-https-%E8%AE%BF%E9%97%AE"><span class="nav-text">4.3 web site 绑定 https 访问</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,18 +167,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -335,8 +335,14 @@
         <p>本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容；</p>
 <p>系统环境：window server 2019</p>
 <span id="more"></span>
-
-<h1 id="1、开启系统必备的服务组件"><a href="#1、开启系统必备的服务组件" class="headerlink" title="1、开启系统必备的服务组件"></a>1、开启系统必备的服务组件</h1><h1 id="2、新建-SSL-证书"><a href="#2、新建-SSL-证书" class="headerlink" title="2、新建 SSL 证书"></a>2、新建 SSL 证书</h1><h1 id="3、建立-web-site-并关联-FTP-Server"><a href="#3、建立-web-site-并关联-FTP-Server" class="headerlink" title="3、建立 web site 并关联 FTP Server"></a>3、建立 web site 并关联 FTP Server</h1><h1 id="4、其他设置"><a href="#4、其他设置" class="headerlink" title="4、其他设置"></a>4、其他设置</h1><h2 id="4-1-ftp-服务直通网络位置"><a href="#4-1-ftp-服务直通网络位置" class="headerlink" title="4.1 ftp 服务直通网络位置"></a>4.1 ftp 服务直通网络位置</h2><h2 id="4-2-web-site-开启浏览文件目录结构的功能"><a href="#4-2-web-site-开启浏览文件目录结构的功能" class="headerlink" title="4.2 web site 开启浏览文件目录结构的功能"></a>4.2 web site 开启浏览文件目录结构的功能</h2><h2 id="4-3-web-site-绑定-https-访问"><a href="#4-3-web-site-绑定-https-访问" class="headerlink" title="4.3 web site 绑定 https 访问"></a>4.3 web site 绑定 https 访问</h2><p>参考资料：</p>
+<h1 id="开启系统必备的服务组件">1、开启系统必备的服务组件</h1>
+<h1 id="新建-ssl-证书">2、新建 SSL 证书</h1>
+<h1 id="建立-web-site-并关联-ftp-server">3、建立 web site 并关联 FTP Server</h1>
+<h1 id="其他设置">4、其他设置</h1>
+<h2 id="ftp-服务直通网络位置">4.1 ftp 服务直通网络位置</h2>
+<h2 id="web-site-开启浏览文件目录结构的功能">4.2 web site 开启浏览文件目录结构的功能</h2>
+<h2 id="web-site-绑定-https-访问">4.3 web site 绑定 https 访问</h2>
+<p>参考资料：</p>
 
     </div>
 
@@ -449,14 +455,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">78k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">31 分钟</span>
+    <span title="站点阅读时长">1:11</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -499,6 +505,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">

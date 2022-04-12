@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1. 七牛云存储环境准备1.1 注册七牛云官网：七牛云 - 国内领先的企业级云服务商 (qiniu.com) 注册流程不在这里详细说明； 说一下注意事项：  注册后，需要实名认证 个人认证 即可">
+<meta name="description" content="1. 七牛云存储环境准备 1.1 注册 七牛云官网：七牛云 - 国内领先的企业级云服务商 (qiniu.com) 注册流程不在这里详细说明； 说一下注意事项：  注册后，需要实名认证 个人认证 即可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Typora 设置关联七牛云图床">
 <meta property="og:url" content="https://buctllx.github.io/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="1. 七牛云存储环境准备1.1 注册七牛云官网：七牛云 - 国内领先的企业级云服务商 (qiniu.com) 注册流程不在这里详细说明； 说一下注意事项：  注册后，需要实名认证 个人认证 即可">
+<meta property="og:description" content="1. 七牛云存储环境准备 1.1 注册 七牛云官网：七牛云 - 国内领先的企业级云服务商 (qiniu.com) 注册流程不在这里详细说明； 说一下注意事项：  注册后，需要实名认证 个人认证 即可">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png">
 <meta property="og:image" content="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png">
@@ -159,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-text">1. 七牛云存储环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%B3%A8%E5%86%8C"><span class="nav-text">1.1 注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B0%E5%BB%BA%E5%9B%BE%E5%BA%8A%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="nav-text">1.2 新建图床存储空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PicGo-%E5%AE%89%E8%A3%85"><span class="nav-text">2. PicGo 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E5%AE%89%E8%A3%85"><span class="nav-text">2.1 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%89%88%E6%9C%AC"><span class="nav-text">2.1.1 图形界面版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%89%88%E6%9C%AC"><span class="nav-text">2.1.2 命令行版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%85%8D%E7%BD%AE"><span class="nav-text">2.2 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E5%9B%BE%E5%BD%A2%E7%89%88%E7%9B%B4%E6%8E%A5%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-text">2.2.1 图形版直接图形界面配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%9B%BE%E5%BD%A2%E7%89%88%E7%9B%B4%E6%8E%A5%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-text">2.2.2 图形版直接图形界面配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE"><span class="nav-text">3. Typora 图片存储设置</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-text">1. 七牛云存储环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C"><span class="nav-text">1.1 注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%9B%BE%E5%BA%8A%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="nav-text">1.2 新建图床存储空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#picgo-%E5%AE%89%E8%A3%85"><span class="nav-text">2. PicGo 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">2.1 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%89%88%E6%9C%AC"><span class="nav-text">2.1.1 图形界面版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%89%88%E6%9C%AC"><span class="nav-text">2.1.2 命令行版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-text">2.2 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%89%88%E7%9B%B4%E6%8E%A5%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-text">2.2.1 图形版直接图形界面配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%89%88%E7%9B%B4%E6%8E%A5%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E9%85%8D%E7%BD%AE-1"><span class="nav-text">2.2.2 图形版直接图形界面配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section"><span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#typora-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8%E8%AE%BE%E7%BD%AE"><span class="nav-text">3. Typora 图片存储设置</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -174,18 +174,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -319,7 +319,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -337,75 +337,93 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-七牛云存储环境准备"><a href="#1-七牛云存储环境准备" class="headerlink" title="1. 七牛云存储环境准备"></a>1. 七牛云存储环境准备</h1><h2 id="1-1-注册"><a href="#1-1-注册" class="headerlink" title="1.1 注册"></a>1.1 注册</h2><p>七牛云官网：<a target="_blank" rel="noopener" href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
+        <h1 id="七牛云存储环境准备">1. 七牛云存储环境准备</h1>
+<h2 id="注册">1.1 注册</h2>
+<p>七牛云官网：<a target="_blank" rel="noopener" href="https://www.qiniu.com/">七牛云 - 国内领先的企业级云服务商 (qiniu.com)</a></p>
 <p>注册流程不在这里详细说明；</p>
 <p>说一下注意事项：</p>
-<ol>
+<ol type="1">
 <li>注册后，需要实名认证</li>
 <li>个人认证 即可</li>
 </ol>
 <span id="more"></span>
-
-<h2 id="1-2-新建图床存储空间"><a href="#1-2-新建图床存储空间" class="headerlink" title="1.2 新建图床存储空间"></a>1.2 新建图床存储空间</h2><ol>
+<h2 id="新建图床存储空间">1.2 新建图床存储空间</h2>
+<ol type="1">
 <li>登录后，通过“管理控制台”进入管理页面；</li>
 <li>点击“对象存储 Kodo”；</li>
 <li>点击“空间管理” -&gt; “新建空间” 进行图床空间创建；</li>
 <li>如下图所示，设置完相关参数，即可创建一个图床存储空间；</li>
 </ol>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755"></p>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207135828755.png" alt="image-20211207135828755" /><figcaption aria-hidden="true">image-20211207135828755</figcaption>
+</figure>
 <p>注意事项：</p>
-<ol>
+<ol type="1">
 <li>访问权限选择“公开”</li>
 <li>存储区域一般选择“距离自己比较近的”，并且不同区域有不同的代号，后面会用到</li>
 </ol>
-<h1 id="2-PicGo-安装"><a href="#2-PicGo-安装" class="headerlink" title="2. PicGo 安装"></a>2. PicGo 安装</h1><p>PicGo  有两种类型；</p>
-<ol>
+<h1 id="picgo-安装">2. PicGo 安装</h1>
+<p>PicGo 有两种类型；</p>
+<ol type="1">
 <li>PicGo App（应用程序）</li>
 <li>PicGo-Core（命令行版本）</li>
 </ol>
-<h2 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h2><h3 id="2-1-1-图形界面版本"><a href="#2-1-1-图形界面版本" class="headerlink" title="2.1.1 图形界面版本"></a>2.1.1 图形界面版本</h3><p><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
+<h2 id="安装">2.1 安装</h2>
+<h3 id="图形界面版本">2.1.1 图形界面版本</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases">PicGo图形</a></p>
 <p>选择对应系统的安装包安装即可</p>
-<h3 id="2-1-2-命令行版本"><a href="#2-1-2-命令行版本" class="headerlink" title="2.1.2 命令行版本"></a>2.1.2 命令行版本</h3><p><a target="_blank" rel="noopener" href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
+<h3 id="命令行版本">2.1.2 命令行版本</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/PicGo/PicGo-Core">PicGo-core</a></p>
 <ul>
 <li>没有nodejs环境，使用typora一键安装即可</li>
 <li>本机有nodjs环境，直接npm全局安装</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install picgo -g</span><br><span class="line"><span class="meta">#</span><span class="bash"> or</span></span><br><span class="line">yarn global add picgo</span><br></pre></td></tr></table></figure>
-
-
-
 <p>插件安装</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/yuki-xin/picgo-plugin-web-uploader">picgo-plugin-web-uploader</a></p>
 <p>这是一款可以上传自定义图床的插件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">picgo install web-uploader</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-2-配置"><a href="#2-2-配置" class="headerlink" title="2.2 配置"></a>2.2 配置</h2><p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
+<h2 id="配置">2.2 配置</h2>
+<p>关于存储区域的填写跟在七牛云上新建空间的地理位置有关；</p>
 <p>具体参考：<a target="_blank" rel="noopener" href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">存储区域_产品简介_对象存储 - 七牛开发者中心 (qiniu.com)</a></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515"></p>
-<h3 id="2-2-1-图形版直接图形界面配置"><a href="#2-2-1-图形版直接图形界面配置" class="headerlink" title="2.2.1 图形版直接图形界面配置"></a>2.2.1 图形版直接图形界面配置</h3><p>参考配置</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184"></p>
-<h3 id="2-2-2-图形版直接图形界面配置"><a href="#2-2-2-图形版直接图形界面配置" class="headerlink" title="2.2.2 图形版直接图形界面配置"></a>2.2.2 图形版直接图形界面配置</h3><p>参考配置文件</p>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211206144124515.png" alt="image-20211206144124515" /><figcaption aria-hidden="true">image-20211206144124515</figcaption>
+</figure>
+<h3 id="图形版直接图形界面配置">2.2.1 图形版直接图形界面配置</h3>
+<p>参考配置</p>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211208133520184.png" alt="image-20211208133520184" /><figcaption aria-hidden="true">image-20211208133520184</figcaption>
+</figure>
+<h3 id="图形版直接图形界面配置-1">2.2.2 图形版直接图形界面配置</h3>
+<p>参考配置文件</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;picBed&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;uploader&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;current&quot;</span>: <span class="string">&quot;qi_niu&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;qi_niu&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;accessKey&quot;</span>: <span class="string">&quot;you-access-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;secretKey&quot;</span>: <span class="string">&quot;you-secret-key&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;bucket&quot;</span>: <span class="string">&quot;blog-pic-resp&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;url&quot;</span>: <span class="string">&quot;http://you-url&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;area&quot;</span>: <span class="string">&quot;z1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;options&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;picgoPlugins&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;picgo-plugin-web-uploader&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="3-Typora-图片存储设置"><a href="#3-Typora-图片存储设置" class="headerlink" title="3. Typora 图片存储设置"></a>3. Typora 图片存储设置</h1><p>设置入口：设置 - 偏好设置 - 图像；</p>
+<h2 id="section"></h2>
+<h1 id="typora-图片存储设置">3. Typora 图片存储设置</h1>
+<p>设置入口：设置 - 偏好设置 - 图像；</p>
 <p>如下图所示：</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086"></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759"></p>
-<ol>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102745086.png" alt="image-20211207102745086" /><figcaption aria-hidden="true">image-20211207102745086</figcaption>
+</figure>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207102901759.png" alt="image-20211207102901759" /><figcaption aria-hidden="true">image-20211207102901759</figcaption>
+</figure>
+<ol type="1">
 <li>插入图片时：选择：上传图片；</li>
-<li>上传服务设定<ol>
+<li>上传服务设定
+<ol type="1">
 <li>上传服务：选择：PicGo（app）</li>
 <li>PicGo 路径：选择：自己安装时候的路径</li>
-</ol>
-</li>
+</ol></li>
 </ol>
 <p>当上述两大项设置完毕后，点击：“验证图片上传选项”</p>
 <p>设置成功后，会出现“验证成功”的提示，如下图：</p>
 <p>如果你的主题设置是 Onedark 一类的黑色主题，这个提示可能会不明显，需要仔细查看才能看到；</p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991"></p>
-<p><img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148"></p>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207103956991.png" alt="image-20211207103956991" /><figcaption aria-hidden="true">image-20211207103956991</figcaption>
+</figure>
+<figure>
+<img src="http://r3oaewll2.hb-bkt.clouddn.com/image-20211207104327148.png" alt="image-20211207104327148" /><figcaption aria-hidden="true">image-20211207104327148</figcaption>
+</figure>
 
     </div>
 
@@ -517,14 +535,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">78k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">31 分钟</span>
+    <span title="站点阅读时长">1:11</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -567,6 +585,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">

@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。 本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。">
+<meta name="description" content="Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。 本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Visual Studio 代码格式化工具">
 <meta property="og:url" content="https://buctllx.github.io/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="ConorLuo 博客">
-<meta property="og:description" content="Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。 本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。">
+<meta property="og:description" content="Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。 本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303115418833.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303120914539.png">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%9F%BA%E7%A1%80%E8%AE%BE%E7%BD%AE"><span class="nav-text">Visual Studio 代码格式化基础设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Format-Document-On-Save-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">1. Format Document On Save 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%89%E8%A3%85%E8%AE%BE%E7%BD%AE"><span class="nav-text">1.1 安装设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 项目级使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-XAML-Styler-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">2. XAML Styler 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-XAML-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">2.1 XAML 的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="nav-text">2.2 安装使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%85%B3%E9%94%AE%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%AE%BE%E7%BD%AE%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="nav-text">2.3 关键格式化设置项说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E6%8E%92%E5%BA%8F"><span class="nav-text">2.4 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="nav-text">2.5 项目级使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-ctrl-s-%E4%BF%9D%E5%AD%98%E6%97%B6%E7%9A%84%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-text">2.6 ctrl+s 保存时的冲突问题解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1%E5%88%86%E6%9E%90"><span class="nav-text">现象分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#visual-studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%9F%BA%E7%A1%80%E8%AE%BE%E7%BD%AE"><span class="nav-text">Visual Studio 代码格式化基础设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#format-document-on-save-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">1. Format Document On Save 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E8%AE%BE%E7%BD%AE"><span class="nav-text">1.1 安装设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 项目级使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xaml-styler-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">2. XAML Styler 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#xaml-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">2.1 XAML 的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="nav-text">2.2 安装使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%AE%BE%E7%BD%AE%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="nav-text">2.3 关键格式化设置项说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-text">2.4 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8-1"><span class="nav-text">2.5 项目级使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ctrls-%E4%BF%9D%E5%AD%98%E6%97%B6%E7%9A%84%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-text">2.6 ctrl+s 保存时的冲突问题解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1%E5%88%86%E6%9E%90"><span class="nav-text">现象分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -171,18 +171,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -340,39 +340,48 @@
     <div class="post-body" itemprop="articleBody">
         <p>Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。</p>
 <p>本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。</p>
-<span id="more"></span> 
-
-<h1 id="Visual-Studio-代码格式化基础设置"><a href="#Visual-Studio-代码格式化基础设置" class="headerlink" title="Visual Studio 代码格式化基础设置"></a>Visual Studio 代码格式化基础设置</h1><p>vs 自带的文件格式化设置功能位于：工具 -&gt; 选项 -&gt; 文本编辑器</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303115418833.png" alt="image-20220303115418833"></p>
+<span id="more"></span>
+<h1 id="visual-studio-代码格式化基础设置">Visual Studio 代码格式化基础设置</h1>
+<p>vs 自带的文件格式化设置功能位于：工具 -&gt; 选项 -&gt; 文本编辑器</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303115418833.png" alt="image-20220303115418833" /><figcaption aria-hidden="true">image-20220303115418833</figcaption>
+</figure>
 <p>在这里，既可以按照编程语言设置，也可以在“所有语言”中进行统一设置；</p>
 <p>这里的设置都是一些基本的设置，比如说：行号，自动补全，缩进等；</p>
 <p>以C#为例，在写代码的过程中一般只有在 补全 {} 的时候才会进行自动格式化，如果实在 {} 内部写代码，比如说缩进不对，没有加空格等，那么在保存的时候就不会自动格式化（除非使用了手动/快捷键格式化或者高级插件）</p>
 <p>还有，在进行 XAML 开发的时候，由于其标签语言的特性，属性有时候会比较多，尤其实在团队开发的过程中，每个人都有自己的习惯，有些人喜欢一行写下去不带换行，有些喜欢加换行（换行的时候属性的数量也不同，极端的一个属性就换行，或者三五个属性后再换行），而且相同标签的空间在一起，属性的顺序也可能不一样，这就给代码的可读性增加了困难；</p>
-<p>如何解决这些问题，下面将会结合高级工具进行说明； </p>
-<h1 id="1-Format-Document-On-Save-扩展插件"><a href="#1-Format-Document-On-Save-扩展插件" class="headerlink" title="1. Format Document On Save 扩展插件"></a>1. Format Document On Save 扩展插件</h1><p>主要用户解决，再保存代码的时候进行自动格式化；</p>
+<p>如何解决这些问题，下面将会结合高级工具进行说明；</p>
+<h1 id="format-document-on-save-扩展插件">1. Format Document On Save 扩展插件</h1>
+<p>主要用户解决，再保存代码的时候进行自动格式化；</p>
 <p>保存操作支持</p>
-<ol>
+<ol type="1">
 <li>ctrl+s</li>
 <li>vs ide 中保存按钮</li>
 </ol>
-<h2 id="1-1-安装设置"><a href="#1-1-安装设置" class="headerlink" title="1.1 安装设置"></a>1.1 安装设置</h2><p>插件链接：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave">Format document on Save - Visual Studio Marketplace</a></p>
+<h2 id="安装设置">1.1 安装设置</h2>
+<p>插件链接：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave">Format document on Save - Visual Studio Marketplace</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Elders/VSE-FormatDocumentOnSave">Elders/VSE-FormatDocumentOnSave: Visual Studio - Format Document on Save (github.com)</a></p>
 <p>安装后，可以在 工具 -&gt; 选项 -&gt; Format Document On Save 中进行格式化的一些设置，操作；</p>
-<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303120914539.png" alt="image-20220303120914539"></p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303120914539.png" alt="image-20220303120914539" /><figcaption aria-hidden="true">image-20220303120914539</figcaption>
+</figure>
 <p>设置项比较简单，也有注释，这里就不在一一说明了；</p>
-<h2 id="1-2-项目级使用"><a href="#1-2-项目级使用" class="headerlink" title="1.2 项目级使用"></a>1.2 项目级使用</h2><p>上面介绍的使用方法，可以满足一般个人的使用，但是在团队开发的过程中，每个人的设置可能不一样，如何解决这个问题能，这里就要使用到项目级的文件格式化配置 EditConfig。</p>
+<h2 id="项目级使用">1.2 项目级使用</h2>
+<p>上面介绍的使用方法，可以满足一般个人的使用，但是在团队开发的过程中，每个人的设置可能不一样，如何解决这个问题能，这里就要使用到项目级的文件格式化配置 EditConfig。</p>
 <p>项目级的文件格式化配置 EditConfig，不是针对某个人的；具有以下特点：</p>
-<ol>
+<ol type="1">
 <li>一个项目（sln）一个配置文件；</li>
 <li>项目配置的优先级高于 工具 -&gt; 选项 -&gt; Format Document On Save 插件中的配置；</li>
 </ol>
 <p>这样，有了<a target="_blank" rel="noopener" href="https://editorconfig.org/">EditorConfig</a> 即便团队中的人员插件设置不一样，也能使用相同的格式化配置；</p>
 <p>有关 <a target="_blank" rel="noopener" href="https://editorconfig.org/">EditorConfig</a> 的详细信息可以查看链接，这里不详细说明了。</p>
 <p>有了这个插件，可以很好的解决 99% 的代码格式问题，唯一例外的就是 xaml 文件不能格式化，这个会在下面单独说明。</p>
-<h1 id="2-XAML-Styler-扩展插件"><a href="#2-XAML-Styler-扩展插件" class="headerlink" title="2. XAML Styler 扩展插件"></a>2. XAML Styler 扩展插件</h1><p>在 .Net 开发中，有一种特殊的代码文件：XAML，是前面讲的代码格式化插件所不能格式的；</p>
+<h1 id="xaml-styler-扩展插件">2. XAML Styler 扩展插件</h1>
+<p>在 .Net 开发中，有一种特殊的代码文件：XAML，是前面讲的代码格式化插件所不能格式的；</p>
 <p>而 XAML Styler 就是专门针对 xaml 文件进行格式化，这一点从名字上就能看出来。</p>
 <p>参考链接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dino623/p/XAML_Styler.html">使用 XAML 格式化工具：XAML Styler - dino.c - 博客园 (cnblogs.com)</a></p>
-<h2 id="2-1-XAML-的问题"><a href="#2-1-XAML-的问题" class="headerlink" title="2.1 XAML 的问题"></a>2.1 XAML 的问题</h2><p>XAML 格式化主要的难题是下面几个：</p>
+<h2 id="xaml-的问题">2.1 XAML 的问题</h2>
+<p>XAML 格式化主要的难题是下面几个：</p>
 <ul>
 <li>如果所有属性都写在同一行，它太宽了很难看到后面的属性</li>
 <li>如果每个属性单独一行，它又太长了很难看清楚它的结构</li>
@@ -380,58 +389,59 @@
 <li>团队没有统一的标准，不小心格式化一下代码的话全部都会变，CodeReview 烦死人</li>
 </ul>
 <p>如果不想得过且过忍受上述这些问题的话，可以试试用 XAML Styler 这个工具，它正好解决了这些问题。</p>
-<h2 id="2-2-安装使用"><a href="#2-2-安装使用" class="headerlink" title="2.2 安装使用"></a>2.2 安装使用</h2><p>XAML Styler 是一个 VisualStudio插件（也可用于其它 IDE），这是它在  Visual Studio Marketplace 和 Github 上的地址：</p>
+<h2 id="安装使用">2.2 安装使用</h2>
+<p>XAML Styler 是一个 VisualStudio插件（也可用于其它 IDE），这是它在 Visual Studio Marketplace 和 Github 上的地址：</p>
 <p><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=NicoVermeir.XAMLStyler">XAML Styler - Visual Studio Marketplace</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler">Xavalon/XamlStyler: Visual Studio extension to help format your XAML source code (github.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler/wiki">Home · Xavalon/XamlStyler Wiki (github.com)</a></p>
 <p>在 VisualStudio 的管理扩展窗口中，输入 XamlStyle 搜索，点击“下载”然后关闭 VisualStudio 即可完成安装。</p>
 <p>具体安装步骤不在这里说明了。</p>
 <p>安装完成后重启 Visual Studio，可以在“选项”窗口中看到它的配置：</p>
-<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232810578-324783095.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232810578-324783095.png" alt="img"></a></p>
+<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232810578-324783095.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232810578-324783095.png" alt="img" /></a></p>
 <p>之后，每次在 XAML 编辑器中执行保存都会自动进行格式化操作。你也可以在 XAML 编辑器的右键菜单选择 Format XAML 或使用快捷键进行格式化。</p>
-<h2 id="2-3-关键格式化设置项说明"><a href="#2-3-关键格式化设置项说明" class="headerlink" title="2.3 关键格式化设置项说明"></a>2.3 关键格式化设置项说明</h2><p>XAML 的格式主要有两种方式：所有属性放一行和每个属性单独一行。</p>
+<h2 id="关键格式化设置项说明">2.3 关键格式化设置项说明</h2>
+<p>XAML 的格式主要有两种方式：所有属性放一行和每个属性单独一行。</p>
 <p>如果选择所有属性放一行的时候，XAML 结构清晰，结构严谨，段落分明，而且文件也很短。</p>
 <p>可是万一很多属性问题就出来了，一行 XAML 会变得很长。而且看看下面两个 ContentPresenter，同样都有 Margin 属性、HorizontalAlignment 属性，VerticalAlignment 属性，RecognizesAccessKey 属性，SnapsToDevicePixels 顺序ing，但你能看到第二个 ContentPresenter 后面偷偷塞了个 Margin 吗：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span> <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span> <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span> <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span> <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span> <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span> <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span> <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span> <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span> <span class="attr">Margin</span>=<span class="string">&quot;40&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>如果在 VisualStudio 中“文本编辑器-&gt;XAML-&gt;格式化-&gt;间距-&gt;特性间距”这个选项中选择了“将各个属性分别放置”：</p>
-<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232837859-1653416211.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232837859-1653416211.png" alt="img"></a></p>
+<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232837859-1653416211.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232837859-1653416211.png" alt="img" /></a></p>
 <p>格式化文档后上面的 XAML 就会变成这样：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">Margin</span>=<span class="string">&quot;40&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>每个属性单独一行不仅不会看漏属性，而且编辑器本身也不会有横向和纵向两种方向的移动，只有从上到下的移动，这就舒服多了。</p>
 <p>可是大部分情况下每个属性分行放置会破坏原本清晰的 XAML 层次结构，例如下面这种本来好好的 XAML:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FontWeight&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;Normal&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;UseSystemFocusVisuals&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;True&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FocusVisualMargin&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;-3&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Height&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Width&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Maximum&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>变成这样：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FontWeight&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;Normal&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;UseSystemFocusVisuals&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;True&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FocusVisualMargin&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;-3&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Height&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Width&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Maximum&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这种风格优雅得像诗歌<br>我偶尔称为豆瓣风<br>一行变两行<br>两行变四行<br>本来<br>一页看得完<br>的代码<br>变成<br>两页才看得完<br>也是够<br>麻烦的。</p>
+<p>这种风格优雅得像诗歌 我偶尔称为豆瓣风 一行变两行 两行变四行 本来 一页看得完 的代码 变成 两页才看得完 也是够 麻烦的。</p>
 <p>XAML Styler 很好地解决了这个问题，它通过 “Attribute tolerance” 属性控制每一行的容许的最多的属性数量，如果一个元素的属性数量少于设定值，那就放在一行，如果超过就所有属性单独一行。通常我将这个属性设置为 <code>2</code>，再配合 “Keep first attribute on same line = true” 的设置，可以做到下面这种格式化效果：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;NormalTextColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#2E2F33&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;PrimaryColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#FFED5B8C&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;LineColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#E1E1E1&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;TransparentBackground&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;Transparent&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ControlTemplate</span> <span class="attr">x:Key</span>=<span class="string">&quot;CompletedTemplate&quot;</span> <span class="attr">TargetType</span>=<span class="string">&quot;ContentControl&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Grid</span> <span class="attr">x:Name</span>=<span class="string">&quot;CompletedElement&quot;</span> <span class="attr">Margin</span>=<span class="string">&quot;-2&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">control:DropShadowPanel</span> <span class="attr">HorizontalContentAlignment</span>=<span class="string">&quot;Stretch&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">VerticalContentAlignment</span>=<span class="string">&quot;Stretch&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">BlurRadius</span>=<span class="string">&quot;8&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">OffsetX</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">OffsetY</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">Color</span>=<span class="string">&quot;#FFED5B8C&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Ellipse</span> <span class="attr">x:Name</span>=<span class="string">&quot;CompletedRectangle&quot;</span> <span class="attr">Fill</span>=<span class="string">&quot;&#123;StaticResource PrimaryColor&#125;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">control:DropShadowPanel</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Grid</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ControlTemplate</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>这样就可以兼顾两种格式化的优点。</p>
-<h2 id="2-4-排序"><a href="#2-4-排序" class="headerlink" title="2.4 排序"></a>2.4 排序</h2><p>如果元素有多个属性，要找到它的主要属性（通常是 Name 和 Grid.Row）需要颇费一番功夫。XAML Styler 根据一个可设定的规则自动将元素的各个属性排序，这个规则如下：</p>
+<h2 id="排序">2.4 排序</h2>
+<p>如果元素有多个属性，要找到它的主要属性（通常是 Name 和 Grid.Row）需要颇费一番功夫。XAML Styler 根据一个可设定的规则自动将元素的各个属性排序，这个规则如下：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;AttributeOrderingRuleGroups&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;x:Class&quot;</span>,</span><br><span class="line">    <span class="string">&quot;xmlns, xmlns:x&quot;</span>,</span><br><span class="line">    <span class="string">&quot;xmlns:*&quot;</span>,</span><br><span class="line">    <span class="string">&quot;x:Key, Key, x:Name, Name, x:Uid, Uid, Title&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Grid.Row, Grid.RowSpan, Grid.Column, Grid.ColumnSpan, Canvas.Left, Canvas.Top, Canvas.Right, Canvas.Bottom&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Margin, Padding, HorizontalAlignment, VerticalAlignment, HorizontalContentAlignment, VerticalContentAlignment, Panel.ZIndex&quot;</span>,</span><br><span class="line">    <span class="string">&quot;*:*, *&quot;</span>,</span><br><span class="line">    <span class="string">&quot;PageSource, PageIndex, Offset, Color, TargetName, Property, Value, StartPoint, EndPoint&quot;</span>,</span><br><span class="line">    <span class="string">&quot;mc:Ignorable, d:IsDataSource, d:LayoutOverrides, d:IsStaticText&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Storyboard.*, From, To, Duration&quot;</span></span><br><span class="line">],</span><br></pre></td></tr></table></figure>
-
 <p>排序结果大致如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">x:Name</span>=<span class="string">&quot;Show&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Grid.Row</span>=<span class="string">&quot;1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Padding</span>=<span class="string">&quot;40,20&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Center&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">VerticalAlignment</span>=<span class="string">&quot;Center&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Background</span>=<span class="string">&quot;#00aef1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Show&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Foreground</span>=<span class="string">&quot;White&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Style</span>=<span class="string">&quot;&#123;StaticResource BubbleButtonStyle&#125;&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-5-项目级使用"><a href="#2-5-项目级使用" class="headerlink" title="2.5 项目级使用"></a>2.5 项目级使用</h2><p>最后，就算自己做好了格式化，团队中的其它成员使用了不同的格式化标准也会引起很多问题。针对这个问题 Xaml Styler 也提供了解决方案。</p>
-<p>在项目的根目录创建一个名为“Settings.XamlStyler”的文件，内容参考这个网址：<a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler/wiki/External-Configurations">https://github.com/Xavalon/XamlStyler/wiki/External-Configurations</a> 中的 <strong>Default Configuration</strong>。有了这个配置文件，XAML Styler 就会根据它而不是全局配置进行格式化，作为项目的统一格式化标准。</p>
-<h2 id="2-6-ctrl-s-保存时的冲突问题解决"><a href="#2-6-ctrl-s-保存时的冲突问题解决" class="headerlink" title="2.6 ctrl+s 保存时的冲突问题解决"></a>2.6 ctrl+s 保存时的冲突问题解决</h2><p>设置完这两个插件后，在实际使用的过程中可能会发现：在使用 ctrl + s 保存的时候会达不到效果</p>
-<h3 id="现象分析"><a href="#现象分析" class="headerlink" title="现象分析"></a>现象分析</h3><p>在 xaml 中按 ctrl + s 保存的时候，仔细查看画面，会发现 xaml 文件被保存了两次，而且第一一闪而过的结果好像还是正确的，最初呈现的第二次保存解决却不对了，</p>
-<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>根据现象可以分析出来，不止一个插件触发了xaml 的保存操作，那个捣乱者是谁，很容易想到是 Format Document On Save</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>从现象中我们看到，保存了两次导致解结果不对；</p>
+<h2 id="项目级使用-1">2.5 项目级使用</h2>
+<p>最后，就算自己做好了格式化，团队中的其它成员使用了不同的格式化标准也会引起很多问题。针对这个问题 Xaml Styler 也提供了解决方案。</p>
+<p>在项目的根目录创建一个名为“Settings.XamlStyler”的文件，内容参考这个网址：https://github.com/Xavalon/XamlStyler/wiki/External-Configurations 中的 <strong>Default Configuration</strong>。有了这个配置文件，XAML Styler 就会根据它而不是全局配置进行格式化，作为项目的统一格式化标准。</p>
+<h2 id="ctrls-保存时的冲突问题解决">2.6 ctrl+s 保存时的冲突问题解决</h2>
+<p>设置完这两个插件后，在实际使用的过程中可能会发现：在使用 ctrl + s 保存的时候会达不到效果</p>
+<h3 id="现象分析">现象分析</h3>
+<p>在 xaml 中按 ctrl + s 保存的时候，仔细查看画面，会发现 xaml 文件被保存了两次，而且第一一闪而过的结果好像还是正确的，最初呈现的第二次保存解决却不对了，</p>
+<h3 id="原因分析">原因分析</h3>
+<p>根据现象可以分析出来，不止一个插件触发了xaml 的保存操作，那个捣乱者是谁，很容易想到是 Format Document On Save</p>
+<h3 id="解决方法">解决方法</h3>
+<p>从现象中我们看到，保存了两次导致解结果不对；</p>
 <p>那么就有两个解决方案：</p>
-<ol>
+<ol type="1">
 <li>让 xaml styler 最后保存，</li>
 <li>不然 Format Document On Save 保存 xaml；</li>
 </ol>
 <p>方案 1 我们无法控制保存顺序，暂时无解；</p>
 <p>方案 2 如果我们在设置中可以设置 不存在 xaml 文件就可以了，或许可行</p>
-<p>打开 Format Document On Save  设置信息，我们仔细查看，有一个叫 <strong>Denied Extensions</strong> 的设置项，我们可以通过它设置不格式化 xaml 文件，设置后试了一些，依然达不到效果，查看那里除了问题，仔细看 <strong>Denied Extensions</strong> 设置项的说明发现：</p>
-<p> <strong>Denied Extensions</strong> 设置项，只有在  <strong>Allowed Extensions</strong> 设置项为空的情况下才能生效，于是赶紧删除试一下，果然成功了。</p>
+<p>打开 Format Document On Save 设置信息，我们仔细查看，有一个叫 <strong>Denied Extensions</strong> 的设置项，我们可以通过它设置不格式化 xaml 文件，设置后试了一些，依然达不到效果，查看那里除了问题，仔细看 <strong>Denied Extensions</strong> 设置项的说明发现：</p>
+<p><strong>Denied Extensions</strong> 设置项，只有在 <strong>Allowed Extensions</strong> 设置项为空的情况下才能生效，于是赶紧删除试一下，果然成功了。</p>
 
     </div>
 
@@ -543,14 +553,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">78k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">31 分钟</span>
+    <span title="站点阅读时长">1:11</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -593,6 +603,12 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
