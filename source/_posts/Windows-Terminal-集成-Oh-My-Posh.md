@@ -40,6 +40,8 @@ Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载
 
 [将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv](https://blog.walterlv.com/post/beautify-powershell-like-zsh.html)
 
+[Making Windows Terminal look awesome with oh-my-posh and new fonts. (zimmergren.net)](https://zimmergren.net/making-windows-terminal-look-awesome-with-oh-my-posh/)
+
 
 
 ## 2.2 可能使用到的命令
