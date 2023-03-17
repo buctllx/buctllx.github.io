@@ -1966,8 +1966,8 @@ If you get any problems when using Hexo, you can find the answer in <a href="htt
 <p>就像家里装修买建材，最环保的是E0级，其次是<a href="https://www.zhihu.com/search?q=E1级&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">E1级</a>，还有E2级等等。</p>
 <p><a href="https://www.zhihu.com/search?q=数据库范式&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">数据库范式</a>也分为1NF，2NF，3NF，BCNF，4NF，5NF。一般在我们设计<a href="https://www.zhihu.com/search?q=关系型数据库&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">关系型数据库</a>的时候，最多考虑到BCNF就够。符合高一级范式的设计，必定符合低一级范式，例如符合2NF的关系模式，必定符合1NF。</p>
 <h1 id="数据库范式分类">数据库范式分类</h1>
-<blockquote>
 <p>目前关系数据库有六种范式：</p>
+<blockquote>
 <p>第一范式（1NF）</p>
 <p>第二范式（2NF）</p>
 <p>第三范式（3NF）</p>
