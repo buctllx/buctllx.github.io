@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="https://buctllx.github.io/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/","path":"2022/04/14/AEC-Ifc-结构学习/","title":"AEC Ifc 结构学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AEC Ifc 结构学习 | ConorLuo 博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ConorLuo 博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ifc-%E7%AE%80%E4%BB%8B"><span class="nav-text">1 IFC 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ifc-%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-text">1.1 IFC 可以用来做什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%81%E6%9D%A5%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 谁来使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ifc-%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-text">1.3 IFC 文件格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#official-%E5%AE%98%E6%96%B9%E7%9A%84"><span class="nav-text">1.3.1 Official 官方的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E5%80%99%E9%80%89%E7%9A%84"><span class="nav-text">1.3.2 临时&#x2F;候选的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%8D%E5%8F%97%E6%94%AF%E6%8C%81%E7%9A%84"><span class="nav-text">1.3.3 实验&#x2F;不受支持的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%89%93%E5%BC%80-ifc-%E6%96%87%E4%BB%B6"><span class="nav-text">1.4 如何打开 IFC 文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ifc-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-text">2 IFC 数据结构说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ifcobjectdefinition"><span class="nav-text">2.1 IfcObjectDefinition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ifcobject"><span class="nav-text">2.1.1 IfcObject</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ifcproduct"><span class="nav-text">2.1.1.1 IfcProduct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ifcgroup"><span class="nav-text">2.1.1.2 IfcGroup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifctypeobject"><span class="nav-text">2.1.2 IfcTypeObject</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://docs.microsoft.com/" title="https:&#x2F;&#x2F;docs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft 技术文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://devblogs.microsoft.com/" title="https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft Blog</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.liaoxuefeng.com/" title="https:&#x2F;&#x2F;www.liaoxuefeng.com&#x2F;" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://jeremytammik.github.io/tbc/a/" title="http:&#x2F;&#x2F;jeremytammik.github.io&#x2F;tbc&#x2F;a&#x2F;" rel="noopener" target="_blank">Revit jeremy</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.walterlv.com/" title="https:&#x2F;&#x2F;blog.walterlv.com&#x2F;" rel="noopener" target="_blank">MVP walterlv</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.lindexi.com/" title="https:&#x2F;&#x2F;blog.lindexi.com&#x2F;" rel="noopener" target="_blank">MVP 林德熙</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AEC Ifc 结构学习 | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AEC Ifc 结构学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-14 17:05:20 / 修改时间：19:17:47" itemprop="dateCreated datePublished" datetime="2022-04-14T17:05:20+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[AEC（建筑、工程和施工行业）_百度百科 (baidu.com)](https://baike.baidu.com/item/AEC/22376679?fr=aladdin)</p>
+<p><a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/">Industry Foundation Classes (IFC) - buildingSMART Technical</a></p>
+<p>IFC 文件是一种开放的、非专有的文件格式，国际标准 ISO 16739，可用于在设计、施工、运行和维护阶段，在所有图形和不同软件开发的各种应用程序之间交换和共享数据房屋，而无需它们支持本机（专有）文件。</p>
+<span id="more"></span>
+<h1 id="ifc-简介">1 IFC 简介</h1>
+<p><a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/">Industry Foundation Classes (IFC) - buildingSMART Technical</a></p>
+<p>BuildingSmart 官方网站已经给出了英文版的定义和说明；这里简单翻译一下：</p>
+<p>IFC 架构以一种标准换的数据模型去组织数据</p>
+<p>这些数据包含：人员、实体、属性、特征、关系、过程、抽象概念等</p>
+<p>简单来说：就是以计算机编程面向对象的方法去定义了一套数据结构</p>
+<p>IFC 可以定义建筑物、制成品、机械/电气系统的物理组成部分；同时也能定义：抽象的结构分析模型、能源分析模型、成本分解、工作计划等等。通过这套架构规范还可以描述如何使用设施和安装、如何构建、以及如何操作。</p>
+<p>当然，IFC 不是一次就定义好的，它的定义是一个不断完善发展的过程，因此，存在多个版本。</p>
+<p>主流的有：IFC2x3 和 IFC4</p>
+<p>这里可以看到所有的版本定义：<a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-schema-specifications/">IFC Schema Specifications - buildingSMART Technical</a></p>
+<h2 id="ifc-可以用来做什么">1.1 IFC 可以用来做什么</h2>
+<p>简单来说有两点</p>
+<ol type="1">
+<li>数据交换</li>
+<li>文件数据归档</li>
+</ol>
+<h2 id="谁来使用">1.2 谁来使用</h2>
+<p>前面说了 IFC 是使用计算机面向对象的方式定义的一套数据结构；</p>
+<p>因此不难看出，IFC 的使用者肯定和软件开发相关，事实也是这样的。使用 IFC 的就是那些各种各样的软件公司开发的各种软件。每个软件都有自己的数据格式，但是一旦涉及到数据交换或者传递，他们都会选择一种通用的标准格式，这个格式就是 IFC。</p>
+<p><a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/resources/software-implementations/">Software Implementations - buildingSMART Technical</a> 这里列出了使用 IFC 的各种软件。</p>
+<h2 id="ifc-文件格式">1.3 IFC 文件格式</h2>
+<p><a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/">IFC Formats - buildingSMART Technical</a></p>
+<p>IFC 文件只是广义上的一种统称，实际上，按照不同的数据格式可以划分成不同的文件格式。</p>
+<p>简单来说：IFC 只是定义了一套数据结构，至于如何去描述这套数据结构可以使用不同的数据格式，比如说：xml，json，等。至于如何去选择，通常有以下几个方面的考虑：</p>
+<ol type="1">
+<li>软件的支持度</li>
+<li>可扩展性</li>
+<li>可读性</li>
+<li>数据量是否很大</li>
+</ol>
+<h3 id="official-官方的">1.3.1 <strong>Official 官方的</strong></h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 30%" />
+<col style="width: 9%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Format</th>
+<th style="text-align: left;">Extension</th>
+<th style="text-align: left;">MIME Type</th>
+<th style="text-align: left;">Text</th>
+<th style="text-align: left;">Indexed</th>
+<th style="text-align: left;">Size</th>
+<th style="text-align: left;">Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">STEP Physical File (SPF)</td>
+<td style="text-align: left;">.ifc</td>
+<td style="text-align: left;">application/x-step</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">STEP 物理格式（SPF 或 IFC-SPF）是 IFC 在实践中使用最广泛的格式，它是列出的可以作为文本读取的格式中最紧凑的格式。 IFC-SPF 基于用于 EXPRESS 数据模型的明文表示的 ISO 标准 <a target="_blank" rel="noopener" href="https://www.iso.org/standard/63141.html">ISO 10303-21</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Extensible Markup Language (XML)</td>
+<td style="text-align: left;">.ifcXML</td>
+<td style="text-align: left;">application/xml</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">113%</td>
+<td style="text-align: left;">可扩展标记语言 (XML) 提供了增强的可读性并从广泛的软件工具中受益。 ifcXML 基于用于以 XML 格式 ISO 10303-28 表示 STEP 数据的 ISO 标准 <a target="_blank" rel="noopener" href="https://www.iso.org/standard/40646.html">ISO 10303-28</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ZIP</td>
+<td style="text-align: left;">.ifcZIP</td>
+<td style="text-align: left;">application/zip</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">17%</td>
+<td style="text-align: left;">IFC 数据可能嵌入在 ZIP 文件中。嵌入的数据可以编码为 SPF 或 XML，其中生成的大小通常是可比较的。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Terse RDF Triple Language (Turtle)</td>
+<td style="text-align: left;">.ttl based on <a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">ifcOWL</a></td>
+<td style="text-align: left;">text/turtle</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">1372%</td>
+<td style="text-align: left;">More info on: <a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">ifcOWL</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Resource Description Framework (RDF/XML)</td>
+<td style="text-align: left;">.rdf based on <a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">ifcOWL</a></td>
+<td style="text-align: left;">application/rdf+xml</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">816%</td>
+<td style="text-align: left;">More info on: <a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">ifcOWL</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="临时候选的">1.3.2 <strong>临时/候选的</strong></h3>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Extension</th>
+<th>MIME Type</th>
+<th>Text</th>
+<th>Indexed</th>
+<th>Size</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JSON</td>
+<td>.json</td>
+<td>application/json</td>
+<td>Yes</td>
+<td>No</td>
+<td>148%</td>
+<td>JSON 通过广泛的软件工具提供增强的可读性和优势。</td>
+</tr>
+<tr class="even">
+<td>Hierarchical Data Format (HDF)</td>
+<td>.hdf</td>
+<td>application/x-hdf</td>
+<td>No</td>
+<td>Yes</td>
+<td>n/a</td>
+<td>HDF5 可以将 IFC 数据存储在分层数据库中，从而提供对工程数据的高性能访问。 HDF 基于用于 STEP 数据表示的 ISO 标准 <a target="_blank" rel="noopener" href="https://www.iso.org/standard/50029.html">ISO 10303-26</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="实验不受支持的">1.3.3 实验/不受支持的</h3>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 8%" />
+<col style="width: 18%" />
+<col style="width: 3%" />
+<col style="width: 6%" />
+<col style="width: 3%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Extension</th>
+<th>MIME Type</th>
+<th>Text</th>
+<th>Indexed</th>
+<th>Size</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SQLite</td>
+<td>.sqlite</td>
+<td>application/x-sqlite3</td>
+<td>No</td>
+<td>Yes</td>
+<td>n/a</td>
+<td>SQLite 可以将 IFC 数据存储在关系数据库中，该数据库提供对大型模型中数据的索引访问，并受益于广泛的软件工具。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="如何打开-ifc-文件">1.4 如何打开 IFC 文件</h2>
+<p>从上面可以看出，IFC 文件有多种格式。可以分为：文本类和非文本类；</p>
+<p>如果你只是想看看数据，那么针对文本类的，你可以使用任何文本编辑器查看即可；</p>
+<p>非文本类的就需要借助专业的软件来查看，比如说：专业的设计软件，或者数据库软件等；</p>
+<h1 id="ifc-数据结构说明">2 IFC 数据结构说明</h1>
+<p>因为 IFC 定义了很庞大的一套数据架构，这里仅仅挑选与建筑设计相关的核心主要的数据结构定义进行说明</p>
+<p>其他的如果有兴趣可以在官方文档查看 <a target="_blank" rel="noopener" href="https://technical.buildingsmart.org/standards/ifc/ifc-schema-specifications/">IFC Schema Specifications - buildingSMART Technical</a></p>
+<p>同时为了便于说明，本文以 IFC2x3 版本进行说明。</p>
+<p><a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/">Start Page of IFC2x3 Final Documentation (buildingsmart.org)</a></p>
+<p>IFC 数据定义基于 3 个基本概念：他们的父类都是 IFCRoot（一个抽象类）</p>
+<p>IfcObjectDefinition 定义实体本身（对象）</p>
+<p>IfcRelationship 定义实体之间的关系</p>
+<p>IfcPropertyDefinition 定义与实体相关的属性。</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414182909999.png" alt="image-20220414182909999" /><figcaption aria-hidden="true">image-20220414182909999</figcaption>
+</figure>
+<p><strong>IfcRoot</strong> 是底层的抽象类，不能直接实例化，</p>
+<p>他包含了一些基本信息：</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 45%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>名称</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GlobalId</td>
+<td><a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifcutilityresource/lexical/ifcgloballyuniqueid.htm">IfcGloballyUniqueId</a></td>
+<td>软件系统内部的全局唯一 Id</td>
+</tr>
+<tr class="even">
+<td>OwnerHistory</td>
+<td><a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifcutilityresource/lexical/ifcownerhistory.htm">IfcOwnerHistory</a></td>
+<td>分配有关该对象的当前所有权的信息，包括拥有参与者，应用程序，本地标识和捕获的有关对象最近更改的信息，注意：仅存储最后一次修改。</td>
+</tr>
+<tr class="odd">
+<td>Name</td>
+<td>OPTIONAL <a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;</td>
+<td>名称</td>
+</tr>
+<tr class="even">
+<td>Description</td>
+<td>OPTIONAL <a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;</td>
+<td>描述说明</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ifcobjectdefinition">2.1 IfcObjectDefinition</h2>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414184453314.png" alt="image-20220414184453314" /><figcaption aria-hidden="true">image-20220414184453314</figcaption>
+</figure>
+<p>这是 IFC 实体对象的基类，UML 类图如上；</p>
+<p>主要定义了两类信息：实体和实体类型</p>
+<ul>
+<li>IfcObject</li>
+<li>IfcTypeObject</li>
+</ul>
+<h3 id="ifcobject">2.1.1 IfcObject</h3>
+<p>包含了7个子类</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414184923892.png" alt="image-20220414184923892" /><figcaption aria-hidden="true">image-20220414184923892</figcaption>
+</figure>
+<ol type="1">
+<li>IfcActor 定义了所有参与施工过程中的角色。它可以轻松识别参与者，并包含姓名、地址、组织和角色等信息</li>
+<li>IfcControl 是控制或限制一般产品、过程或资源使用的所有概念的抽象概括。因此，它代表了设计约束。例如，在这个类中，我们可以包含影响项目规划的元素</li>
+<li>IfcGroup 是任意群的推广。组是对象的逻辑集合，它没有自己的位置，也不能包含自己的形状表示。因此，一个群是一个拓扑聚合。例如，我们可以将一组结构框架的元素关联到一个组中，这些元素根据特定方向翘曲。</li>
+<li>IfcProcess 代表随时间发生的活动，事件和程序。在IfcProcess 被定义为一个单一的活动或事件</li>
+<li>IfcResource 包含表示成本、计划和其他过程中使用资产的影响所需的信息。例如，出于成本估算的目的，目前未在 IFC 中建模的建筑设备（如车辆或土方机械）可被视为 IfcResource.</li>
+<li>IfcProduct 包括可以涉及一种几何/空间上下文的任何实体。当每个实体分配了几何表示时，它在空间中都有一个特定的位置。这种表示可以相对于其他实体来表达，但它肯定会相对于项目坐标系进行引用。除了真实的实体，IfcProduct 还包括非物理元素，例如网格、注释、结构动作。</li>
+<li>IfcProject 定义了一个项目</li>
+</ol>
+<p>与建模直接相关的其实只有：<strong>IfcProduct</strong>、<strong>IfcGroup</strong>、<strong>IfcProject</strong>；其中最主要的两个概念是前两个，我们这里主要说明；</p>
+<h4 id="ifcproduct">2.1.1.1 IfcProduct</h4>
+<p>这里我们只介绍红框里的核心数据定义</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414190000756.png" alt="image-20220414190000756" /><figcaption aria-hidden="true">image-20220414190000756</figcaption>
+</figure>
+<ul>
+<li>IfcElement 基本对象（具有物理形体的）
+<ul>
+<li>IfcBuildingElement 建筑对象实体定义
+<ul>
+<li>IfcWall
+<ul>
+<li>IfcWallStandardCase（基本墙）</li>
+</ul></li>
+<li>IfcDoor</li>
+<li>……</li>
+<li>IfcBeam</li>
+</ul></li>
+</ul></li>
+<li>IfcGrid 轴网信息（定位使用）</li>
+<li>IfcPort 端口信息</li>
+<li>IfcSpatialStructureElement（空间对象）
+<ul>
+<li>建筑空间</li>
+<li>楼层空间</li>
+<li>场地</li>
+<li>一般空间</li>
+</ul></li>
+</ul>
+<h4 id="ifcgroup">2.1.1.2 IfcGroup</h4>
+<p>IfcGroup 定义了一组对象逻辑上的集合；他没有自己的位置、几何形体信息；</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414191115155.png" alt="image-20220414191115155" /><figcaption aria-hidden="true">image-20220414191115155</figcaption>
+</figure>
+<p>从上面的信息可以看出：一些系统可以形成一个组，一些分析模型可以形成一个组，一些空间 Space 可以形成一个区域 Zone 等等</p>
+<h3 id="ifctypeobject">2.1.2 IfcTypeObject</h3>
+<p><strong>IfcTypeObject</strong> 主要用于描述 <strong>IfcObject</strong> 的类型信息，基本继承结构和 <strong>IfcObject</strong> 非常类似</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220414190933933.png" alt="image-20220414190933933" /><figcaption aria-hidden="true">image-20220414190933933</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>ConorLuo
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://buctllx.github.io/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/" title="AEC Ifc 结构学习">https://buctllx.github.io/2022/04/14/AEC-Ifc-结构学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/IFC/" rel="tag"><i class="fa fa-tag"></i> IFC</a>
+              <a href="/tags/BIM/" rel="tag"><i class="fa fa-tag"></i> BIM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/29/Maven-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" rel="prev" title="Maven 使用方法">
+                  <i class="fa fa-chevron-left"></i> Maven 使用方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/" rel="next" title="MongoDB 索引">
+                  MongoDB 索引 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">96k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:27</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"46b448b081d263d3f18d3233ecfcd44b"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

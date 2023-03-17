@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="https://buctllx.github.io/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/","path":"2022/07/18/MongoDB-索引/","title":"MongoDB 索引"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MongoDB 索引 | ConorLuo 博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ConorLuo 博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mongodb-%E7%B4%A2%E5%BC%95"><span class="nav-text">MongoDB 索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%B4%A2%E5%BC%95"><span class="nav-text">简单索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%B5%8C%E5%85%A5%E5%AD%97%E6%AE%B5%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95img"><span class="nav-text">在嵌入字段上创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%B5%8C%E5%85%A5%E6%96%87%E6%A1%A3%E4%B8%8A%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95img"><span class="nav-text">在嵌入文档上创建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9img"><span class="nav-text">其他注意事项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%B4%A2%E5%BC%95"><span class="nav-text">高级索引</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://docs.microsoft.com/" title="https:&#x2F;&#x2F;docs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft 技术文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://devblogs.microsoft.com/" title="https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft Blog</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.liaoxuefeng.com/" title="https:&#x2F;&#x2F;www.liaoxuefeng.com&#x2F;" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://jeremytammik.github.io/tbc/a/" title="http:&#x2F;&#x2F;jeremytammik.github.io&#x2F;tbc&#x2F;a&#x2F;" rel="noopener" target="_blank">Revit jeremy</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.walterlv.com/" title="https:&#x2F;&#x2F;blog.walterlv.com&#x2F;" rel="noopener" target="_blank">MVP walterlv</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.lindexi.com/" title="https:&#x2F;&#x2F;blog.lindexi.com&#x2F;" rel="noopener" target="_blank">MVP 林德熙</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MongoDB 索引 | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MongoDB 索引
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-18 15:27:15" itemprop="dateCreated datePublished" datetime="2022-07-18T15:27:15+08:00">2022-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-31 13:42:00" itemprop="dateModified" datetime="2023-01-31T13:42:00+08:00">2023-01-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DB/MongoDB/" itemprop="url" rel="index"><span itemprop="name">MongoDB</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mongodb-索引">MongoDB 索引</h1>
+<p>在 MongoDB 中设置索引，主要是为了增加查询效率；</p>
+<p>没有设置索引，MongoDB 在查询数据的时候执行的是：扫描整个集合 Collection，在数据量不大的时候没有问题，一旦数据量增加到一定程度后，查询耗时就会很高，导致查询效率变低。</p>
+<h2 id="简单索引">简单索引</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">1.</span> 方法</span><br><span class="line">createIndex()</span><br><span class="line"></span><br><span class="line"># <span class="number">2.</span> 样例（单字段索引）</span><br><span class="line">db.collection.createIndex(keys, options)</span><br><span class="line">testdb.student.createIndex(&#123;&quot;code&quot;:<span class="number">1</span>&#125;)</span><br><span class="line"></span><br><span class="line"># <span class="number">3.</span> 设置使用多个字段创建索引（关系型数据库中称作：联合索引）</span><br><span class="line">db.col.createIndex(&#123;&quot;id&quot;:<span class="number">1</span>,&quot;code&quot;:<span class="number">-1</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="在嵌入字段上创建索引img">在嵌入字段上创建索引<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-single/#create-an-index-on-an-embedded-field"><img src="https://www.mongodb.com/docs/manual/assets/link.svg" alt="img" /></a></h3>
+<p>您可以对嵌入文档中的字段创建索引，就像可以为文档中的顶级字段编制索引一样。嵌入字段上的索引不同于<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-single/#std-label-index-embedded-documents">嵌入文档上的索引</a>，后者包括索引中嵌入文档的最大<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/reference/limits/#mongodb-limit-Index-Key-Limit">索引大小</a>的完整内容。相反，嵌入字段上的索引允许您使用“点表示法”来自省嵌入的文档。</p>
+<p>请考虑一个名为 的集合，该集合保存类似于以下示例文档的文档：<code>records</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;_id&quot;</span>: ObjectId(<span class="string">&quot;570c04a4ad233577f97dc459&quot;</span>),</span><br><span class="line">  <span class="attr">&quot;score&quot;</span>: <span class="number">1034</span>,</span><br><span class="line">  <span class="attr">&quot;location&quot;</span>: &#123; state: <span class="string">&quot;NY&quot;</span>, city: <span class="string">&quot;New York&quot;</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下操作将在字段上创建索引：<code>location.state</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.records.createIndex( &#123; &quot;location.state&quot;: <span class="number">1</span> &#125; )</span><br></pre></td></tr></table></figure>
+<p>创建的索引将支持在字段上选择的查询，如下所示：<code>location.state</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.records.find( &#123; &quot;location.state&quot;: &quot;CA&quot; &#125; )</span><br><span class="line">db.records.find( &#123; &quot;location.city&quot;: &quot;Albany&quot;, &quot;location.state&quot;: &quot;NY&quot; &#125; )</span><br></pre></td></tr></table></figure>
+<h3 id="在嵌入文档上创建索引img">在嵌入文档上创建索引<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-single/#create-an-index-on-embedded-document"><img src="https://www.mongodb.com/docs/manual/assets/link.svg" alt="img" /></a></h3>
+<p>还可以在整个嵌入文档上创建索引。</p>
+<p>请考虑一个名为 record 的集合，该集合保存类似于以下示例文档的文档：<code>records</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;_id&quot;</span>: ObjectId(<span class="string">&quot;570c04a4ad233577f97dc459&quot;</span>),</span><br><span class="line">  <span class="attr">&quot;score&quot;</span>: <span class="number">1034</span>,</span><br><span class="line">  <span class="attr">&quot;location&quot;</span>: &#123; state: <span class="string">&quot;NY&quot;</span>, city: <span class="string">&quot;New York&quot;</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该字段是嵌入的文档，包含嵌入的字段和 。以下命令在整个字段上创建索引：<code>location</code> <code>city</code> <code>state</code> <code>location</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.records.createIndex( &#123; location: <span class="number">1</span> &#125; )</span><br></pre></td></tr></table></figure>
+<p>以下查询可以使用字段上的索引：<code>location</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.records.find( &#123; location: &#123; city: &quot;New York&quot;, state: &quot;NY&quot; &#125; &#125; )</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
+<p>尽管查询可以使用索引，但结果集不包括上面的示例文档。对嵌入的文档执行相等匹配时，字段顺序很重要，嵌入的文档必须完全匹配。有关<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/reference/method/db.collection.find/#std-label-query-embedded-documents">查询嵌入文档</a>的详细信息，请参阅查询嵌入文档。</p>
+<h3 id="其他注意事项img">其他注意事项<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-single/#additional-considerations"><img src="https://www.mongodb.com/docs/manual/assets/link.svg" alt="img" /></a></h3>
+<p>在索引生成期间，应用程序可能会遇到性能降低的问题，包括对集合的有限读/写访问权限。有关索引生成过程的详细信息，请参阅<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-creation/#std-label-index-operations">填充集合上的索引生成</a>，包括<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/core/index-creation/#std-label-index-operations-replicated-build">复制环境中的索引生成</a>部分。</p>
+<p>某些驱动程序可能指定索引，使用而不是用作规范。这对生成的索引没有任何影响。<code>NumberLong(1)``1</code></p>
+<h2 id="高级索引">高级索引</h2>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>ConorLuo
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://buctllx.github.io/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/" title="MongoDB 索引">https://buctllx.github.io/2022/07/18/MongoDB-索引/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/DB/" rel="tag"><i class="fa fa-tag"></i> DB</a>
+              <a href="/tags/MongoDB/" rel="tag"><i class="fa fa-tag"></i> MongoDB</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/" rel="prev" title="AEC Ifc 结构学习">
+                  <i class="fa fa-chevron-left"></i> AEC Ifc 结构学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/01/31/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="next" title="数据库基础知识">
+                  数据库基础知识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">96k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:27</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d0d8ba233177794e21a3931b8ccb9878"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

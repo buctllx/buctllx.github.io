@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="https://buctllx.github.io/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/","path":"2023/03/07/数据库范式/","title":"数据库范式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据库范式 | ConorLuo 博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ConorLuo 博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F"><span class="nav-text">什么是数据库范式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F%E5%88%86%E7%B1%BB"><span class="nav-text">数据库范式分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%89%E5%A4%A7%E8%8C%83%E5%BC%8F%E5%89%96%E6%9E%90"><span class="nav-text">数据库三大范式剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8C%83%E5%BC%8F1nf"><span class="nav-text">第一范式（1NF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8C%83%E5%BC%8F2nf"><span class="nav-text">第二范式（2NF）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-text">函数依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-text">完全函数依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-text">部分函数依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-text">传递函数依赖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%81"><span class="nav-text">码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E4%B8%BB%E5%B1%9E%E6%80%A7"><span class="nav-text">非主属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F3nf"><span class="nav-text">第三范式（3NF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bcnf-%E8%8C%83%E5%BC%8F"><span class="nav-text">BCNF 范式</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://docs.microsoft.com/" title="https:&#x2F;&#x2F;docs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft 技术文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://devblogs.microsoft.com/" title="https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft Blog</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.liaoxuefeng.com/" title="https:&#x2F;&#x2F;www.liaoxuefeng.com&#x2F;" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://jeremytammik.github.io/tbc/a/" title="http:&#x2F;&#x2F;jeremytammik.github.io&#x2F;tbc&#x2F;a&#x2F;" rel="noopener" target="_blank">Revit jeremy</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.walterlv.com/" title="https:&#x2F;&#x2F;blog.walterlv.com&#x2F;" rel="noopener" target="_blank">MVP walterlv</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.lindexi.com/" title="https:&#x2F;&#x2F;blog.lindexi.com&#x2F;" rel="noopener" target="_blank">MVP 林德熙</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据库范式 | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库范式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-07 16:18:40" itemprop="dateCreated datePublished" datetime="2023-03-07T16:18:40+08:00">2023-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-17 10:58:00" itemprop="dateModified" datetime="2023-03-17T10:58:00+08:00">2023-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DB/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>国内绝大多数院校用的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=王珊&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">王珊</a>的《数据库系统概论》这本教材，某些方面并没有给出很详细很明确的解释，与实际应用联系不那么紧密。本文将结合应用案例，介绍数据库方式的基本知识。</p>
+<span id="more"></span>
+<h1 id="什么是数据库范式">什么是数据库范式</h1>
+<blockquote>
+<p>设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越小。 范式来自英文Normal form，简称 NF。要想设计—个好的关系，必须使关系满足一定的约束条件，此约束已经形成了规范，分成几个等级，一级比一级要求得严格。满足这些规范的数据库是简洁的、结构明晰的，同时，不会发生插入(insert)、删除(delete)和更新(update)操作异常。</p>
+</blockquote>
+<p>按照教材中的定义，范式是“符合某一种级别的关系模式的集合，表示一个关系内部各属性之间的联系的合理化程度”。很晦涩~~实际上你可以把它粗略地理解为：</p>
+<p><strong>一张数据表的表结构所符合的某种设计标准的级别</strong>。</p>
+<p>就像家里装修买建材，最环保的是E0级，其次是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=E1级&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">E1级</a>，还有E2级等等。</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=数据库范式&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">数据库范式</a>也分为1NF，2NF，3NF，BCNF，4NF，5NF。一般在我们设计<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=关系型数据库&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">关系型数据库</a>的时候，最多考虑到BCNF就够。符合高一级范式的设计，必定符合低一级范式，例如符合2NF的关系模式，必定符合1NF。</p>
+<h1 id="数据库范式分类">数据库范式分类</h1>
+<blockquote>
+<p>目前关系数据库有六种范式：</p>
+<p>第一范式（1NF）</p>
+<p>第二范式（2NF）</p>
+<p>第三范式（3NF）</p>
+<p>巴斯-科德范式（BCNF）</p>
+<p>第四范式(4NF）</p>
+<p>第五范式（5NF，又称完美范式）</p>
+</blockquote>
+<p>满足最低要求的范式是第一范式（1NF）。在第一范式的基础上进一步满足更多规范要求的称为第二范式（2NF），其余范式以次类推。一般来说，数据库只需满足第三范式(3NF）就行了。</p>
+<h1 id="数据库三大范式剖析">数据库三大范式剖析</h1>
+<h2 id="第一范式1nf">第一范式（1NF）</h2>
+<p><strong>第一范式（1NF）的定义为：符合 1NF 关系中的每个属性都不可再分。</strong></p>
+<p>实际上，<strong>1NF是所有关系型数据库的最基本要求</strong>，你在关系型数据库管理系统（RDBMS），例如SQL Server，Oracle，MySQL中创建数据表的时候，如果数据表的设计不符合这个最基本的要求，那么操作一定是不能成功的。也就是说，只要在RDBMS中已经存在的数据表，一定是符合1NF的。</p>
+<blockquote>
+<p>第一范式<strong>强调每一列都是不可分割的原子数据项。</strong></p>
+</blockquote>
+<p>说到<code>原子</code>这个词，肯定有小伙伴就先到了原子性问题，其实这么想也是没有错的。那就让我带你们去剖析一下第一范式。</p>
+<p>首先，我用Excel表格模拟数据库中的表，并在表中填入了一些数据。如下，</p>
+<div class="tabs" id="table1"><ul class="nav-tabs"><li class="tab active"><a href="#table1-1">[表 1]</a></li></ul><div class="tab-content"><div class="tab-pane active" id="table1-1"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>姓名</th>
+<th>系名/系主任</th>
+<th>课程名称</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>张三</td>
+<td>计算机 / 高主任</td>
+<td>C</td>
+<td>90</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>张三</td>
+<td>计算机 / 高主任</td>
+<td>Python</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>李四</td>
+<td>计算机 / 高主任</td>
+<td>Java</td>
+<td>98</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>李四</td>
+<td>计算机 / 高主任</td>
+<td>C++</td>
+<td>95</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>王五</td>
+<td>管理系 / 刘主任</td>
+<td>会计</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>王五</td>
+<td>管理系 / 刘主任</td>
+<td>酒店管理</td>
+<td>90</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<p>当看到<code>系名/系主任</code>这一列数据的时候感觉这并不合符我们数据库的设计理念，因为它完全可以拆分为两列的。</p>
+<p>其实每一个人的思想中的已经有了这个范式要求的概念，只是你并不知道这个概念叫做第一范式。</p>
+<p>表1 显然不遵循第一范式，那我们就把它修改一下，让其遵循第一范式的要求。如下，</p>
+<div class="tabs" id="table2"><ul class="nav-tabs"><li class="tab active"><a href="#table2-1">[表 2]</a></li></ul><div class="tab-content"><div class="tab-pane active" id="table2-1"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>姓名</th>
+<th>系名</th>
+<th>系主任</th>
+<th>课程名称</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+<td>高主任</td>
+<td>C</td>
+<td>90</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+<td>高主任</td>
+<td>Python</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+<td>高主任</td>
+<td>Java</td>
+<td>98</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+<td>高主任</td>
+<td>C++</td>
+<td>95</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+<td>刘主任</td>
+<td>会计</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+<td>刘主任</td>
+<td>酒店管理</td>
+<td>90</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<p>我们再看看表2，依然存在一些问题：</p>
+<div class="note info"><ol type="1">
+<li><p>每一名学生的学号、姓名、系名、系主任这些数据重复多次。每个系与对应的系主任的数据也重复多次——<strong>数据冗余过大</strong></p></li>
+<li><p>假如学校新建了一个系，但是暂时还没有招收任何学生（比如3月份就新建了，但要等到8月份才招生），那么是无法将系名与系主任的数据单独地添加到数据表中去的 （注１）——<strong>插入异常</strong></p></li>
+</ol>
+<p>注１：根据三种关系完整性约束中实体完整性的要求，关系中的码（注２）所包含的任意一个属性都不能为空，所有属性的组合也不能重复。为了满足此要求，图中的表，只能将学号与课名的组合作为码，否则就无法唯一地区分每一条记录。</p>
+<p>注２：<strong>码：关系中的某个属性或者某几个属性的组合，用于区分每个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=元组&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">元组</a></strong>（可以把“元组”理解为一张表中的每条记录，也就是每一行）<strong>。</strong></p>
+<ol start="3" type="1">
+<li><p>假如将某个系中所有学生相关的记录都删除，那么所有系与系主任的数据也就随之消失了（一个系所有学生都没有了，并不表示这个系就没有了）。——<strong>删除异常</strong></p></li>
+<li><p>假如张三转系到法律系，那么为了保证数据库中数据的一致性，需要修改两条记录中系与系主任的数据。——<strong>修改异常</strong>。</p></li>
+</ol>
+</div>
+<p>正因为仅符合1NF的数据库设计存在着这样那样的问题，我们需要提高设计标准，去掉导致上述四种问题的因素，使其符合更高一级的范式（2NF），这就是所谓的“规范化”。</p>
+<h2 id="第二范式2nf">第二范式（2NF）</h2>
+<p><strong>第二范式（2NF）</strong>在关系理论中的严格定义这里就不多介绍，只需要了解2NF对1NF进行了哪些改进即可。其改进是，</p>
+<p><strong>2NF在1NF的基础之上，消除了非主属性对于码的部分函数依赖</strong>。</p>
+<p>接下来对这句话中涉及到的四个概念——<strong>“函数依赖”</strong>、<strong>“码”</strong>、<strong>“非主属性”</strong>、与<strong>“部分<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=函数依赖&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">函数依赖</a>”</strong>进行一下解释。</p>
+<h3 id="函数依赖">函数依赖</h3>
+<p>我们可以这么理解（但并不是特别严格的定义）：<strong>若在一张表中，在属性（或属性组）X的值确定的情况下，必定能确定属性Y的值，那么就可以说Y函数依赖于X，写作 X → Y</strong>。</p>
+<p>也就是说，在数据表中，不存在任意两条记录，它们在X属性（或属性组）上的值相同，而在Y属性上的值不同。这也就是“函数依赖”名字的由来，类似于函数关系 y = f(x)，在x的值确定的情况下，y的值一定是确定的。</p>
+<p>例如，对于表3中的数据，找不到任何一条记录，它们的学号相同而对应的姓名不同。所以我们可以说<strong>姓名函数依赖于学号</strong>，写作 <strong>学号 → 姓名</strong>。但是反过来，因为可能出现同名的学生，所以有可能不同的两条学生记录，它们在姓名上的值相同，但对应的学号不同，所以我们不能说学号函数依赖于姓名。表中其他的函数依赖关系还有如：</p>
+<ul>
+<li>系名 → 系主任</li>
+<li>学号 → 系主任</li>
+<li>（学号，课名） → 分数</li>
+</ul>
+<p>但以下函数依赖关系则不成立：</p>
+<ul>
+<li>学号 → 课名</li>
+<li>学号 → 分数</li>
+<li>课名 → 系主任</li>
+<li>（学号，课名） → 姓名</li>
+</ul>
+<p>从“函数依赖”这个概念展开，还会有三个概念：</p>
+<h4 id="完全函数依赖">完全函数依赖</h4>
+<p>在一张表中，若 X → Y，且对于 X 的任何一个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=真子集&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">真子集</a>（假如属性组 X 包含超过一个属性的话），X ' → Y 不成立，那么我们称 Y 对于 X <strong>完全函数依赖</strong>，记作：<span class="math inline">\(X \stackrel{F}{\rightarrow} Y\)</span>。</p>
+<p>例如：</p>
+<ul>
+<li><span class="math inline">\(学号 \stackrel{F}{\rightarrow} 姓名\)</span></li>
+<li><span class="math inline">\((学号，课名) \stackrel{F}{\rightarrow} 分数\)</span>（注：因为同一个的学号对应的分数不确定，同一个课名对应的分数也不确定）</li>
+</ul>
+<h4 id="部分函数依赖"><strong>部分函数依赖</strong></h4>
+<p>假如 Y 函数依赖于 X，但同时 Y 并不完全函数依赖于 X，那么我们就称 Y 部分函数依赖于 X，记作 ：<span class="math inline">\(X \stackrel{P}{\rightarrow} Y\)</span>。</p>
+<p>例如：</p>
+<ul>
+<li><span class="math inline">\((学号，课名) \stackrel{P}{\rightarrow} 姓名\)</span></li>
+</ul>
+<h4 id="传递函数依赖">传递函数依赖</h4>
+<p>假如 Z 函数依赖于 Y，且 Y 函数依赖于 X （感谢 <a target="_blank" rel="noopener" href="http://www.zhihu.com/people/cd70559bf6f5073e39a22d98a805f3b6"><span class="citation" data-cites="百达">@百达</span></a>指出的错误，这里改为：『Y 不包含于 X，且 X 不函数依赖于 Y』这个前提），那么我们就称 Z 传递函数依赖于 X ，记作 ：<span class="math inline">\(X \stackrel{T}{\rightarrow} Z\)</span>。</p>
+<h3 id="码">码</h3>
+<p>设 K 为某表中的一个属性或属性组，若除 K 之外的所有属性都完全函数依赖于 K（这个“完全”不要漏了），那么我们称 K 为<strong>候选码</strong>，简称为<strong>码</strong>。</p>
+<p>在实际中我们通常可以理解为：<strong>假如当 K 确定的情况下，该表除 K 之外的所有属性的值也就随之确定，那么 K 就是码。</strong>一张表中可以有超过一个码。（实际应用中为了方便，通常选择其中的一个码作为<strong>主码</strong>）</p>
+<p>例如： 对于表3，<strong>（学号、课名）</strong>这个属性组就是码。该表中有且仅有这一个码。（假设所有课没有重名的情况）</p>
+<h3 id="非主属性">非主属性</h3>
+<p>包含在任何一个码中的属性成为主属性。</p>
+<p>例如： 对于表3，主属性就有两个，<strong>学号</strong> 与 <strong>课名</strong>。</p>
+<p>终于可以回过来看2NF了。首先，我们需要判断，表3是否符合2NF的要求？</p>
+<p>根据2NF的定义，判断的依据实际上就是看数据表中<strong>是否存在非主属性对于码的部分函数依赖</strong>。若存在，则数据表最高只符合1NF的要求，若不存在，则符合2NF的要求。判断的方法是：</p>
+<p>第一步：找出数据表中所有的<strong>码</strong>。 第二步：根据第一步所得到的码，找出所有的<strong>主属性</strong>。 第三步：数据表中，除去所有的主属性，剩下的就都是<strong>非主属性</strong>了。 第四步：查看是否存在非主属性对码的<strong>部分函数依赖</strong>。</p>
+<p>对于表3，根据前面所说的四步，我们可以这么做：</p>
+<p>第一步：</p>
+<ol type="1">
+<li>查看所有每一单个属性，当它的值确定了，是否剩下的所有属性值都能确定。</li>
+<li>查看所有包含有两个属性的属性组，当它的值确定了，是否剩下的所有属性值都能确定。</li>
+<li>……</li>
+<li>查看所有包含了六个属性，也就是所有属性的属性组，当它的值确定了，是否剩下的所有属性值都能确定。</li>
+</ol>
+<p>看起来很麻烦是吧，但是这里有一个诀窍，就是假如A是码，那么所有包含了A的属性组，如（A，B）、（A，C）、（A，B，C）等等，都不是码了（因为作为码的要求里有一个“<strong>完全</strong>函数依赖”）。</p>
+<p><strong>图4</strong>表示了表中所有的函数依赖关系：</p>
+<figure>
+<img src="https://pic1.zhimg.com/80/51e2689ac9416a91800e63101bee9db7_720w.webp?source=1940ef5c" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图4</p>
+<p>这一步完成以后，可以得到，表3的码只有一个，就是<strong>（学号、课名）</strong>。</p>
+<p>第二步： 主属性有两个：<strong>学号</strong> 与 <strong>课名</strong></p>
+<p>第三步： 非主属性有四个：<strong>姓名</strong>、<strong>系名</strong>、<strong>系主任</strong>、<strong>分数</strong></p>
+<p><strong>第四步：</strong> 对于<strong>（学号，课名） → 姓名</strong>，有 <strong>学号 → 姓名</strong>，存在非主属性 <strong>姓名</strong> 对码<strong>（学号，课名）</strong>的部分函数依赖。 对于<strong>（学号，课名） → 系名</strong>，有 <strong>学号 → 系名</strong>，存在非主属性 系<strong>名</strong> 对码<strong>（学号，课名）</strong>的部分函数依赖。 对于<strong>（学号，课名） → 系主任</strong>，有 <strong>学号 → 系主任</strong>，存在非主属性 对码<strong>（学号，课名）</strong>的部分函数依赖。</p>
+<p>所以表3存在非主属性对于码的部分函数依赖，最高只符合1NF的要求，不符合2NF的要求。</p>
+<p>为了让表3符合2NF的要求，我们必须消除这些部分函数依赖，只有一个办法，就是将大数据表拆分成两个或者更多个更小的数据表，在拆分的过程中，要达到更高一级范式的要求，这个过程叫做”模式分解“。模式分解的方法不是唯一的，以下是其中一种方法： 选课（学号，课名，分数） 学生（学号，姓名，系名，系主任）</p>
+<p>我们先来判断以下，<strong>选课</strong>表与<strong>学生</strong>表，是否符合了2NF的要求？</p>
+<p>对于<strong>选课</strong>表，其码是<strong>（学号，课名）</strong>，主属性是<strong>学号</strong>和<strong>课名</strong>，非主属性是<strong>分数</strong>，<strong>学号</strong>确定，并不能唯一确定<strong>分数</strong>，<strong>课名</strong>确定，也不能唯一确定<strong>分数</strong>，所以不存在非主属性<strong>分数</strong>对于码 <strong>（学号，课名）</strong>的部分函数依赖，所以此表符合2NF的要求。</p>
+<p>对于<strong>学生</strong>表，其码是<strong>学号，</strong>主属性是<strong>学号</strong>，非主属性是<strong>姓名、系名</strong>和<strong>系主任</strong>，因为码只有一个属性，所以不可能存在非主属性对于码 的部分函数依赖，所以此表符合2NF的要求。</p>
+<p><strong>图5</strong>表示了<strong>模式分解</strong>以后的新的函数依赖关系</p>
+<figure>
+<img src="https://picx.zhimg.com/80/2f4b4a887f6a61674a49d03d79e3fe17_720w.webp?source=1940ef5c" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图5</p>
+<p>下面表示了表3模式分解以后新的数据</p>
+<div class="tabs" id="table3"><ul class="nav-tabs"><li class="tab active"><a href="#table3-1">[学生选课表]</a></li><li class="tab"><a href="#table3-2">[专业学生表]</a></li></ul><div class="tab-content"><div class="tab-pane active" id="table3-1"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>课程名称</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>C</td>
+<td>90</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Python</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Java</td>
+<td>98</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>C++</td>
+<td>95</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>会计</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>酒店管理</td>
+<td>90</td>
+</tr>
+</tbody>
+</table></div><div class="tab-pane" id="table3-2"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>姓名</th>
+<th>系名</th>
+<th>系主任</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+<td>刘主任</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+<td>刘主任</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<p>（这里还涉及到一个如何进行模式分解才是正确的知识点，先不介绍了）</p>
+<p>现在我们来看一下，进行同样的操作，是否还存在着之前的那些问题？</p>
+<div class="note info"><ol type="1">
+<li>李小明转系到法律系 只需要修改一次李小明对应的系的值即可。——有改进</li>
+<li>数据冗余是否减少了？ 学生的姓名、系名与系主任，不再像之前一样重复那么多次了。——有改进</li>
+<li>删除某个系中所有的学生记录 该系的信息仍然全部丢失。——无改进</li>
+<li>插入一个尚无学生的新系的信息。 因为学生表的码是学号，不能为空，所以此操作不被允许。——无改进</li>
+</ol>
+</div>
+<p>所以说，仅仅符合2NF的要求，很多情况下还是不够的，而出现问题的原因，在于仍然存在非主属性<strong>系主任</strong>对于码<strong>学号</strong>的传递函数依赖。为了能进一步解决这些问题，我们还需要将符合2NF要求的数据表改进为符合3NF的要求。</p>
+<h2 id="第三范式3nf">第三范式（3NF）</h2>
+<p><strong>第三范式（3NF）</strong> <strong>3NF 在 2NF 的基础之上，消除了非主属性对于码的传递函数依赖</strong>。也就是说， 如果存在非主属性对于码的传递函数依赖，则不符合3NF的要求。</p>
+<p>接下来我们看看表3中的设计，是否符合 3NF 的要求。</p>
+<p>对于<strong>选课</strong>表，主码为（学号，课名），主属性为<strong>学号</strong>和<strong>课名，</strong>非主属性只有一个，为分数，不可能存在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=传递函数&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">传递函数</a>依赖，所以<strong>选课</strong>表的设计，符合3NF的要求。</p>
+<p>对于<strong>学生</strong>表，主码为<strong>学号</strong>，主属性为<strong>学号</strong>，非主属性为<strong>姓名</strong>、<strong>系名</strong>和<strong>系主任</strong>。因为 学号 → 系名，同时 系名 → 系主任，所以存在非主属性<strong>系主任</strong>对于码<strong>学号</strong>的传递函数依赖，所以<strong>学生</strong>表的设计，不符合3NF的要求。。</p>
+<p>为了让<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=数据表设计&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">数据表设计</a>达到3NF，我们必须进一步进行模式分解为以下形式： 选课（学号，课名，分数） 学生（学号，姓名，系名） 系（系名，系主任）</p>
+<p>对于<strong>选课</strong>表，符合3NF的要求，之前已经分析过了。</p>
+<p>对于<strong>学生</strong>表，码为<strong>学号</strong>，主属性为<strong>学号</strong>，非主属性为<strong>系名</strong>，不可能存在非主属性对于码的传递函数依赖，所以符合3NF的要求。</p>
+<p>对于<strong>系</strong>表，码为<strong>系名</strong>，主属性为<strong>系名</strong>，非主属性为<strong>系主任</strong>，不可能存在非主属性对于码的传递函数依赖（至少要有三个属性才可能存在传递函数依赖关系），所以符合3NF的要求。。</p>
+<p>新的函数依赖关系如图6</p>
+<figure>
+<img src="https://pic1.zhimg.com/80/5b20707ff3d9afb51ef7bfda726c3e34_720w.webp?source=1940ef5c" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>图6</p>
+<p>新的数据表如表4</p>
+<div class="tabs" id="table4"><ul class="nav-tabs"><li class="tab active"><a href="#table4-1">[学生选课表]</a></li><li class="tab"><a href="#table4-2">[学生系表]</a></li><li class="tab"><a href="#table4-3">[系表]</a></li></ul><div class="tab-content"><div class="tab-pane active" id="table4-1"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>课程名称</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>C</td>
+<td>90</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Python</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Java</td>
+<td>98</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>C++</td>
+<td>95</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>会计</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>酒店管理</td>
+<td>90</td>
+</tr>
+</tbody>
+</table></div><div class="tab-pane" id="table4-2"><table>
+<thead>
+<tr class="header">
+<th>学号</th>
+<th>姓名</th>
+<th>系名</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>张三</td>
+<td>计算机</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>李四</td>
+<td>计算机</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>王五</td>
+<td>管理系</td>
+</tr>
+</tbody>
+</table></div><div class="tab-pane" id="table4-3"><table>
+<thead>
+<tr class="header">
+<th>系名</th>
+<th>系主任</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="even">
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="odd">
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="even">
+<td>计算机</td>
+<td>高主任</td>
+</tr>
+<tr class="odd">
+<td>管理系</td>
+<td>刘主任</td>
+</tr>
+<tr class="even">
+<td>管理系</td>
+<td>刘主任</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<p>现在我们来看一下，进行同样的操作，是否还存在着之前的那些问题？</p>
+<div class="note info"><ol type="1">
+<li>删除某个系中所有的学生记录 该系的信息不会丢失。——有改进</li>
+<li>插入一个尚无学生的新系的信息。 因为系表与学生表目前是独立的两张表，所以不影响。——有改进</li>
+<li>数据冗余更加少了。——有改进</li>
+</ol>
+</div>
+<p><strong>结论</strong> 由此可见，符合3NF要求的数据库设计，<strong>基本</strong>上解决了数据冗余过大，插入异常，修改异常，删除异常的问题。当然，在实际中，往往为了性能上或者应对扩展的需要，经常 做到2NF或者1NF，但是作为数据库设计人员，至少应该知道，3NF的要求是怎样的。</p>
+<h2 id="bcnf-范式">BCNF 范式</h2>
+<p>要了解 BCNF 范式，那么先看这样一个问题：</p>
+<p>若：</p>
+<ol type="1">
+<li>某公司有若干个仓库；</li>
+<li>每个仓库只能有一名管理员，一名管理员只能在一个仓库中工作；</li>
+<li>一个仓库中可以存放多种物品，一种物品也可以存放在不同的仓库中。每种物品在每个仓库中都有对应的数量。</li>
+</ol>
+<p>那么关系模式 仓库（仓库名，管理员，物品名，数量） 属于哪一级范式？</p>
+<p>答：已知函数依赖集：仓库名 → 管理员，管理员 → 仓库名，（仓库名，物品名）→ 数量 码：（管理员，物品名），（仓库名，物品名） 主属性：仓库名、管理员、物品名 非主属性：数量 ∵ 不存在非主属性对码的部分函数依赖和传递函数依赖。∴ 此关系模式属于3NF。</p>
+<p>基于此关系模式的关系（具体的数据）可能如下表所示：</p>
+<table>
+<thead>
+<tr class="header">
+<th>仓库名</th>
+<th>管理员</th>
+<th>物品名</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>上海仓</td>
+<td>张三</td>
+<td>iPhone 7</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>上海仓</td>
+<td>张三</td>
+<td>iPad Air</td>
+<td>40</td>
+</tr>
+<tr class="odd">
+<td>北京仓</td>
+<td>李四</td>
+<td>iPhone 8</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>北京仓</td>
+<td>李四</td>
+<td>iPad Mini</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<p>好，既然此关系模式已经属于了 3NF，那么这个关系模式是否存在问题呢？我们来看以下几种操作：</p>
+<ol type="1">
+<li>先新增加一个仓库，但尚未存放任何物品，是否可以为该仓库指派管理员？——不可以，因为物品名也是主属性，根据实体完整性的要求，主属性不能为空。</li>
+<li>某仓库被清空后，需要删除所有与这个仓库相关的物品存放记录，会带来什么问题？——仓库本身与管理员的信息也被随之删除了。</li>
+<li>如果某仓库更换了管理员，会带来什么问题？——这个仓库有几条物品存放记录，就要修改多少次管理员信息。</li>
+</ol>
+<p>从这里我们可以得出结论，在某些特殊情况下，即使关系模式符合 3NF 的要求，仍然存在着插入异常，修改异常与删除异常的问题，仍然不是 ”好“ 的设计。</p>
+<p>造成此问题的原因：存在着<strong>主属性</strong>对于码的部分函数依赖与传递函数依赖。（在此例中就是存在主属性【仓库名】对于码【（管理员，物品名）】的部分函数依赖。</p>
+<p>解决办法就是要在 3NF 的基础上消除<strong>主属性</strong>对于码的部分与传递函数依赖。</p>
+<p>仓库（仓库名，管理员） 库存（仓库名，物品名，数量）</p>
+<p>这样，之前的插入异常，修改异常与删除异常的问题就被解决了。</p>
+<p>以上就是关于 BCNF 的解释。</p>
+<p><strong>参考：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24696366/answer/29189700">如何理解关系型数据库的常见设计范式？ - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=函数依赖&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A29189700%7D">函数依赖</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>ConorLuo
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://buctllx.github.io/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/" title="数据库范式">https://buctllx.github.io/2023/03/07/数据库范式/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/DB/" rel="tag"><i class="fa fa-tag"></i> DB</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/01/31/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="数据库基础知识">
+                  <i class="fa fa-chevron-left"></i> 数据库基础知识
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">96k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:27</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"2a723c63597037c9943d8fe3e60e370e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
