@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="https://buctllx.github.io/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/","path":"2023/03/17/Git-Submodule-的使用/","title":"Git Submodule 的使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git Submodule 的使用 | ConorLuo 博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ConorLuo 博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="nav-text">1. 解释：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2. 使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%83%B3%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%EF%BC%8C%E4%BD%86%E5%8F%88%E6%83%B3%E4%BF%9D%E6%8C%81%E7%8B%AC%E7%AB%8B%E7%9A%84%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95%EF%BC%9B"><span class="nav-text">2.1 想使用其他项目的代码，但又想保持独立的操作记录；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%8A%8A%E4%B8%80%E4%B8%AA%E5%A4%A7%E9%A1%B9%E7%9B%AE%E6%8B%86%E5%88%86%E6%88%90%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BB%93%E5%BA%93%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8F%88%E6%83%B3%E6%8A%8A%E8%BF%99%E4%BA%9B%E4%BB%93%E5%BA%93%E4%BB%A5%E6%9F%90%E7%A7%8D%E6%96%B9%E5%BC%8F%E9%9B%86%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7%EF%BC%9B"><span class="nav-text">2.2 把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Git-Doc-DESCRIPTION-%E5%AE%98%E6%96%B9%E8%A7%A3%E9%87%8A"><span class="nav-text">3. Git Doc DESCRIPTION (官方解释)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="nav-text">4. 使用方法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E4%B8%BA%E4%B8%BB%E9%A1%B9%E7%9B%AE%E6%B7%BB%E5%8A%A0Submodules"><span class="nav-text">4.1 为主项目添加Submodules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Clone%E5%B8%A6%E6%9C%89Submodule%E7%9A%84%E4%BB%93%E5%BA%93"><span class="nav-text">4.2 Clone带有Submodule的仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%9C%A8-superproject-%E4%B8%AD%E4%BF%AE%E6%94%B9-submodule"><span class="nav-text">4.3 在 superproject 中修改 submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A1%B9%E7%9B%AE%E7%9A%84-Submodules"><span class="nav-text">4.4 其他开发人员更新主项目的 Submodules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E7%A7%BB%E9%99%A4-Submodule"><span class="nav-text">4.5 移除 Submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-update-submodule"><span class="nav-text">4.6 update submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-git-checkout-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="nav-text">4.7 git checkout 同时更新子模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-text">5. 参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://docs.microsoft.com/" title="https:&#x2F;&#x2F;docs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft 技术文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://devblogs.microsoft.com/" title="https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft Blog</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.liaoxuefeng.com/" title="https:&#x2F;&#x2F;www.liaoxuefeng.com&#x2F;" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://jeremytammik.github.io/tbc/a/" title="http:&#x2F;&#x2F;jeremytammik.github.io&#x2F;tbc&#x2F;a&#x2F;" rel="noopener" target="_blank">Revit jeremy</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.walterlv.com/" title="https:&#x2F;&#x2F;blog.walterlv.com&#x2F;" rel="noopener" target="_blank">MVP walterlv</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.lindexi.com/" title="https:&#x2F;&#x2F;blog.lindexi.com&#x2F;" rel="noopener" target="_blank">MVP 林德熙</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Git Submodule 的使用 | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git Submodule 的使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-17 19:48:54 / 修改时间：19:50:24" itemprop="dateCreated datePublished" datetime="2023-03-17T19:48:54+08:00">2023-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Git-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">Git 相关</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-解释："><a href="#1-解释：" class="headerlink" title="1. 解释："></a>1. 解释：</h2><p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image2020-3-31_14-39-49.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
+<p>submodule 也是仓库；</p>
+<p>嵌入在其他项目的仓库中；</p>
+<p>一套代码体系，在 superproject 和 submodule 自己的 project 都可以发起修改操作；</p>
+<h2 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2. 使用场景"></a>2. 使用场景</h2><h3 id="2-1-想使用其他项目的代码，但又想保持独立的操作记录；"><a href="#2-1-想使用其他项目的代码，但又想保持独立的操作记录；" class="headerlink" title="2.1 想使用其他项目的代码，但又想保持独立的操作记录；"></a>2.1 想使用其他项目的代码，但又想保持独立的操作记录；</h3><p>引用一段《<a target="_blank" rel="noopener" href="http://book.douban.com/subject/6526452/">Git权威指南</a>》的话： 项目的版本库在某些情况虾需要引用其他版本库中的文件，例如公司积累了一套常用的函数库，被多个项目调用，显然这个函数库的代码不能直接放到某个项目的代码中，而是要独立为一个代码库，那么其他项目要调用公共函数库该如何处理呢？分别把公共函数库的文件拷贝到各自的项目中会造成冗余，丢弃了公共函数库的维护历史，这显然不是好的方法。</p>
+<h3 id="2-2-把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"><a href="#2-2-把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；" class="headerlink" title="2.2 把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"></a>2.2 把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；</h3><h2 id="3-Git-Doc-DESCRIPTION-官方解释"><a href="#3-Git-Doc-DESCRIPTION-官方解释" class="headerlink" title="3. Git Doc DESCRIPTION (官方解释)"></a>3. Git Doc DESCRIPTION (官方解释)</h2><p>A submodule is a repository embedded inside another repository. The submodule has its own history; the repository it is embedded in is called a superproject.</p>
+<p>On the filesystem, a submodule usually (but not always - see FORMS below) consists of (i) a Git directory located under the <code>$GIT_DIR/modules/</code> directory of its superproject, (ii) a working directory inside the superproject’s working directory, and a <code>.git</code> file at the root of the submodule’s working directory pointing to (i).</p>
+<p>Assuming the submodule has a Git directory at <code>$GIT_DIR/modules/foo/</code> and a working directory at <code>path/to/bar/</code>, the superproject tracks the submodule via a <code>gitlink</code> entry in the tree at <code>path/to/bar</code> and an entry in its <code>.gitmodules</code> file (see gitmodules(5)) of the form <code>submodule.foo.path = path/to/bar</code>.</p>
+<p>The <code>gitlink</code> entry contains the object name of the commit that the superproject expects the submodule’s working directory to be at.</p>
+<p>The section <code>submodule.foo.*</code> in the <code>.gitmodules</code> file gives additional hints to Git’s porcelain layer. For example, the <code>submodule.foo.url</code> setting specifies where to obtain the submodule.</p>
+<p>Submodules can be used for at least two different use cases:</p>
+<ol>
+<li>Using another project while maintaining independent history. Submodules allow you to contain the working tree of another project within your own working tree while keeping the history of both projects separate. Also, since submodules are fixed to an arbitrary version, the other project can be independently developed without affecting the superproject, allowing the superproject project to fix itself to new versions only when desired.</li>
+<li>Splitting a (logically single) project into multiple repositories and tying them back together. This can be used to overcome current limitations of Git’s implementation to have finer grained access:<ul>
+<li>Size of the Git repository: In its current form Git scales up poorly for large repositories containing content that is not compressed by delta computation between trees. For example, you can use submodules to hold large binary assets and these repositories can be shallowly cloned such that you do not have a large history locally.</li>
+<li>Transfer size: In its current form Git requires the whole working tree present. It does not allow partial trees to be transferred in fetch or clone. If the project you work on consists of multiple repositories tied together as submodules in a superproject, you can avoid fetching the working trees of the repositories you are not interested in.</li>
+<li>Access control: By restricting user access to submodules, this can be used to implement read&#x2F;write policies for different users.</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-使用方法介绍"><a href="#4-使用方法介绍" class="headerlink" title="4. 使用方法介绍"></a>4. 使用方法介绍</h2><h3 id="4-1-为主项目添加Submodules"><a href="#4-1-为主项目添加Submodules" class="headerlink" title="4.1 为主项目添加Submodules"></a>4.1 为主项目添加Submodules</h3><p>命令：git submodule add <repository url> <module path></p>
+<p>解释：</p>
+<p>在 super project 中执行（下面用 superproject 代替）；</p>
+<p><repository url>是要引用的项目的仓库地址；</p>
+<p><module path>引用的项目在 super project 中要存放的位置（下面用 libs\lib1 代替）；</p>
+<p>结果：</p>
+<p>查看 superproject 当前的状态发现添加了一个新文件(<strong>.gitmodules</strong>) 和 <module path> 文件夹；</p>
+<p><strong>.gitmodules</strong> 记录了每个 submodule 的引用信息，知道在当前项目的位置以及仓库的所在。</p>
+<h3 id="4-2-Clone带有Submodule的仓库"><a href="#4-2-Clone带有Submodule的仓库" class="headerlink" title="4.2 Clone带有Submodule的仓库"></a>4.2 Clone带有Submodule的仓库</h3><p>一般操作：<code>git clone &lt;repository url&gt;</code></p>
+<p>然后进入项目根目录。执行以下命令；</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git submodule</span></span><br></pre></td></tr></table></figure>
+
+<p>看到 显示的 submodules 的状态是hash码和文件目录，但是注意前面有一个减号：**-**，含义是该子模块还没有检出。</p>
+<p>检出 submodule 命令： <code>git submodule init</code></p>
+<p>结果是：开始 clone submodule 了；</p>
+<p>多个步骤比较麻烦，总结一下简单的方法：</p>
+<p><strong><code>git clone --recursive &lt;repository url&gt;</code></strong></p>
+<p>–<strong>recursive</strong> 参数的含义：可以在clone项目时同时clone关联的 submodules。</p>
+<p>git help 对其解释：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--recursive, --recurse-submodules</span></span><br><span class="line">   <span class="keyword">After</span> the clone <span class="keyword">is</span> created, initialize <span class="keyword">all</span> submodules <span class="keyword">within</span>, <span class="keyword">using</span> their <span class="keyword">default</span> settings. This <span class="keyword">is</span> equivalent <span class="keyword">to</span> running git</span><br><span class="line">   submodule <span class="keyword">update</span> <span class="comment">--init --recursive immediately after the clone is finished. This option is ignored if the cloned repository</span></span><br><span class="line">   does <span class="keyword">not</span> have a worktree/checkout (i.e. <span class="keyword">if</span> <span class="keyword">any</span> <span class="keyword">of</span> <span class="comment">--no-checkout/-n, --bare, or --mirror is given)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-在-superproject-中修改-submodule"><a href="#4-3-在-superproject-中修改-submodule" class="headerlink" title="4.3 在 superproject 中修改 submodule"></a>4.3 在 superproject 中修改 submodule</h3><p>在 superproject 目录下执行</p>
+<p>cd libs&#x2F;lib1</p>
+<p>git status</p>
+<p>git checkout master # 切换到子模块的 master 分支 (也可以是其他分支，这里只是做一下示意)</p>
+<p>git remote -v # 验证当前所处的分支</p>
+<p>## 做一些 lib1 的修改操作；</p>
+<p>git status</p>
+<p>git add .</p>
+<p>git commit -m “xxx”</p>
+<p>git push # push 到的是 lib1 的远程仓库（通过 merge request 最终合并到 master 分支，下面的操作不是必要的）</p>
+<p>-————————————————</p>
+<p>cd superproject</p>
+<p>git add -A</p>
+<p>git comm -m “xxx”</p>
+<p>这时候会发现 superproject 下引用的 libs\lib1 的Head Id才会变化</p>
+<h3 id="4-4-其他开发人员更新主项目的-Submodules"><a href="#4-4-其他开发人员更新主项目的-Submodules" class="headerlink" title="4.4 其他开发人员更新主项目的 Submodules"></a>4.4 其他开发人员更新主项目的 Submodules</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">通过 <span class="number">4</span>.<span class="number">3</span> 其他开发人更新了 <span class="keyword">submodule，那么团队的其他人员如何同步到这个开发人员的更新内容；就是以下命令方式：</span></span><br><span class="line"><span class="keyword"></span>在开发人员 <span class="keyword">B </span>的电脑上执行：</span><br><span class="line">git pull</span><br><span class="line">git status</span><br><span class="line">我们运行了git pull命令和git status获取了最新的仓库源码，然后看到了状态时modified 信息，就能看到 <span class="keyword">submodule </span>有变化</span><br><span class="line">git <span class="keyword">diff </span>  <span class="comment"># 比较一下不同点</span></span><br><span class="line">git <span class="keyword">submodule </span>init <span class="comment"># 当需要更新子模块的内容时请先确保已经运行过 git submodule init</span></span><br><span class="line">git <span class="keyword">submodule </span>update</span><br><span class="line"></span><br><span class="line">拉取所有子模块快捷命令总结git <span class="keyword">submodule </span>foreach git pull</span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>init </span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>update </span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-移除-Submodule"><a href="#4-5-移除-Submodule" class="headerlink" title="4.5 移除 Submodule"></a>4.5 移除 Submodule</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git 没有设计 git submodule remove 或者类似的命令，因此只能手动一步一步移除 submodule</span><br><span class="line">git <span class="built_in">rm</span> -r --cached libs/  <span class="comment"># 删除git cache和物理文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf libs/lib1</span><br><span class="line">修改或者删除 .gitmodules 文件</span><br><span class="line">删除.git/config 文件中的 submodule 配置 </span><br><span class="line">最后提交更改；</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-update-submodule"><a href="#4-6-update-submodule" class="headerlink" title="4.6 update submodule"></a>4.6 update submodule</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1">https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1</a></p>
+<p>The <a target="_blank" rel="noopener" href="http://git-scm.com/docs/git-submodule"><code>git submodule update</code></a> command actually tells Git that you want your submodules to each check out the commit already specified in the index of the superproject. If you want to <em>update</em> your submodules to the latest commit available from their remote, you will need to do this directly in the submodules.</p>
+<p>So in summary:</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title"># Get the submodule initially``git submodule add ssh:</span>``//bla submodule_dir``git submodule init` `# Time passes, submodule upstream is updated``# <span class="literal">and</span> you now want to update` `# Change to the submodule directory``cd submodule_dir` `# Checkout desired branch``git checkout master` `# Update``git pull` `# Get back to your project root``cd ..` `# Now the submodules are in the state you want, so``git commit -am ``<span class="string">&quot;Pulled down update to submodule_dir&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Or, if you’re a busy person:</p>
+<p>`&#96;&#96;<br>**git submodule foreach git pull origin release**<br>`&#96;&#96;</p>
+<p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image-20210326165244437.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
+<h3 id="4-7-git-checkout-同时更新子模块"><a href="#4-7-git-checkout-同时更新子模块" class="headerlink" title="4.7 git checkout 同时更新子模块"></a>4.7 git checkout 同时更新子模块</h3><p>参考链接：<a target="_blank" rel="noopener" href="https://www.codenong.com/1899792/">https://www.codenong.com/1899792/</a></p>
+<p>默认情况，如果切换分支前后的两个分支的 submodule 子模块的版本不一致， git checkout <branch name> 的时候不会自动更新子模块；</p>
+<p>git checkout –recurse-submodules已添加到git 2.13</p>
+<p>在发行说明中提到了这一点：<a target="_blank" rel="noopener" href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
+<p>submodule.recurse选项已添加到git 2.14</p>
+<p>设置：</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">git config –global submodule.recurse true</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>man git-config说：</p>
+<blockquote>
+<p>Specifies if commands recurse into submodules by default. This applies to all commands that have a –recurse-submodules option. Defaults to false.</p>
+</blockquote>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch &#x2F; pull 也会自动拉取子模块的更新</p>
+<p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image2021-3-29_17-26-44.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
+<h2 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h2><p>git 官方文档</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lsgxeva/p/8540758.html">https://www.cnblogs.com/lsgxeva/p/8540758.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>ConorLuo
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://buctllx.github.io/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Git Submodule 的使用">https://buctllx.github.io/2023/03/17/Git-Submodule-的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/" rel="prev" title="数据库范式">
+                  <i class="fa fa-chevron-left"></i> 数据库范式
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"9cefbddb37953eb5ed26e7244ff6023c"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
