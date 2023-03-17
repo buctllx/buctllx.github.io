@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"buctllx.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="https://buctllx.github.io/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://buctllx.github.io/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/","path":"2022/03/01/Visual-Studio-代码格式化工具/","title":"Visual Studio 代码格式化工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Visual Studio 代码格式化工具 | ConorLuo 博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">ConorLuo 博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">胆小认生，不易相处</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%9F%BA%E7%A1%80%E8%AE%BE%E7%BD%AE"><span class="nav-text">Visual Studio 代码格式化基础设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Format-Document-On-Save-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">1. Format Document On Save 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%89%E8%A3%85%E8%AE%BE%E7%BD%AE"><span class="nav-text">1.1 安装设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 项目级使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-XAML-Styler-%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6"><span class="nav-text">2. XAML Styler 扩展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-XAML-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">2.1 XAML 的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="nav-text">2.2 安装使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%85%B3%E9%94%AE%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%AE%BE%E7%BD%AE%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="nav-text">2.3 关键格式化设置项说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E6%8E%92%E5%BA%8F"><span class="nav-text">2.4 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E9%A1%B9%E7%9B%AE%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="nav-text">2.5 项目级使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-ctrl-s-%E4%BF%9D%E5%AD%98%E6%97%B6%E7%9A%84%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-text">2.6 ctrl+s 保存时的冲突问题解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1%E5%88%86%E6%9E%90"><span class="nav-text">现象分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ConorLuo"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">ConorLuo</p>
+  <div class="site-description" itemprop="description">北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/buctllx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;buctllx" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="ConorLuo:buctllx@163.com" title="E-Mail → ConorLuo:buctllx@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://docs.microsoft.com/" title="https:&#x2F;&#x2F;docs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft 技术文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://devblogs.microsoft.com/" title="https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;" rel="noopener" target="_blank">Microsoft Blog</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.liaoxuefeng.com/" title="https:&#x2F;&#x2F;www.liaoxuefeng.com&#x2F;" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://jeremytammik.github.io/tbc/a/" title="http:&#x2F;&#x2F;jeremytammik.github.io&#x2F;tbc&#x2F;a&#x2F;" rel="noopener" target="_blank">Revit jeremy</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.walterlv.com/" title="https:&#x2F;&#x2F;blog.walterlv.com&#x2F;" rel="noopener" target="_blank">MVP walterlv</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.lindexi.com/" title="https:&#x2F;&#x2F;blog.lindexi.com&#x2F;" rel="noopener" target="_blank">MVP 林德熙</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Visual Studio 代码格式化工具 | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Visual Studio 代码格式化工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-01 15:43:28" itemprop="dateCreated datePublished" datetime="2022-03-01T15:43:28+08:00">2022-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-16 18:05:41" itemprop="dateModified" datetime="2022-03-16T18:05:41+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/VisualStudio/" itemprop="url" rel="index"><span itemprop="name">VisualStudio</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。</p>
+<p>本篇文章，结合 Visual Studio 的基础设置，同时配合 Visual Studio 扩展相关的代码格式化工具进行项目级别代码格式化规范的统一说明。</p>
+<span id="more"></span> 
+
+<h1 id="Visual-Studio-代码格式化基础设置"><a href="#Visual-Studio-代码格式化基础设置" class="headerlink" title="Visual Studio 代码格式化基础设置"></a>Visual Studio 代码格式化基础设置</h1><p>vs 自带的文件格式化设置功能位于：工具 -&gt; 选项 -&gt; 文本编辑器</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303115418833.png" alt="image-20220303115418833"></p>
+<p>在这里，既可以按照编程语言设置，也可以在“所有语言”中进行统一设置；</p>
+<p>这里的设置都是一些基本的设置，比如说：行号，自动补全，缩进等；</p>
+<p>以C#为例，在写代码的过程中一般只有在 补全 {} 的时候才会进行自动格式化，如果实在 {} 内部写代码，比如说缩进不对，没有加空格等，那么在保存的时候就不会自动格式化（除非使用了手动&#x2F;快捷键格式化或者高级插件）</p>
+<p>还有，在进行 XAML 开发的时候，由于其标签语言的特性，属性有时候会比较多，尤其实在团队开发的过程中，每个人都有自己的习惯，有些人喜欢一行写下去不带换行，有些喜欢加换行（换行的时候属性的数量也不同，极端的一个属性就换行，或者三五个属性后再换行），而且相同标签的空间在一起，属性的顺序也可能不一样，这就给代码的可读性增加了困难；</p>
+<p>如何解决这些问题，下面将会结合高级工具进行说明； </p>
+<h1 id="1-Format-Document-On-Save-扩展插件"><a href="#1-Format-Document-On-Save-扩展插件" class="headerlink" title="1. Format Document On Save 扩展插件"></a>1. Format Document On Save 扩展插件</h1><p>主要用户解决，再保存代码的时候进行自动格式化；</p>
+<p>保存操作支持</p>
+<ol>
+<li>ctrl+s</li>
+<li>vs ide 中保存按钮</li>
+</ol>
+<h2 id="1-1-安装设置"><a href="#1-1-安装设置" class="headerlink" title="1.1 安装设置"></a>1.1 安装设置</h2><p>插件链接：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mynkow.FormatdocumentonSave">Format document on Save - Visual Studio Marketplace</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Elders/VSE-FormatDocumentOnSave">Elders&#x2F;VSE-FormatDocumentOnSave: Visual Studio - Format Document on Save (github.com)</a></p>
+<p>安装后，可以在 工具 -&gt; 选项 -&gt; Format Document On Save 中进行格式化的一些设置，操作；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220303120914539.png" alt="image-20220303120914539"></p>
+<p>设置项比较简单，也有注释，这里就不在一一说明了；</p>
+<h2 id="1-2-项目级使用"><a href="#1-2-项目级使用" class="headerlink" title="1.2 项目级使用"></a>1.2 项目级使用</h2><p>上面介绍的使用方法，可以满足一般个人的使用，但是在团队开发的过程中，每个人的设置可能不一样，如何解决这个问题能，这里就要使用到项目级的文件格式化配置 EditConfig。</p>
+<p>项目级的文件格式化配置 EditConfig，不是针对某个人的；具有以下特点：</p>
+<ol>
+<li>一个项目（sln）一个配置文件；</li>
+<li>项目配置的优先级高于 工具 -&gt; 选项 -&gt; Format Document On Save 插件中的配置；</li>
+</ol>
+<p>这样，有了<a target="_blank" rel="noopener" href="https://editorconfig.org/">EditorConfig</a> 即便团队中的人员插件设置不一样，也能使用相同的格式化配置；</p>
+<p>有关 <a target="_blank" rel="noopener" href="https://editorconfig.org/">EditorConfig</a> 的详细信息可以查看链接，这里不详细说明了。</p>
+<p>有了这个插件，可以很好的解决 99% 的代码格式问题，唯一例外的就是 xaml 文件不能格式化，这个会在下面单独说明。</p>
+<h1 id="2-XAML-Styler-扩展插件"><a href="#2-XAML-Styler-扩展插件" class="headerlink" title="2. XAML Styler 扩展插件"></a>2. XAML Styler 扩展插件</h1><p>在 .Net 开发中，有一种特殊的代码文件：XAML，是前面讲的代码格式化插件所不能格式的；</p>
+<p>而 XAML Styler 就是专门针对 xaml 文件进行格式化，这一点从名字上就能看出来。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dino623/p/XAML_Styler.html">使用 XAML 格式化工具：XAML Styler - dino.c - 博客园 (cnblogs.com)</a></p>
+<h2 id="2-1-XAML-的问题"><a href="#2-1-XAML-的问题" class="headerlink" title="2.1 XAML 的问题"></a>2.1 XAML 的问题</h2><p>XAML 格式化主要的难题是下面几个：</p>
+<ul>
+<li>如果所有属性都写在同一行，它太宽了很难看到后面的属性</li>
+<li>如果每个属性单独一行，它又太长了很难看清楚它的结构</li>
+<li>属性之间没有排序，重要属性的属性找起来很困难</li>
+<li>团队没有统一的标准，不小心格式化一下代码的话全部都会变，CodeReview 烦死人</li>
+</ul>
+<p>如果不想得过且过忍受上述这些问题的话，可以试试用 XAML Styler 这个工具，它正好解决了这些问题。</p>
+<h2 id="2-2-安装使用"><a href="#2-2-安装使用" class="headerlink" title="2.2 安装使用"></a>2.2 安装使用</h2><p>XAML Styler 是一个 VisualStudio插件（也可用于其它 IDE），这是它在  Visual Studio Marketplace 和 Github 上的地址：</p>
+<p><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=NicoVermeir.XAMLStyler">XAML Styler - Visual Studio Marketplace</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler">Xavalon&#x2F;XamlStyler: Visual Studio extension to help format your XAML source code (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler/wiki">Home · Xavalon&#x2F;XamlStyler Wiki (github.com)</a></p>
+<p>在 VisualStudio 的管理扩展窗口中，输入 XamlStyle 搜索，点击“下载”然后关闭 VisualStudio 即可完成安装。</p>
+<p>具体安装步骤不在这里说明了。</p>
+<p>安装完成后重启 Visual Studio，可以在“选项”窗口中看到它的配置：</p>
+<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232810578-324783095.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232810578-324783095.png" alt="img"></a></p>
+<p>之后，每次在 XAML 编辑器中执行保存都会自动进行格式化操作。你也可以在 XAML 编辑器的右键菜单选择 Format XAML 或使用快捷键进行格式化。</p>
+<h2 id="2-3-关键格式化设置项说明"><a href="#2-3-关键格式化设置项说明" class="headerlink" title="2.3 关键格式化设置项说明"></a>2.3 关键格式化设置项说明</h2><p>XAML 的格式主要有两种方式：所有属性放一行和每个属性单独一行。</p>
+<p>如果选择所有属性放一行的时候，XAML 结构清晰，结构严谨，段落分明，而且文件也很短。</p>
+<p>可是万一很多属性问题就出来了，一行 XAML 会变得很长。而且看看下面两个 ContentPresenter，同样都有 Margin 属性、HorizontalAlignment 属性，VerticalAlignment 属性，RecognizesAccessKey 属性，SnapsToDevicePixels 顺序ing，但你能看到第二个 ContentPresenter 后面偷偷塞了个 Margin 吗：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Copy<span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span> <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span> <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span> <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span> <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span> <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span> <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span> <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span> <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span> <span class="attr">Margin</span>=<span class="string">&quot;40&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果在 VisualStudio 中“文本编辑器-&gt;XAML-&gt;格式化-&gt;间距-&gt;特性间距”这个选项中选择了“将各个属性分别放置”：</p>
+<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/38937/202101/38937-20210120232837859-1653416211.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210120232837859-1653416211.png" alt="img"></a></p>
+<p>格式化文档后上面的 XAML 就会变成这样：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ContentPresenter</span> <span class="attr">Margin</span>=<span class="string">&quot;&#123;TemplateBinding Padding&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding HorizontalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">VerticalAlignment</span>=<span class="string">&quot;&#123;TemplateBinding VerticalContentAlignment&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">RecognizesAccessKey</span>=<span class="string">&quot;True&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">SnapsToDevicePixels</span>=<span class="string">&quot;&#123;TemplateBinding SnapsToDevicePixels&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">Margin</span>=<span class="string">&quot;40&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>每个属性单独一行不仅不会看漏属性，而且编辑器本身也不会有横向和纵向两种方向的移动，只有从上到下的移动，这就舒服多了。</p>
+<p>可是大部分情况下每个属性分行放置会破坏原本清晰的 XAML 层次结构，例如下面这种本来好好的 XAML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FontWeight&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;Normal&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;UseSystemFocusVisuals&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;True&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FocusVisualMargin&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;-3&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Height&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Width&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Maximum&quot;</span> <span class="attr">Value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>变成这样：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FontWeight&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;Normal&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;UseSystemFocusVisuals&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;True&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;FocusVisualMargin&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;-3&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Height&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Width&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">&quot;Maximum&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种风格优雅得像诗歌<br>我偶尔称为豆瓣风<br>一行变两行<br>两行变四行<br>本来<br>一页看得完<br>的代码<br>变成<br>两页才看得完<br>也是够<br>麻烦的。</p>
+<p>XAML Styler 很好地解决了这个问题，它通过 “Attribute tolerance” 属性控制每一行的容许的最多的属性数量，如果一个元素的属性数量少于设定值，那就放在一行，如果超过就所有属性单独一行。通常我将这个属性设置为 <code>2</code>，再配合 “Keep first attribute on same line &#x3D; true” 的设置，可以做到下面这种格式化效果：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;NormalTextColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#2E2F33&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;PrimaryColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#FFED5B8C&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;LineColor&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;#E1E1E1&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SolidColorBrush</span> <span class="attr">x:Key</span>=<span class="string">&quot;TransparentBackground&quot;</span> <span class="attr">Color</span>=<span class="string">&quot;Transparent&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ControlTemplate</span> <span class="attr">x:Key</span>=<span class="string">&quot;CompletedTemplate&quot;</span> <span class="attr">TargetType</span>=<span class="string">&quot;ContentControl&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Grid</span> <span class="attr">x:Name</span>=<span class="string">&quot;CompletedElement&quot;</span> <span class="attr">Margin</span>=<span class="string">&quot;-2&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">control:DropShadowPanel</span> <span class="attr">HorizontalContentAlignment</span>=<span class="string">&quot;Stretch&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">VerticalContentAlignment</span>=<span class="string">&quot;Stretch&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">BlurRadius</span>=<span class="string">&quot;8&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">OffsetX</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">OffsetY</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">Color</span>=<span class="string">&quot;#FFED5B8C&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Ellipse</span> <span class="attr">x:Name</span>=<span class="string">&quot;CompletedRectangle&quot;</span> <span class="attr">Fill</span>=<span class="string">&quot;&#123;StaticResource PrimaryColor&#125;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">control:DropShadowPanel</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Grid</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ControlTemplate</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就可以兼顾两种格式化的优点。</p>
+<h2 id="2-4-排序"><a href="#2-4-排序" class="headerlink" title="2.4 排序"></a>2.4 排序</h2><p>如果元素有多个属性，要找到它的主要属性（通常是 Name 和 Grid.Row）需要颇费一番功夫。XAML Styler 根据一个可设定的规则自动将元素的各个属性排序，这个规则如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;AttributeOrderingRuleGroups&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;x:Class&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;xmlns, xmlns:x&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;xmlns:*&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;x:Key, Key, x:Name, Name, x:Uid, Uid, Title&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;Grid.Row, Grid.RowSpan, Grid.Column, Grid.ColumnSpan, Canvas.Left, Canvas.Top, Canvas.Right, Canvas.Bottom&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;Margin, Padding, HorizontalAlignment, VerticalAlignment, HorizontalContentAlignment, VerticalContentAlignment, Panel.ZIndex&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;*:*, *&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;PageSource, PageIndex, Offset, Color, TargetName, Property, Value, StartPoint, EndPoint&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;mc:Ignorable, d:IsDataSource, d:LayoutOverrides, d:IsStaticText&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;Storyboard.*, From, To, Duration&quot;</span></span><br><span class="line"><span class="punctuation">]</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
+<p>排序结果大致如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">x:Name</span>=<span class="string">&quot;Show&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Grid.Row</span>=<span class="string">&quot;1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Padding</span>=<span class="string">&quot;40,20&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Center&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">VerticalAlignment</span>=<span class="string">&quot;Center&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Background</span>=<span class="string">&quot;#00aef1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Show&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Foreground</span>=<span class="string">&quot;White&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Style</span>=<span class="string">&quot;&#123;StaticResource BubbleButtonStyle&#125;&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-项目级使用"><a href="#2-5-项目级使用" class="headerlink" title="2.5 项目级使用"></a>2.5 项目级使用</h2><p>最后，就算自己做好了格式化，团队中的其它成员使用了不同的格式化标准也会引起很多问题。针对这个问题 Xaml Styler 也提供了解决方案。</p>
+<p>在项目的根目录创建一个名为“Settings.XamlStyler”的文件，内容参考这个网址：<a target="_blank" rel="noopener" href="https://github.com/Xavalon/XamlStyler/wiki/External-Configurations">https://github.com/Xavalon/XamlStyler/wiki/External-Configurations</a> 中的 <strong>Default Configuration</strong>。有了这个配置文件，XAML Styler 就会根据它而不是全局配置进行格式化，作为项目的统一格式化标准。</p>
+<h2 id="2-6-ctrl-s-保存时的冲突问题解决"><a href="#2-6-ctrl-s-保存时的冲突问题解决" class="headerlink" title="2.6 ctrl+s 保存时的冲突问题解决"></a>2.6 ctrl+s 保存时的冲突问题解决</h2><p>设置完这两个插件后，在实际使用的过程中可能会发现：在使用 ctrl + s 保存的时候会达不到效果</p>
+<h3 id="现象分析"><a href="#现象分析" class="headerlink" title="现象分析"></a>现象分析</h3><p>在 xaml 中按 ctrl + s 保存的时候，仔细查看画面，会发现 xaml 文件被保存了两次，而且第一一闪而过的结果好像还是正确的，最初呈现的第二次保存解决却不对了，</p>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>根据现象可以分析出来，不止一个插件触发了xaml 的保存操作，那个捣乱者是谁，很容易想到是 Format Document On Save</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>从现象中我们看到，保存了两次导致解结果不对；</p>
+<p>那么就有两个解决方案：</p>
+<ol>
+<li>让 xaml styler 最后保存，</li>
+<li>不然 Format Document On Save 保存 xaml；</li>
+</ol>
+<p>方案 1 我们无法控制保存顺序，暂时无解；</p>
+<p>方案 2 如果我们在设置中可以设置 不存在 xaml 文件就可以了，或许可行</p>
+<p>打开 Format Document On Save  设置信息，我们仔细查看，有一个叫 <strong>Denied Extensions</strong> 的设置项，我们可以通过它设置不格式化 xaml 文件，设置后试了一些，依然达不到效果，查看那里除了问题，仔细看 <strong>Denied Extensions</strong> 设置项的说明发现：</p>
+<p> <strong>Denied Extensions</strong> 设置项，只有在  <strong>Allowed Extensions</strong> 设置项为空的情况下才能生效，于是赶紧删除试一下，果然成功了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/weixin.jpg" alt="ConorLuo 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="ConorLuo 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>ConorLuo
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://buctllx.github.io/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/" title="Visual Studio 代码格式化工具">https://buctllx.github.io/2022/03/01/Visual-Studio-代码格式化工具/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/VisualStudio/" rel="tag"><i class="fa fa-tag"></i> VisualStudio</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/" rel="prev" title="使用 Windows Server 建立 Web Site 并关联 FTP Server">
+                  <i class="fa fa-chevron-left"></i> 使用 Windows Server 建立 Web Site 并关联 FTP Server
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/03/Visual-Studio-sln-file-%E7%BC%96%E8%BE%91-bug-%E8%AE%B0%E5%BD%95/" rel="next" title="Visual Studio *.sln file 编辑 bug 记录">
+                  Visual Studio *.sln file 编辑 bug 记录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="" aria-label="选择语言">
+      
+        <option value="zh-CN" data-href="/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ConorLuo</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/buctllx" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"buctllx","repo":"buctllx.github.io","client_id":"399664b4b2082eb3e04e","client_secret":"e1aba7692c7cbfaae40cda40e368d9d63385bc6a","admin_user":"buctllx","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"0ff0c5273b6e075cccca387d024f5989"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
