@@ -305,12 +305,16 @@
   <entry>
     <title>Git Submodule 的使用</title>
     <url>/2023/03/17/Git-Submodule-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="1-解释："><a href="#1-解释：" class="headerlink" title="1. 解释："></a>1. 解释：</h2><p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image2020-3-31_14-39-49.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
+    <content><![CDATA[<p>GitSubmodule 是一种在 git repository 中嵌入另外一个 git repository ，并在两个 repository  之间建立关系的一种技术</p>
+<p>简单来说 Git Submodule 是一种在 git repository 中嵌入另外一个 git repository ，并在两个 repository  之间建立关系的一种技术。这样有什么作用呢？他可以把原本多个独立的 repository 通过这种技术放在一个 repository 中进行集成管理，以 repository  的维度对一个大项目进行模块划分。具体的用法和好处接下来我们慢慢讲述。</p>
+<span id="more"></span> 
+
+<h1 id="解释："><a href="#解释：" class="headerlink" title="解释："></a>解释：</h1><p>![imp:&#x2F;&#x2F;confluence.cbim.org.cn:8090&#x2F;download&#x2F;attachments&#x2F;67820378&#x2F;image2020-3-31_14-39-49.png?version&#x3D;1&amp;modificationDate&#x3D;1654071841000&amp;api&#x3D;v2)</p>
 <p>submodule 也是仓库；</p>
 <p>嵌入在其他项目的仓库中；</p>
 <p>一套代码体系，在 superproject 和 submodule 自己的 project 都可以发起修改操作；</p>
-<h2 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2. 使用场景"></a>2. 使用场景</h2><h3 id="2-1-想使用其他项目的代码，但又想保持独立的操作记录；"><a href="#2-1-想使用其他项目的代码，但又想保持独立的操作记录；" class="headerlink" title="2.1 想使用其他项目的代码，但又想保持独立的操作记录；"></a>2.1 想使用其他项目的代码，但又想保持独立的操作记录；</h3><p>引用一段《<a href="http://book.douban.com/subject/6526452/">Git权威指南</a>》的话： 项目的版本库在某些情况虾需要引用其他版本库中的文件，例如公司积累了一套常用的函数库，被多个项目调用，显然这个函数库的代码不能直接放到某个项目的代码中，而是要独立为一个代码库，那么其他项目要调用公共函数库该如何处理呢？分别把公共函数库的文件拷贝到各自的项目中会造成冗余，丢弃了公共函数库的维护历史，这显然不是好的方法。</p>
-<h3 id="2-2-把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"><a href="#2-2-把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；" class="headerlink" title="2.2 把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"></a>2.2 把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；</h3><h2 id="3-Git-Doc-DESCRIPTION-官方解释"><a href="#3-Git-Doc-DESCRIPTION-官方解释" class="headerlink" title="3. Git Doc DESCRIPTION (官方解释)"></a>3. Git Doc DESCRIPTION (官方解释)</h2><p>A submodule is a repository embedded inside another repository. The submodule has its own history; the repository it is embedded in is called a superproject.</p>
+<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><h2 id="想使用其他项目的代码，但又想保持独立的操作记录；"><a href="#想使用其他项目的代码，但又想保持独立的操作记录；" class="headerlink" title="想使用其他项目的代码，但又想保持独立的操作记录；"></a>想使用其他项目的代码，但又想保持独立的操作记录；</h2><p>引用一段《<a href="http://book.douban.com/subject/6526452/">Git权威指南</a>》的话： 项目的版本库在某些情况虾需要引用其他版本库中的文件，例如公司积累了一套常用的函数库，被多个项目调用，显然这个函数库的代码不能直接放到某个项目的代码中，而是要独立为一个代码库，那么其他项目要调用公共函数库该如何处理呢？分别把公共函数库的文件拷贝到各自的项目中会造成冗余，丢弃了公共函数库的维护历史，这显然不是好的方法。</p>
+<h2 id="把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"><a href="#把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；" class="headerlink" title="把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；"></a>把一个大项目拆分成不同的仓库，然后又想把这些仓库以某种方式集合在一起；</h2><h1 id="Git-Doc-DESCRIPTION-官方解释"><a href="#Git-Doc-DESCRIPTION-官方解释" class="headerlink" title="Git Doc DESCRIPTION (官方解释)"></a>Git Doc DESCRIPTION (官方解释)</h1><p>A submodule is a repository embedded inside another repository. The submodule has its own history; the repository it is embedded in is called a superproject.</p>
 <p>On the filesystem, a submodule usually (but not always - see FORMS below) consists of (i) a Git directory located under the <code>$GIT_DIR/modules/</code> directory of its superproject, (ii) a working directory inside the superproject’s working directory, and a <code>.git</code> file at the root of the submodule’s working directory pointing to (i).</p>
 <p>Assuming the submodule has a Git directory at <code>$GIT_DIR/modules/foo/</code> and a working directory at <code>path/to/bar/</code>, the superproject tracks the submodule via a <code>gitlink</code> entry in the tree at <code>path/to/bar</code> and an entry in its <code>.gitmodules</code> file (see gitmodules(5)) of the form <code>submodule.foo.path = path/to/bar</code>.</p>
 <p>The <code>gitlink</code> entry contains the object name of the commit that the superproject expects the submodule’s working directory to be at.</p>
@@ -325,7 +329,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="4-使用方法介绍"><a href="#4-使用方法介绍" class="headerlink" title="4. 使用方法介绍"></a>4. 使用方法介绍</h2><h3 id="4-1-为主项目添加Submodules"><a href="#4-1-为主项目添加Submodules" class="headerlink" title="4.1 为主项目添加Submodules"></a>4.1 为主项目添加Submodules</h3><p>命令：git submodule add <repository url> <module path></p>
+<h1 id="使用方法介绍"><a href="#使用方法介绍" class="headerlink" title="使用方法介绍"></a>使用方法介绍</h1><h2 id="为主项目添加Submodules"><a href="#为主项目添加Submodules" class="headerlink" title="为主项目添加Submodules"></a>为主项目添加Submodules</h2><p>命令：git submodule add <repository url> <module path></p>
 <p>解释：</p>
 <p>在 super project 中执行（下面用 superproject 代替）；</p>
 <p><repository url>是要引用的项目的仓库地址；</p>
@@ -333,7 +337,7 @@
 <p>结果：</p>
 <p>查看 superproject 当前的状态发现添加了一个新文件(<strong>.gitmodules</strong>) 和 <module path> 文件夹；</p>
 <p><strong>.gitmodules</strong> 记录了每个 submodule 的引用信息，知道在当前项目的位置以及仓库的所在。</p>
-<h3 id="4-2-Clone带有Submodule的仓库"><a href="#4-2-Clone带有Submodule的仓库" class="headerlink" title="4.2 Clone带有Submodule的仓库"></a>4.2 Clone带有Submodule的仓库</h3><p>一般操作：<code>git clone &lt;repository url&gt;</code></p>
+<h2 id="Clone-带有-Submodule-的仓库"><a href="#Clone-带有-Submodule-的仓库" class="headerlink" title="Clone 带有 Submodule 的仓库"></a>Clone 带有 Submodule 的仓库</h2><p>一般操作：<code>git clone &lt;repository url&gt;</code></p>
 <p>然后进入项目根目录。执行以下命令；</p>
 <figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">git submodule</span></span><br></pre></td></tr></table></figure>
 
@@ -346,7 +350,7 @@
 <p>git help 对其解释：</p>
 <figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--recursive, --recurse-submodules</span></span><br><span class="line">   <span class="keyword">After</span> the clone <span class="keyword">is</span> created, initialize <span class="keyword">all</span> submodules <span class="keyword">within</span>, <span class="keyword">using</span> their <span class="keyword">default</span> settings. This <span class="keyword">is</span> equivalent <span class="keyword">to</span> running git</span><br><span class="line">   submodule <span class="keyword">update</span> <span class="comment">--init --recursive immediately after the clone is finished. This option is ignored if the cloned repository</span></span><br><span class="line">   does <span class="keyword">not</span> have a worktree/checkout (i.e. <span class="keyword">if</span> <span class="keyword">any</span> <span class="keyword">of</span> <span class="comment">--no-checkout/-n, --bare, or --mirror is given)</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="4-3-在-superproject-中修改-submodule"><a href="#4-3-在-superproject-中修改-submodule" class="headerlink" title="4.3 在 superproject 中修改 submodule"></a>4.3 在 superproject 中修改 submodule</h3><p>在 superproject 目录下执行</p>
+<h2 id="在-superproject-中修改-submodule"><a href="#在-superproject-中修改-submodule" class="headerlink" title="在 superproject 中修改 submodule"></a>在 superproject 中修改 submodule</h2><p>在 superproject 目录下执行</p>
 <p>cd libs&#x2F;lib1</p>
 <p>git status</p>
 <p>git checkout master # 切换到子模块的 master 分支 (也可以是其他分支，这里只是做一下示意)</p>
@@ -361,11 +365,11 @@
 <p>git add -A</p>
 <p>git comm -m “xxx”</p>
 <p>这时候会发现 superproject 下引用的 libs\lib1 的Head Id才会变化</p>
-<h3 id="4-4-其他开发人员更新主项目的-Submodules"><a href="#4-4-其他开发人员更新主项目的-Submodules" class="headerlink" title="4.4 其他开发人员更新主项目的 Submodules"></a>4.4 其他开发人员更新主项目的 Submodules</h3><figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">通过 <span class="number">4</span>.<span class="number">3</span> 其他开发人更新了 <span class="keyword">submodule，那么团队的其他人员如何同步到这个开发人员的更新内容；就是以下命令方式：</span></span><br><span class="line"><span class="keyword"></span>在开发人员 <span class="keyword">B </span>的电脑上执行：</span><br><span class="line">git pull</span><br><span class="line">git status</span><br><span class="line">我们运行了git pull命令和git status获取了最新的仓库源码，然后看到了状态时modified 信息，就能看到 <span class="keyword">submodule </span>有变化</span><br><span class="line">git <span class="keyword">diff </span>  <span class="comment"># 比较一下不同点</span></span><br><span class="line">git <span class="keyword">submodule </span>init <span class="comment"># 当需要更新子模块的内容时请先确保已经运行过 git submodule init</span></span><br><span class="line">git <span class="keyword">submodule </span>update</span><br><span class="line"></span><br><span class="line">拉取所有子模块快捷命令总结git <span class="keyword">submodule </span>foreach git pull</span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>init </span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>update </span><br></pre></td></tr></table></figure>
+<h2 id="其他开发人员更新主项目的-Submodules"><a href="#其他开发人员更新主项目的-Submodules" class="headerlink" title="其他开发人员更新主项目的 Submodules"></a>其他开发人员更新主项目的 Submodules</h2><figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">通过 <span class="number">4</span>.<span class="number">3</span> 其他开发人更新了 <span class="keyword">submodule，那么团队的其他人员如何同步到这个开发人员的更新内容；就是以下命令方式：</span></span><br><span class="line"><span class="keyword"></span>在开发人员 <span class="keyword">B </span>的电脑上执行：</span><br><span class="line">git pull</span><br><span class="line">git status</span><br><span class="line">我们运行了git pull命令和git status获取了最新的仓库源码，然后看到了状态时modified 信息，就能看到 <span class="keyword">submodule </span>有变化</span><br><span class="line">git <span class="keyword">diff </span>  <span class="comment"># 比较一下不同点</span></span><br><span class="line">git <span class="keyword">submodule </span>init <span class="comment"># 当需要更新子模块的内容时请先确保已经运行过 git submodule init</span></span><br><span class="line">git <span class="keyword">submodule </span>update</span><br><span class="line"></span><br><span class="line">拉取所有子模块快捷命令总结git <span class="keyword">submodule </span>foreach git pull</span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>init </span><br><span class="line">git <span class="keyword">submodule </span>foreach --recursive git <span class="keyword">submodule </span>update </span><br></pre></td></tr></table></figure>
 
-<h3 id="4-5-移除-Submodule"><a href="#4-5-移除-Submodule" class="headerlink" title="4.5 移除 Submodule"></a>4.5 移除 Submodule</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git 没有设计 git submodule remove 或者类似的命令，因此只能手动一步一步移除 submodule</span><br><span class="line">git <span class="built_in">rm</span> -r --cached libs/  <span class="comment"># 删除git cache和物理文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf libs/lib1</span><br><span class="line">修改或者删除 .gitmodules 文件</span><br><span class="line">删除.git/config 文件中的 submodule 配置 </span><br><span class="line">最后提交更改；</span><br></pre></td></tr></table></figure>
+<h2 id="移除-Submodule"><a href="#移除-Submodule" class="headerlink" title="移除 Submodule"></a>移除 Submodule</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git 没有设计 git submodule remove 或者类似的命令，因此只能手动一步一步移除 submodule</span><br><span class="line">git <span class="built_in">rm</span> -r --cached libs/  <span class="comment"># 删除git cache和物理文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf libs/lib1</span><br><span class="line">修改或者删除 .gitmodules 文件</span><br><span class="line">删除.git/config 文件中的 submodule 配置 </span><br><span class="line">最后提交更改；</span><br></pre></td></tr></table></figure>
 
-<h3 id="4-6-update-submodule"><a href="#4-6-update-submodule" class="headerlink" title="4.6 update submodule"></a>4.6 update submodule</h3><p><a href="https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1">https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1</a></p>
+<h2 id="update-submodule"><a href="#update-submodule" class="headerlink" title="update submodule"></a>update submodule</h2><p><a href="https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1">https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin?noredirect=1</a></p>
 <p>The <a href="http://git-scm.com/docs/git-submodule"><code>git submodule update</code></a> command actually tells Git that you want your submodules to each check out the commit already specified in the index of the superproject. If you want to <em>update</em> your submodules to the latest commit available from their remote, you will need to do this directly in the submodules.</p>
 <p>So in summary:</p>
 <figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line"><span class="title"># Get the submodule initially``git submodule add ssh:</span>``//bla submodule_dir``git submodule init` `# Time passes, submodule upstream is updated``# <span class="literal">and</span> you now want to update` `# Change to the submodule directory``cd submodule_dir` `# Checkout desired branch``git checkout master` `# Update``git pull` `# Get back to your project root``cd ..` `# Now the submodules are in the state you want, so``git commit -am ``<span class="string">&quot;Pulled down update to submodule_dir&quot;</span></span><br></pre></td></tr></table></figure>
@@ -375,7 +379,7 @@
 <p>Or, if you’re a busy person:</p>
 <p>`&#96;&#96;<br>**git submodule foreach git pull origin release**<br>`&#96;&#96;</p>
 <p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image-20210326165244437.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
-<h3 id="4-7-git-checkout-同时更新子模块"><a href="#4-7-git-checkout-同时更新子模块" class="headerlink" title="4.7 git checkout 同时更新子模块"></a>4.7 git checkout 同时更新子模块</h3><p>参考链接：<a href="https://www.codenong.com/1899792/">https://www.codenong.com/1899792/</a></p>
+<h2 id="git-checkout-同时更新子模块"><a href="#git-checkout-同时更新子模块" class="headerlink" title="git checkout 同时更新子模块"></a>git checkout 同时更新子模块</h2><p>参考链接：<a href="https://www.codenong.com/1899792/">https://www.codenong.com/1899792/</a></p>
 <p>默认情况，如果切换分支前后的两个分支的 submodule 子模块的版本不一致， git checkout <branch name> 的时候不会自动更新子模块；</p>
 <p>git checkout –recurse-submodules已添加到git 2.13</p>
 <p>在发行说明中提到了这一点：<a href="https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139">https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</a></p>
@@ -399,7 +403,7 @@
 </blockquote>
 <p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch &#x2F; pull 也会自动拉取子模块的更新</p>
 <p><img src="http://confluence.cbim.org.cn:8090/download/attachments/67820378/image2021-3-29_17-26-44.png?version=1&modificationDate=1654071841000&api=v2" alt="img"></p>
-<h2 id="5-参考文档"><a href="#5-参考文档" class="headerlink" title="5. 参考文档"></a>5. 参考文档</h2><p>git 官方文档</p>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><p>git 官方文档</p>
 <p><a href="https://www.cnblogs.com/lsgxeva/p/8540758.html">https://www.cnblogs.com/lsgxeva/p/8540758.html</a></p>
 ]]></content>
       <categories>
