@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ElasticSearch 操作异常总结</title>
+    <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="index-写入数据-forbidden-问题">1. Index 写入数据 FORBIDDEN 问题</h1>
+<h2 id="问题描述">1.1 问题描述</h2>
+<p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
+<p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
+<span id="more"></span>
+<h2 id="原因分析">1.2 原因分析</h2>
+<p>从字面意思看，ES 禁止数据写入；</p>
+<p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
+<p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
+<p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
+<h2 id="解决方法">1.3 解决方法</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<p>参考链接：[如何修复 ElasticSearch <a href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
+<h1 id="elasticsearch-启动参数问题">2. ElasticSearch 启动参数问题</h1>
+<p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
+<p>这里主要说明常见的各种 es 设置问题</p>
+<h2 id="unknown-setting-discovery.seed_hosts">2.1 unknown setting [discovery.seed_hosts]</h2>
+<h3 id="产生背景">产生背景</h3>
+<p>使用2019年的老脚本启动 es 的 docker 实例；</p>
+<p>注：笔者是 2021.12.15 pull 最新的 es 镜像启动实例的，启动实例使用的参数是 2019 年底时的；</p>
+<h3 id="原因">原因</h3>
+<p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
+<p>可以通过 dock inspect elasticsearch 查看</p>
+<h3 id="解决方法-1">解决方法</h3>
+<p>使用下面的配置替代</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
+<h3 id="类似的问题">类似的问题</h3>
+<p>unknown setting [cluster.initial_master_nodes]</p>
+<h2 id="es-缓存设置">2.2 ES 缓存设置</h2>
+<p>默认设置：ES_JAVA_OPTS="-Xms256m -Xmx256m"</p>
+<p>启动的时候可以加 -e 指定参数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
+<p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
+<blockquote>
+<p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
+</blockquote>
+<p>解决方法：修改 centos 系统的缓存设置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
+<h1 id="elasticsearch-集群状态排查">3. ElasticSearch 集群状态排查</h1>
+<p><a href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
+<h1 id="es-索引-primary-shard-is-unassigned-解决方法">4. ES 索引 primary shard is unassigned 解决方法</h1>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>[ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客](https://blog.csdn.net/weixin_34050519/article/details/85936609)</p>
+<p><a href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
+]]></content>
+      <categories>
+        <category>ElasticSearch</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git fetch 同时更新子模块</title>
+    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="问题描述">1. 问题描述</h2>
+<p>默认情况，git checkout; git fetch 如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
+<span id="more"></span>
+<h2 id="传统解决方法">2. 传统解决方法：</h2>
+<p>cd submodules 文件夹；</p>
+<p>git checkout / fetch；</p>
+<h2 id="高级解决方法">3. 高级解决方法：</h2>
+<p>在全局进行 Git 设置：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">1</th>
+<th style="text-align: left;">git config --global submodule.recurse true</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
+<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
+<p>在发行说明中提到了这一点：https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</p>
+<p>submodule.recurse 选项已添加到 git 2.14</p>
+]]></content>
+      <categories>
+        <category>Git 相关</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>AEC Ifc 结构学习</title>
     <url>/2022/04/14/AEC-Ifc-%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p>[AEC（建筑、工程和施工行业）_百度百科 (baidu.com)](https://baike.baidu.com/item/AEC/22376679?fr=aladdin)</p>
@@ -314,97 +405,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch 操作异常总结</title>
-    <url>/2021/12/15/ElasticSearch-%E6%93%8D%E4%BD%9C%E5%BC%82%E5%B8%B8%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="index-写入数据-forbidden-问题">1. Index 写入数据 FORBIDDEN 问题</h1>
-<h2 id="问题描述">1.1 问题描述</h2>
-<p>在使用七牛云的 Logkit 往 ElasticSearch 发送数据的时候出现了以下异常信息；</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># SendError: bulk failed with last error</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;_index&quot;</span>:<span class="string">&quot;dev_cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_type&quot;</span>:<span class="string">&quot;cbim_tool_log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;_id&quot;</span>:<span class="string">&quot;UhoDvX0B7FSmwLI_OPym&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;status&quot;</span>:<span class="number">403</span>,</span><br><span class="line">    <span class="attr">&quot;error&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;cluster_block_exception&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;reason&quot;</span>:<span class="string">&quot;blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"># failDatas size : <span class="number">33</span>	</span><br></pre></td></tr></table></figure>
-<p>其核心异常提示是：[FORBIDDEN/12/index read-only / allow delete (api)]</p>
-<span id="more"></span>
-<h2 id="原因分析">1.2 原因分析</h2>
-<p>从字面意思看，ES 禁止数据写入；</p>
-<p>联想到最近服务器发生的一系列问题，一切都能解释的通了；</p>
-<p>最近发现：ES 集群的一个节点挂了（主要是因为服务器的磁盘坏了）；</p>
-<p>在这样的情况下，触发了 ES 的保护机制，因此出现了上面的情况；</p>
-<h2 id="解决方法">1.3 解决方法</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
-<p>参考链接：[如何修复 ElasticSearch <a href="https://techoverflow.net/2019/04/17/how-to-fix-elasticsearch-forbidden-12-index-read-only-allow-delete-api/">FORBIDDEN/12/index read-only / allow delete （api）] – TechOverflow</a></p>
-<h1 id="elasticsearch-启动参数问题">2. ElasticSearch 启动参数问题</h1>
-<p>通过 docker 启动 es 的时候，相关参数设置跟 es 的镜像版本有关；</p>
-<p>这里主要说明常见的各种 es 设置问题</p>
-<h2 id="unknown-setting-discovery.seed_hosts">2.1 unknown setting [discovery.seed_hosts]</h2>
-<h3 id="产生背景">产生背景</h3>
-<p>使用2019年的老脚本启动 es 的 docker 实例；</p>
-<p>注：笔者是 2021.12.15 pull 最新的 es 镜像启动实例的，启动实例使用的参数是 2019 年底时的；</p>
-<h3 id="原因">原因</h3>
-<p>2019 年底的 es 镜像和 2021 年的镜像文件参数设置不一致，</p>
-<p>可以通过 dock inspect elasticsearch 查看</p>
-<h3 id="解决方法-1">解决方法</h3>
-<p>使用下面的配置替代</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">discovery.zen.ping.unicast.hosts:</span> [<span class="string">&quot;192.168.10.11:9300&quot;</span>,<span class="string">&quot;192.168.10.12:9300&quot;</span>,<span class="string">&quot;192.168.10.13:9300&quot;</span>]</span><br></pre></td></tr></table></figure>
-<p><font color="red">注意：启动脚本，最好跟 docker 镜像配套使用</font></p>
-<h3 id="类似的问题">类似的问题</h3>
-<p>unknown setting [cluster.initial_master_nodes]</p>
-<h2 id="es-缓存设置">2.2 ES 缓存设置</h2>
-<p>默认设置：ES_JAVA_OPTS="-Xms256m -Xmx256m"</p>
-<p>启动的时候可以加 -e 指定参数</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-e ES_JAVA_OPTS=&quot;-Xms1g -Xmx1g&quot;</span><br></pre></td></tr></table></figure>
-<p>设置过大可能导致本机缓存不够，启动时有如下错误提示：</p>
-<blockquote>
-<p>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
-</blockquote>
-<p>解决方法：修改 centos 系统的缓存设置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. open and edit conf</span></span><br><span class="line">vi /etc/sysctl.conf</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. add at last vm.max_map_count=262144</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3. apply</span></span><br><span class="line">/sbin/sysctl -p</span><br></pre></td></tr></table></figure>
-<h1 id="elasticsearch-集群状态排查">3. ElasticSearch 集群状态排查</h1>
-<p><a href="https://blog.csdn.net/laoyang360/article/details/109699085">Elasticsearch 集群故障排查及修复指南_铭毅天下（公众号同名）-CSDN博客</a></p>
-<h1 id="es-索引-primary-shard-is-unassigned-解决方法">4. ES 索引 primary shard is unassigned 解决方法</h1>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /_cluster/reroute</span><br><span class="line">&#123;</span><br><span class="line">  &quot;commands&quot; : [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;allocate_stale_primary&quot; : &#123;</span><br><span class="line">    &quot;index&quot; : &quot;.monitoring-kibana-6-2021.12.17&quot;, </span><br><span class="line">    &quot;shard&quot; : 0,</span><br><span class="line">    &quot;node&quot; : &quot;es-node-2&quot;,</span><br><span class="line">    &quot;accept_data_loss&quot; : true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>[ES 遇到 unassigned shard如何处理？_weixin_34050519的博客-CSDN博客](https://blog.csdn.net/weixin_34050519/article/details/85936609)</p>
-<p><a href="https://blog.csdn.net/dlm_bk/article/details/102840031">解决elasticsearch分片unassigned的3个方法_dlm_bk的博客-CSDN博客_es分片unassigned</a></p>
-]]></content>
-      <categories>
-        <category>ElasticSearch</category>
-      </categories>
-      <tags>
-        <tag>ElasticSearch</tag>
-        <tag>ES</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git fetch 同时更新子模块</title>
-    <url>/2021/12/02/Git-fetch-%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E5%AD%90%E6%A8%A1%E5%9D%97/</url>
-    <content><![CDATA[<h2 id="问题描述">1. 问题描述</h2>
-<p>默认情况，git checkout; git fetch 如果子模块 submodule 的版本不一致， git 是不会自动更新子模块；</p>
-<span id="more"></span>
-<h2 id="传统解决方法">2. 传统解决方法：</h2>
-<p>cd submodules 文件夹；</p>
-<p>git checkout / fetch；</p>
-<h2 id="高级解决方法">3. 高级解决方法：</h2>
-<p>在全局进行 Git 设置：</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">1</th>
-<th style="text-align: left;">git config --global submodule.recurse true</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<p>设置 submodule.recurse true 后，不仅仅 git checkout 会自动切换子模块，git fetch / pull 也会自动拉取子模块的更新</p>
-<p>注意：这个设置对用户机器上安装的 git 版本有要求，详见下面说明</p>
-<p>在发行说明中提到了这一点：https://github.com/git/git/commit/e1104a5ee539408b81566066aaa6963cb87d5cd6#diff-c24776ff22455a30fbb78e378b7df0b0R139</p>
-<p>submodule.recurse 选项已添加到 git 2.14</p>
-]]></content>
-      <categories>
-        <category>Git 相关</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo Next Theme 使用问题总结</title>
     <url>/2021/12/21/Hexo-Next-Theme-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<div class="note info"><p>两个路径说明：</p>
@@ -414,7 +414,8 @@
 </div>
 <h1 id="部署后搜索功能无法使用">1. 部署后“搜索”功能无法使用</h1>
 <p><strong>原因</strong></p>
-<p>使用了最新的 master 版本，master 分支是主题作者的开发分支，每周都会更新，当时不稳定</p>
+<p>使用了最新的 master 版本，master
+分支是主题作者的开发分支，每周都会更新，当时不稳定</p>
 <span id="more"></span>
 <p><strong>解决方法</strong></p>
 <p>拉去稳定版本的分支，主要看最新的 Tag</p>
@@ -468,21 +469,56 @@
 <p>新增方法：以“标签”也为例说明：</p>
 <ol type="1">
 <li><p>使用 hexo 命令新建 tags.md页面</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cd</span> site root directory</span></span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure></li>
 <li><p>打开 tags.md 并修改页面类型 type 信息</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">title</span>: Tags</span><br><span class="line"><span class="attribute">date</span>: <span class="number">2021</span>-<span class="number">12</span>-<span class="number">22</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="attribute">type</span>: tags</span><br></pre></td></tr></table></figure></li>
 <li><p>修改主题配置文件</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd next/_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <h1 id="开启首页文章部分显示">4. 开启首页文章部分显示</h1>
-<p>next 主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
-<p>想要让文章部分显示，并出现“阅读全文的按钮”，只需要在个人的文章 Markdown 源文件中添加一行代码就行</p>
+<p>next
+主题默认的是将你的文章全篇显示在自己的首页上，这就会导致一个问题，首页各个文章太长了不利于翻阅</p>
+<p>想要让文章部分显示，并出现“阅读全文的按钮”，只需要在个人的文章
+Markdown 源文件中添加一行代码就行</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--more--&gt;</span></span><br></pre></td></tr></table></figure>
 <p>具体位置，自己确定，在自己想要显示的文章部分下面加上即可只在首页显示所需的文章部分。</p>
+<h1 id="升级问题">升级问题</h1>
+<p>参考：</p>
+<p><a
+href="https://dandyxu.me/Hexo/How-to-update-Hexo-and-Hexo-theme-properly/">How
+to update Hexo and Hexo theme properly | Dandy Xu's Pit</a></p>
+<p><a href="https://www.jianshu.com/p/d7c20f3b006c">Hexo 博客升级 - 简书
+(jianshu.com)</a></p>
+<h2 id="升级前确保-node-帮忙满足要求">升级前确保 node 帮忙满足要求</h2>
+<p>鉴于 hexo 和 node 存在一定的版本依赖关系，升级前请先明确本机 node
+版本和要升级的 hexo 版本之间的关系，然后决定：在升级 hexo
+之前是否需要升级 node 包含 npm 的版本；参考文档：<a
+href="https://hexo.io/docs/#Required-Node-js-version">Documentation |
+Hexo</a></p>
+<p>附加说明——node升级方法：</p>
+<p>安装 nvm 进行升级</p>
+<ol type="1">
+<li>下载安装 nvm 这里不做详细说明</li>
+<li>nvm install lts</li>
+<li>nvm use xxx</li>
+</ol>
+<h2 id="升级-hexo">升级 hexo</h2>
+<p><a
+href="https://dandyxu.me/Hexo/How-to-update-Hexo-and-Hexo-theme-properly/">How
+to update Hexo and Hexo theme properly | Dandy Xu's Pit</a></p>
+<p>进入博客仓库目录</p>
+<p>执行 npm update</p>
+<p>{note info}</p>
 <p>参考文档：</p>
-<p><a href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-«Tags»-Page">Custom Pages | NexT (theme-next.js.org)</a></p>
-<p><a href="https://github.com/iissnan/hexo-theme-next/wiki/创建分类页面">创建分类页面 · iissnan/hexo-theme-next Wiki (github.com)</a></p>
-<p><a href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo + Theme Next -- 写作 | Knner.Wang's Blog</a></p>
+<p><a
+href="https://theme-next.js.org/docs/theme-settings/custom-pages.html?highlight=categories#Adding-«Tags»-Page">Custom
+Pages | NexT (theme-next.js.org)</a></p>
+<p><a
+href="https://github.com/iissnan/hexo-theme-next/wiki/创建分类页面">创建分类页面
+· iissnan/hexo-theme-next Wiki (github.com)</a></p>
+<p><a
+href="https://knner.wang/2019/11/03/Hexo-ThemeNext-Writing.html">Hexo +
+Theme Next -- 写作 | Knner.Wang's Blog</a></p>
 ]]></content>
       <categories>
         <category>Hexo</category>
@@ -491,6 +527,134 @@
       <tags>
         <tag>Hexo</tag>
         <tag>Theme</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo 集成 PicGo Github 图床</title>
+    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
+    <content><![CDATA[<h1 id="背景说明">0、背景说明</h1>
+<p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
+<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
+<p>使用 Github 图床的好处：</p>
+<ol type="1">
+<li>没有域名限制；</li>
+<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
+<li>有人说慢，但是可以设置加速</li>
+<li>稳定，不用担心挂了或者失效</li>
+</ol>
+<span id="more"></span>
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
+<h1 id="新建一个仓库">1、新建一个仓库</h1>
+<ol type="1">
+<li>名字自定义，例如：pic_bed</li>
+<li>选择 Public</li>
+<li>勾选初始化复选框： Initialize this repository with a README</li>
+<li>点击 Create repository 创建成功</li>
+<li><a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
+<li>Note下面的文本框内容自定义</li>
+<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
+<li>最下面点击Generate token即可生成</li>
+<li>下面要用，如果忘记了可以在重新生成</li>
+</ol>
+<h1 id="安装配置-picgo">2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1>
+<p>下载安装，这里不再说明，</p>
+<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709" /><figcaption aria-hidden="true">image-20220120182829709</figcaption>
+</figure>
+<p>填写第一步中创建的 仓库名，分支名，以及 Token</p>
+<p>然后“确定”，并设置为默认图床即可</p>
+<h1 id="配置-jsdeliv给图片镶上加速器">3、配置 JsDeliv，给图片镶上加速器</h1>
+<ul>
+<li>比如在GitHub的图片路径是：https://github.com/user/pic_bed/img/test_image.png</li>
+<li>拼接链接方法1：https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</li>
+<li>拼接链接方法2：https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</li>
+</ul>
+<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
+<ul>
+<li>拼接链接方法1：https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</li>
+<li>拼接链接方法2：https://cdn.jsdelivr.net/gh/user/pic_bed/</li>
+</ul>
+<h1 id="再-typora-中选择-picgo-app-作为图片上传服务">4、再 Typora 中选择 PicGo app 作为图片上传服务</h1>
+<p><a href="https://buctllx.github.io/2021/12/06/Typora-设置关联七牛云图床/#3-Typora-图片存储设置">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+        <category>PicGo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>PicGo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Microsoft.Toolkit.Mvvm 使用记录</title>
+    <url>/2022/03/16/Microsoft-Toolkit-Mvvm-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="microsoft.toolkit.mvvm-介绍">1. Microsoft.Toolkit.Mvvm 介绍</h1>
+<blockquote>
+<p>模型-视图-视图模型 (MVVM) 是用于解耦 UI 代码和非 UI 代码的 UI 体系结构设计模式。 借助 MVVM，可以在 XAML 中以声明方式定义 UI，并使用数据绑定标记将 UI 链接到包含数据和命令的其他层。</p>
+</blockquote>
+<p>MVVM 最早是 Microsoft 提出来的，但是官方一直没有提供框架；很多人会说 Prism 框架，但是 Prism 已经出走了，而且比较臃肿；至于 MVVMLight 也很久没有更新了，直到 2020 年 Windows Community Toolkit 开源了一套 MVVM 框架 Microsoft.Toolkit.Mvvm。</p>
+<span id="more"></span>
+<p>Windows Community Toolkit 除了提供开源框架，也贴心的在文档中提供了，基本的使用案例，以及从其他 MVVM 框架迁移到 Microsoft.Toolkit.Mvvm 框架的说明文档。</p>
+<p>官方文档：<a href="https://docs.microsoft.com/zh-cn/windows/communitytoolkit/mvvm/introduction">Introduction to the MVVM Toolkit - Windows Community Toolkit | Microsoft Docs</a></p>
+<p>[<a href="https://www.cnblogs.com/dino623/p/building_MVVM_programs_using_MVVM_Toolkit.html">WPF] 使用 MVVM Toolkit 构建 MVVM 程序 - dino.c - 博客园 (cnblogs.com)</a></p>
+<p>MVVM Toolkit 延续了 MVVMLight 的风格，是一个轻量级的组件，而且它基于 .NET Standard 2.0，可用于UWP, WinForms, WPF, Xamarin, Uno 等多个平台。相比它的前身 MVVMLight，它有以下特点：</p>
+<ul>
+<li>更高：版本号更高，一出手就是 7.0。</li>
+<li>更快：速度更快，MVVM Toolkit 从一开始就以高性能为实现目标。</li>
+<li>更强：后台更强，MVVM Toolkit 的全称是 'Microsoft.Toolkit.Mvvm'，根正苗红。</li>
+</ul>
+<h1 id="各个组件说明">2. 各个组件说明</h1>
+<p>前面说到 MVVM Toolkit 延续了 MVVMLight 的风格，因此他们大部分的组件都是相同的</p>
+<h2 id="observableobject">2.1 ObservableObject</h2>
+<p>ObservableObject 实现了 <a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged"><code>INotifyPropertyChanged</code></a> 和<a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging"><code>INotifyPropertyChanging</code></a>，并触发 <code>PropertyChanged</code> 和 <code>PropertyChanging</code> 事件。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; name;</span><br><span class="line">        <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> name, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这段示例代码中，如果 name 和 value 的值不同，首先触发 <code>PropertyChanging</code> 事件，然后触发 <code>PropertyChanged</code>。</p>
+<h2 id="relaycommand">2.2 RelayCommand</h2>
+<p><code>RelayCommand</code> 和 <code>RelayCommand&lt;T&gt;</code> 实现了 <code>ICommand</code> 接口，<code>INotifyPropertyChanged</code> 和 <code>ICommand</code> 是 MVVM 模式的基础。下面的代码使用 <code>ObservableObject</code> 和 <code>RelayCommand</code> 展示一个基本的 ViewModel：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IncrementCounterCommand = <span class="keyword">new</span> RelayCommand(IncrementCounter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Counter</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; counter;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> counter, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ICommand IncrementCounterCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">IncrementCounter</span>(<span class="params"></span>)</span> =&gt; Counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page</span></span></span><br><span class="line"><span class="tag">    <span class="attr">x:Class</span>=<span class="string">&quot;MyApp.Views.MyPage&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:viewModels</span>=<span class="string">&quot;using:MyApp.ViewModels&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">viewModels:MyViewModel</span> <span class="attr">x:Name</span>=<span class="string">&quot;ViewModel&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.Counter, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.IncrementCounterCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在这段示例里 <code>IncrementCounterCommand</code> 包装了 <code>IncrementCounter</code> 函数提供给 Button 绑定。<code>IncrementCounter</code> 函数更改 <code>Counter</code> 的值并通过 <code>PropertyChanged</code> 事件通知绑定的 TextBlock。</p>
+<h2 id="asyncrelaycommand">2.3 AsyncRelayCommand</h2>
+<p><code>AsyncRelayCommand</code> 和 <code>AsyncRelayCommand&lt;T&gt;</code> 也实现了 <code>ICommand</code>，不过它们支持异步操作，提供的 <code>ExecutionTask</code> 和 <code>IsRunning</code> 两个属性对监视任务运行状态十分有用。</p>
+<p>例如这个 ViewModel：</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    DownloadTextCommand = <span class="keyword">new</span> AsyncRelayCommand(DownloadTextAsync);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> IAsyncRelayCommand DownloadTextCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">string</span>&gt; <span class="title">DownloadTextAsync</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">3000</span>); <span class="comment">// Simulate a web request</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用相关的 UI 代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">converters:TaskResultConverter</span> <span class="attr">x:Key</span>=<span class="string">&quot;TaskResultConverter&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Task status:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask.Status, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">LineBreak</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Result:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask, Converter=&#123;StaticResource TaskResultConverter&#125;, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">muxc:ProgressRing</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Left&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">IsActive</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.IsRunning, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>点击 <code>Button</code> 后 <code>DownloadTextAsync</code> 开始运行，在 UI 上 TextBlock 和 ProgressRing 绑定到 <code>ExecutionTask</code> 和 <code>IsRunning</code> 并显示任务运行状态，最后通过 <code>TaskResultConverter</code> 显示任务结果。</p>
+<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221618229-510116488.gif"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221618229-510116488.gif" alt="img" /></a></p>
+<h2 id="messenger">2.4 Messenger</h2>
+<p>对于主要目的是松耦合的 MVVM 框架，提供一个用于消息交换的系统十分有必要。MVVM Toolkit 中用于消息交换的核心是 <code>WeakReferenceMessenger</code> 类。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create a message</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoggedInUserChangedMessage</span> : <span class="title">ValueChangedMessage</span>&lt;<span class="title">User</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoggedInUserChangedMessage</span>(<span class="params">User user</span>) : <span class="title">base</span>(<span class="params">user</span>)</span></span><br><span class="line">    &#123;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Register a message in some module</span></span><br><span class="line">WeakReferenceMessenger.Default.Register&lt;LoggedInUserChangedMessage&gt;(<span class="keyword">this</span>, (r, m) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Handle the message here, with r being the recipient and m being the</span></span><br><span class="line">    <span class="comment">// input messenger. Using the recipient passed as input makes it so that</span></span><br><span class="line">    <span class="comment">// the lambda expression doesn&#x27;t capture &quot;this&quot;, improving performance.</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Send a message from some other module</span></span><br><span class="line">WeakReferenceMessenger.Default.Send(<span class="keyword">new</span> LoggedInUserChangedMessage(user));</span><br></pre></td></tr></table></figure>
+<p>正如这段代码所示，<code>WeakReferenceMessenger</code> 主要通过 <code>Register</code> 和 <code>Send</code> 进行信息交换，它的使用方式类似于 MVVMLight 的 messenger 类。MVVM Toolkit 另外还提供了一个 <code>StrongReferenceMessenger</code> 类，更多使用方法可以参考这篇 <a href="https://github.com/CommunityToolkit/MVVM-Samples/blob/master/docs/mvvm/Messenger.md">文档</a>。<code>Messenger</code> 功能强大且简单易用，但也由于误用会带来风险而引发了一些争议，有必要更详细地理解它的原理和用法以避免它带来的其它风险，这篇文章只是简单地介绍一下它的用法。</p>
+<h2 id="observablerecipient">2.5 ObservableRecipient</h2>
+<p><code>ObservableRecipient</code> 继承了 <code>ObservableObject</code> 并支持从 <code>Messenger</code> 接收信息，可通过 <code>IsActive</code> 属性激活或停用。它可以用作 ViewModel 的基类，事实上它的作用基本上相遇于 MVVMLight 中的 <a href="https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight%20(PCL)/ViewModelBase.cs">ViewModelBase</a> ：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableRecipient</span>, <span class="title">IRecipient</span>&lt;<span class="title">LoggedInUserRequestMessage</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Receive</span>(<span class="params">LoggedInUserRequestMessage message</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Handle the message here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="viewmodellocator">2.6 ViewModelLocator</h2>
+<p>在 MVVMLight 中，很多人使用 ViewModelLocator，然后在 xaml 中 binding View 的 DataContext，但是到了 Microsoft.Toolkit.Mvvm 中，却没有默认提供，这里根据官方的 Ioc 迁移说明，给出一个 WPF 应用程序的 ViewModelLocator 的实现方式。</p>
+<p>需要的 Package</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Extensions.DependencyInjection&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;6.0.0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Toolkit.Mvvm&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;7.1.2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>ViewModelLocator.cs 代码文件如下</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Toolkit.Mvvm.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ViewModelLocator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewModelLocator</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ConfigureServices();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Configures the services for the application.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IServiceProvider <span class="title">ConfigureServices</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> services = <span class="keyword">new</span> ServiceCollection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Services</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IContactsService, ContactsService&gt;();</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IPhoneService, PhoneService&gt;();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Viewmodels</span></span><br><span class="line">        services.AddTransient&lt;MainViewModel&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> serviceProvider = services.BuildServiceProvider();</span><br><span class="line">        Ioc.Default.ConfigureServices(serviceProvider);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> serviceProvider;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> MainViewModel? MainVM &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> Ioc.Default.GetService&lt;MainViewModel&gt;(); &#125; &#125;</span><br><span class="line"></span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<p>App.xaml 添加以下资源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">local:ViewModelLocator</span> <span class="attr">x:Key</span>=<span class="string">&quot;Locator&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Application.Resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在 View xaml 中的使用方法</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">&quot;Test.MainWindow&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">DataContext</span>=<span class="string">&quot;&#123;Binding Source=&#123;StaticResource Locator&#125;, Path=MainVM&#125;&quot;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="attr">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样即可实现 MVVMLight 中 Locator 的效果。</p>
+<h1 id="the-性能">3. The 性能</h1>
+<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221730002-1263673884.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221730002-1263673884.png" alt="img" /></a></p>
+<p>MVVM Toolkit 在开发过程中为了追求卓越的性能做了很多努力，例如提供一个 <code>StrongReferenceMessenger</code> 类，性能如上图所示地有了大幅提升。又例如下面这篇文章所介绍的：</p>
+<p><a href="https://devblogs.microsoft.com/ifdef-windows/mvvm-toolkit-preview-3-the-journey-of-an-api/">MVVM Toolkit Preview 3 &amp; The Journey of an API</a></p>
+<p>有兴趣的话可以通过源码详细了解一下。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>MVVM</category>
+      </categories>
+      <tags>
+        <tag>MVVM</tag>
       </tags>
   </entry>
   <entry>
@@ -904,196 +1068,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo 集成 PicGo Github 图床</title>
-    <url>/2022/01/20/Hexo-%E9%9B%86%E6%88%90-PicGo-Github-%E5%9B%BE%E5%BA%8A/</url>
-    <content><![CDATA[<h1 id="背景说明">0、背景说明</h1>
-<p>博主原来使用七牛云图床，好处：10G 免费空间；坏处：域名有效期一个月；超出一个月就没法使用了；</p>
-<p>因而转向了其他图床，发现 PicGo 中支持的图床有 Github，觉得是一个不错的选择</p>
-<p>使用 Github 图床的好处：</p>
-<ol type="1">
-<li>没有域名限制；</li>
-<li>仓库虽然空间有限（1G），但是满了可以再新建一个仓库，因此相当于无限</li>
-<li>有人说慢，但是可以设置加速</li>
-<li>稳定，不用担心挂了或者失效</li>
-</ol>
-<span id="more"></span>
-<p>参考：</p>
-<p><a href="https://www.cnblogs.com/52duan/p/12551393.html">MarkDown、Hexo博客、Coding托管、GitHub做图床、CDN加速 - 段十三 - 博客园 (cnblogs.com)</a></p>
-<h1 id="新建一个仓库">1、新建一个仓库</h1>
-<ol type="1">
-<li>名字自定义，例如：pic_bed</li>
-<li>选择 Public</li>
-<li>勾选初始化复选框： Initialize this repository with a README</li>
-<li>点击 Create repository 创建成功</li>
-<li><a href="https://github.com/settings/tokens/new">New personal access token (github.com)</a> 配置图床的时候要用：</li>
-<li>Note下面的文本框内容自定义</li>
-<li>下面很多复选框，只需要勾选 repo 也就是第一个复选框</li>
-<li>最下面点击Generate token即可生成</li>
-<li>下面要用，如果忘记了可以在重新生成</li>
-</ol>
-<h1 id="安装配置-picgo">2、安装配置 <a href="https://molunerfinn.com/PicGo/">PicGo</a></h1>
-<p>下载安装，这里不再说明，</p>
-<p>安装后启动 PicGo，找到 Github 图床，如下图所示：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220120182829709.png" alt="image-20220120182829709" /><figcaption aria-hidden="true">image-20220120182829709</figcaption>
-</figure>
-<p>填写第一步中创建的 仓库名，分支名，以及 Token</p>
-<p>然后“确定”，并设置为默认图床即可</p>
-<h1 id="配置-jsdeliv给图片镶上加速器">3、配置 JsDeliv，给图片镶上加速器</h1>
-<ul>
-<li>比如在GitHub的图片路径是：https://github.com/user/pic_bed/img/test_image.png</li>
-<li>拼接链接方法1：https://cdn.jsdelivr.net/gh/user/pic_bed@latest/img/test_image.png</li>
-<li>拼接链接方法2：https://cdn.jsdelivr.net/gh/user/pic_bed/img/test_image.png</li>
-</ul>
-<p><strong>将方法1和方法2拼接起来的链接前缀输入到上图第5步的自定义域名中即可</strong></p>
-<ul>
-<li>拼接链接方法1：https://cdn.jsdelivr.net/gh/user/pic_bed@latest/</li>
-<li>拼接链接方法2：https://cdn.jsdelivr.net/gh/user/pic_bed/</li>
-</ul>
-<h1 id="再-typora-中选择-picgo-app-作为图片上传服务">4、再 Typora 中选择 PicGo app 作为图片上传服务</h1>
-<p><a href="https://buctllx.github.io/2021/12/06/Typora-设置关联七牛云图床/#3-Typora-图片存储设置">Typora 设置关联七牛云图床 | ConorLuo 博客 (buctllx.github.io)</a></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-        <category>PicGo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>PicGo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Microsoft.Toolkit.Mvvm 使用记录</title>
-    <url>/2022/03/16/Microsoft-Toolkit-Mvvm-%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h1 id="microsoft.toolkit.mvvm-介绍">1. Microsoft.Toolkit.Mvvm 介绍</h1>
-<blockquote>
-<p>模型-视图-视图模型 (MVVM) 是用于解耦 UI 代码和非 UI 代码的 UI 体系结构设计模式。 借助 MVVM，可以在 XAML 中以声明方式定义 UI，并使用数据绑定标记将 UI 链接到包含数据和命令的其他层。</p>
-</blockquote>
-<p>MVVM 最早是 Microsoft 提出来的，但是官方一直没有提供框架；很多人会说 Prism 框架，但是 Prism 已经出走了，而且比较臃肿；至于 MVVMLight 也很久没有更新了，直到 2020 年 Windows Community Toolkit 开源了一套 MVVM 框架 Microsoft.Toolkit.Mvvm。</p>
-<span id="more"></span>
-<p>Windows Community Toolkit 除了提供开源框架，也贴心的在文档中提供了，基本的使用案例，以及从其他 MVVM 框架迁移到 Microsoft.Toolkit.Mvvm 框架的说明文档。</p>
-<p>官方文档：<a href="https://docs.microsoft.com/zh-cn/windows/communitytoolkit/mvvm/introduction">Introduction to the MVVM Toolkit - Windows Community Toolkit | Microsoft Docs</a></p>
-<p>[<a href="https://www.cnblogs.com/dino623/p/building_MVVM_programs_using_MVVM_Toolkit.html">WPF] 使用 MVVM Toolkit 构建 MVVM 程序 - dino.c - 博客园 (cnblogs.com)</a></p>
-<p>MVVM Toolkit 延续了 MVVMLight 的风格，是一个轻量级的组件，而且它基于 .NET Standard 2.0，可用于UWP, WinForms, WPF, Xamarin, Uno 等多个平台。相比它的前身 MVVMLight，它有以下特点：</p>
-<ul>
-<li>更高：版本号更高，一出手就是 7.0。</li>
-<li>更快：速度更快，MVVM Toolkit 从一开始就以高性能为实现目标。</li>
-<li>更强：后台更强，MVVM Toolkit 的全称是 'Microsoft.Toolkit.Mvvm'，根正苗红。</li>
-</ul>
-<h1 id="各个组件说明">2. 各个组件说明</h1>
-<p>前面说到 MVVM Toolkit 延续了 MVVMLight 的风格，因此他们大部分的组件都是相同的</p>
-<h2 id="observableobject">2.1 ObservableObject</h2>
-<p>ObservableObject 实现了 <a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged"><code>INotifyPropertyChanged</code></a> 和<a href="https://docs.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanging"><code>INotifyPropertyChanging</code></a>，并触发 <code>PropertyChanged</code> 和 <code>PropertyChanging</code> 事件。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; name;</span><br><span class="line">        <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> name, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这段示例代码中，如果 name 和 value 的值不同，首先触发 <code>PropertyChanging</code> 事件，然后触发 <code>PropertyChanged</code>。</p>
-<h2 id="relaycommand">2.2 RelayCommand</h2>
-<p><code>RelayCommand</code> 和 <code>RelayCommand&lt;T&gt;</code> 实现了 <code>ICommand</code> 接口，<code>INotifyPropertyChanged</code> 和 <code>ICommand</code> 是 MVVM 模式的基础。下面的代码使用 <code>ObservableObject</code> 和 <code>RelayCommand</code> 展示一个基本的 ViewModel：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        IncrementCounterCommand = <span class="keyword">new</span> RelayCommand(IncrementCounter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> counter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Counter</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; counter;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span> =&gt; SetProperty(<span class="keyword">ref</span> counter, <span class="keyword">value</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ICommand IncrementCounterCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">IncrementCounter</span>(<span class="params"></span>)</span> =&gt; Counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page</span></span></span><br><span class="line"><span class="tag">    <span class="attr">x:Class</span>=<span class="string">&quot;MyApp.Views.MyPage&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:viewModels</span>=<span class="string">&quot;using:MyApp.ViewModels&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">viewModels:MyViewModel</span> <span class="attr">x:Name</span>=<span class="string">&quot;ViewModel&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Page.DataContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.Counter, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.IncrementCounterCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>在这段示例里 <code>IncrementCounterCommand</code> 包装了 <code>IncrementCounter</code> 函数提供给 Button 绑定。<code>IncrementCounter</code> 函数更改 <code>Counter</code> 的值并通过 <code>PropertyChanged</code> 事件通知绑定的 TextBlock。</p>
-<h2 id="asyncrelaycommand">2.3 AsyncRelayCommand</h2>
-<p><code>AsyncRelayCommand</code> 和 <code>AsyncRelayCommand&lt;T&gt;</code> 也实现了 <code>ICommand</code>，不过它们支持异步操作，提供的 <code>ExecutionTask</code> 和 <code>IsRunning</code> 两个属性对监视任务运行状态十分有用。</p>
-<p>例如这个 ViewModel：</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyViewModel</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    DownloadTextCommand = <span class="keyword">new</span> AsyncRelayCommand(DownloadTextAsync);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> IAsyncRelayCommand DownloadTextCommand &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">string</span>&gt; <span class="title">DownloadTextAsync</span>(<span class="params"></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">3000</span>); <span class="comment">// Simulate a web request</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用相关的 UI 代码：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">converters:TaskResultConverter</span> <span class="attr">x:Key</span>=<span class="string">&quot;TaskResultConverter&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Page.Resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">StackPanel</span> <span class="attr">Spacing</span>=<span class="string">&quot;8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Task status:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask.Status, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">LineBreak</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;Result:&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Run</span> <span class="attr">Text</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.ExecutionTask, Converter=&#123;StaticResource TaskResultConverter&#125;, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Content</span>=<span class="string">&quot;Click me!&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Command</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">muxc:ProgressRing</span></span></span><br><span class="line"><span class="tag">        <span class="attr">HorizontalAlignment</span>=<span class="string">&quot;Left&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">IsActive</span>=<span class="string">&quot;&#123;x:Bind ViewModel.DownloadTextCommand.IsRunning, Mode=OneWay&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">StackPanel</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>点击 <code>Button</code> 后 <code>DownloadTextAsync</code> 开始运行，在 UI 上 TextBlock 和 ProgressRing 绑定到 <code>ExecutionTask</code> 和 <code>IsRunning</code> 并显示任务运行状态，最后通过 <code>TaskResultConverter</code> 显示任务结果。</p>
-<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221618229-510116488.gif"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221618229-510116488.gif" alt="img" /></a></p>
-<h2 id="messenger">2.4 Messenger</h2>
-<p>对于主要目的是松耦合的 MVVM 框架，提供一个用于消息交换的系统十分有必要。MVVM Toolkit 中用于消息交换的核心是 <code>WeakReferenceMessenger</code> 类。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Create a message</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LoggedInUserChangedMessage</span> : <span class="title">ValueChangedMessage</span>&lt;<span class="title">User</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoggedInUserChangedMessage</span>(<span class="params">User user</span>) : <span class="title">base</span>(<span class="params">user</span>)</span></span><br><span class="line">    &#123;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Register a message in some module</span></span><br><span class="line">WeakReferenceMessenger.Default.Register&lt;LoggedInUserChangedMessage&gt;(<span class="keyword">this</span>, (r, m) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Handle the message here, with r being the recipient and m being the</span></span><br><span class="line">    <span class="comment">// input messenger. Using the recipient passed as input makes it so that</span></span><br><span class="line">    <span class="comment">// the lambda expression doesn&#x27;t capture &quot;this&quot;, improving performance.</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Send a message from some other module</span></span><br><span class="line">WeakReferenceMessenger.Default.Send(<span class="keyword">new</span> LoggedInUserChangedMessage(user));</span><br></pre></td></tr></table></figure>
-<p>正如这段代码所示，<code>WeakReferenceMessenger</code> 主要通过 <code>Register</code> 和 <code>Send</code> 进行信息交换，它的使用方式类似于 MVVMLight 的 messenger 类。MVVM Toolkit 另外还提供了一个 <code>StrongReferenceMessenger</code> 类，更多使用方法可以参考这篇 <a href="https://github.com/CommunityToolkit/MVVM-Samples/blob/master/docs/mvvm/Messenger.md">文档</a>。<code>Messenger</code> 功能强大且简单易用，但也由于误用会带来风险而引发了一些争议，有必要更详细地理解它的原理和用法以避免它带来的其它风险，这篇文章只是简单地介绍一下它的用法。</p>
-<h2 id="observablerecipient">2.5 ObservableRecipient</h2>
-<p><code>ObservableRecipient</code> 继承了 <code>ObservableObject</code> 并支持从 <code>Messenger</code> 接收信息，可通过 <code>IsActive</code> 属性激活或停用。它可以用作 ViewModel 的基类，事实上它的作用基本上相遇于 MVVMLight 中的 <a href="https://github.com/lbugnion/mvvmlight/blob/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight%20(PCL)/ViewModelBase.cs">ViewModelBase</a> ：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyViewModel</span> : <span class="title">ObservableRecipient</span>, <span class="title">IRecipient</span>&lt;<span class="title">LoggedInUserRequestMessage</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Receive</span>(<span class="params">LoggedInUserRequestMessage message</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Handle the message here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="viewmodellocator">2.6 ViewModelLocator</h2>
-<p>在 MVVMLight 中，很多人使用 ViewModelLocator，然后在 xaml 中 binding View 的 DataContext，但是到了 Microsoft.Toolkit.Mvvm 中，却没有默认提供，这里根据官方的 Ioc 迁移说明，给出一个 WPF 应用程序的 ViewModelLocator 的实现方式。</p>
-<p>需要的 Package</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Extensions.DependencyInjection&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;6.0.0&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">&quot;Microsoft.Toolkit.Mvvm&quot;</span> <span class="attr">Version</span>=<span class="string">&quot;7.1.2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<p>ViewModelLocator.cs 代码文件如下</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Toolkit.Mvvm.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ViewModelLocator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ViewModelLocator</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ConfigureServices();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Configures the services for the application.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> IServiceProvider <span class="title">ConfigureServices</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> services = <span class="keyword">new</span> ServiceCollection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Services</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IContactsService, ContactsService&gt;();</span></span><br><span class="line">        <span class="comment">// services.AddSingleton&lt;IPhoneService, PhoneService&gt;();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Viewmodels</span></span><br><span class="line">        services.AddTransient&lt;MainViewModel&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> serviceProvider = services.BuildServiceProvider();</span><br><span class="line">        Ioc.Default.ConfigureServices(serviceProvider);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> serviceProvider;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> MainViewModel? MainVM &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> Ioc.Default.GetService&lt;MainViewModel&gt;(); &#125; &#125;</span><br><span class="line"></span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
-<p>App.xaml 添加以下资源</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">local:ViewModelLocator</span> <span class="attr">x:Key</span>=<span class="string">&quot;Locator&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Application.Resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>在 View xaml 中的使用方法</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Window</span> <span class="attr">x:Class</span>=<span class="string">&quot;Test.MainWindow&quot;</span></span></span><br><span class="line"><span class="tag">		<span class="attr">DataContext</span>=<span class="string">&quot;&#123;Binding Source=&#123;StaticResource Locator&#125;, Path=MainVM&#125;&quot;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="attr">Window</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这样即可实现 MVVMLight 中 Locator 的效果。</p>
-<h1 id="the-性能">3. The 性能</h1>
-<p><a href="https://img2020.cnblogs.com/blog/38937/202108/38937-20210819221730002-1263673884.png"><img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/38937-20210819221730002-1263673884.png" alt="img" /></a></p>
-<p>MVVM Toolkit 在开发过程中为了追求卓越的性能做了很多努力，例如提供一个 <code>StrongReferenceMessenger</code> 类，性能如上图所示地有了大幅提升。又例如下面这篇文章所介绍的：</p>
-<p><a href="https://devblogs.microsoft.com/ifdef-windows/mvvm-toolkit-preview-3-the-journey-of-an-api/">MVVM Toolkit Preview 3 &amp; The Journey of an API</a></p>
-<p>有兴趣的话可以通过源码详细了解一下。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-        <category>MVVM</category>
-      </categories>
-      <tags>
-        <tag>MVVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx 反向代理 FileBrowser</title>
-    <url>/2022/03/23/Nginx-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-FileBrowser/</url>
-    <content><![CDATA[<p>本文主要说明如果使用 Nginx 方向代理已经启动的 FileBrowser 服务。</p>
-<span id="more"></span>
-<h1 id="准备工作">1. 准备工作</h1>
-<p>开始本文的主要内容前，默认已经做好了以下准备工作</p>
-<ol type="1">
-<li>使用 linux 系统，比如 centos；</li>
-<li>已安装并启动 nginx 服务</li>
-<li>已安装并启动 filebrowser 服务</li>
-</ol>
-<h1 id="有关-filebrowser-的配置">2. 有关 FileBrowser 的配置</h1>
-<p>如果不知道已经启动的 filebrowser 服务的相关配置，可以通过以下命令查看</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 查看 filebrowser 服务的进程 (可以看到启动命令的相关参数，比如说配置文件，数据库文件等)</span></span><br><span class="line">ps -ef |grep filebrowser</span><br><span class="line">pstree -ap |grep filebrowser</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323190406153.png" alt="image-20220323190406153" /><figcaption aria-hidden="true">image-20220323190406153</figcaption>
-</figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 2. 导出 filebrowser 的配置信息</span></span><br><span class="line">cd /etc/filebrowser  # 首先进入包含 filebrowser 可执行文件的目录</span><br><span class="line">filebrowser config cat # 临时查看</span><br><span class="line">filebrowser config export config.json # 导出 filebrowser 配置信息到 config.json 文件</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果存在多个 db 可以通过 -d 参数导出指定数据库中存储的配置信息(其他命令也是如此，后面不在重复说明举例)</span></span><br><span class="line">filebrowser -d /etc/filebrowser/filebrowser.db config export config.json</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可能用到的其他命令</span></span><br><span class="line">filebrowser users update admin -p admin # 更新 admin 用户的密码为 admin</span><br><span class="line">filebrowser config set --port 18080  # 重新设置端口信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>以下 json 信息是我用到的配置</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;port&quot;</span>: <span class="number">18080</span>,</span><br><span class="line">    <span class="attr">&quot;root&quot;</span>:<span class="string">&quot;/data/file&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;database&quot;</span>:<span class="string">&quot;/etc/filebrowser/filebrowser.db&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;log&quot;</span>:<span class="string">&quot;/etc/filebrowser/log.log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;plugin&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;baseURL&quot;</span>: <span class="string">&quot;/files&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;allowCommands&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowEdit&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowNew&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;commands&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;ls&quot;</span>,</span><br><span class="line">        <span class="string">&quot;df&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info"><p>需要注意的问题：</p>
-<ol type="1">
-<li><strong>baseURL</strong> 配置项的值在后面 nginx 的配置中要使用到，一定要记录下来；如果没有设置，默认值是 files， 强烈建议设置一下；</li>
-<li>使用 vi 或者 vim 写 json 配置文件的时候一定要注意，缩进符号是 空格，而且不能和 tab 混合用；尤其是从网页上面复制 json 文本的时候一定要确保是空格（有些网页上的缩进是 tab，但是默认空白看不到）</li>
-<li>如果在 filebrowser 启动后通过 ui 设置了一些操作，或者添加了一些用户，那么通过上面的命名可能获取不到最新的配置信息，或者出现 timeout 的问题，这时候需要关闭 filebrowser 服务，然后通过 -d 参数执行 db 就可以了；</li>
-</ol>
-</div>
-<h1 id="在-nginx-中配置-filebrowser-服务">3. 在 Nginx 中配置 FileBrowser 服务</h1>
-<p>核心配置如下：</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  ai.cbim.com <span class="number">10.80.253.133</span>;</span><br><span class="line">    <span class="attribute">access_log</span>  /var/logs/nginx/filebrowser.access.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># file browser url</span></span><br><span class="line">    <span class="attribute">location</span><span class="regexp"> ^~</span> /files/ &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span>  http://127.0.0.1:18080/;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host $proxy_host;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP $remote_addr;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>新增或者修改完 nginx 的配置文件后，可以使用下面的命令测试 / 重新载入配置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 测试 配置文件的语法是否正确</span></span><br><span class="line">nginx -t</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新载入修改后的 配置文件</span></span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
-<p>最后就可以通过设定的域名或者 IP 访问 filebrowser 了</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323195000831.png" alt="image-20220323195000831" /><figcaption aria-hidden="true">image-20220323195000831</figcaption>
-</figure>
-<div class="note info"><p>需要注意的问题：</p>
-<ol type="1">
-<li>server_name 不要和 nginx/conf.d 中其他的配置文件中的 server_name 重复，否则可能被忽略；</li>
-<li><strong>location</strong> 后面的匹配项，一定要和 前面 filebrowser 配置文件中的 <strong>baseURL</strong> 配置项保持一致，否则无法代理成功；</li>
-<li><strong>location</strong> 的具体匹配规则视情况而定，我这里通过 ^~ 匹配以 files 开头的所有 api；^~ 如果删除，而又没有其他 location 匹配规则，同样会导致代理失败，无法访问 filebrowser</li>
-<li>最后访问的时候，如果是局域网域名，访问前最好关掉 vpn 或者其他一类的代理软件，否则也可能会访问失败；</li>
-</ol>
-</div>
-<h1 id="相关参考资料">4. 相关参考资料：</h1>
-<p><a href="http://nginx.org/en/docs/">nginx documentation</a></p>
-<p><a href="https://github.com/filebrowser/filebrowser">filebrowser/filebrowser: 📂 Web File Browser (github.com)</a></p>
-<p><a href="https://filebrowser.org/">Welcome - File Browser</a></p>
-<p><a href="https://www.cnblogs.com/shanyu20/p/15477202.html">file browser介绍 - shanyu20 - 博客园 (cnblogs.com)</a></p>
-<p><a href="https://github.com/filebrowser/filebrowser/issues/627">timeout on commands that connect to a locked database · Issue #627 · filebrowser/filebrowser (github.com)</a></p>
-<p><a href="https://github.com/filebrowser/filebrowser/issues/549">Usable configuration for executing command behind NGINX. · Issue #549 · filebrowser/filebrowser (github.com)</a></p>
-]]></content>
-      <categories>
-        <category>工具</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
-        <tag>FileBrowsern</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MongoDB 索引</title>
     <url>/2022/07/18/MongoDB-%E7%B4%A2%E5%BC%95/</url>
     <content><![CDATA[<h1 id="mongodb-索引">MongoDB 索引</h1>
@@ -1376,6 +1350,68 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx 反向代理 FileBrowser</title>
+    <url>/2022/03/23/Nginx-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86-FileBrowser/</url>
+    <content><![CDATA[<p>本文主要说明如果使用 Nginx 方向代理已经启动的 FileBrowser 服务。</p>
+<span id="more"></span>
+<h1 id="准备工作">1. 准备工作</h1>
+<p>开始本文的主要内容前，默认已经做好了以下准备工作</p>
+<ol type="1">
+<li>使用 linux 系统，比如 centos；</li>
+<li>已安装并启动 nginx 服务</li>
+<li>已安装并启动 filebrowser 服务</li>
+</ol>
+<h1 id="有关-filebrowser-的配置">2. 有关 FileBrowser 的配置</h1>
+<p>如果不知道已经启动的 filebrowser 服务的相关配置，可以通过以下命令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1. 查看 filebrowser 服务的进程 (可以看到启动命令的相关参数，比如说配置文件，数据库文件等)</span></span><br><span class="line">ps -ef |grep filebrowser</span><br><span class="line">pstree -ap |grep filebrowser</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323190406153.png" alt="image-20220323190406153" /><figcaption aria-hidden="true">image-20220323190406153</figcaption>
+</figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 2. 导出 filebrowser 的配置信息</span></span><br><span class="line">cd /etc/filebrowser  # 首先进入包含 filebrowser 可执行文件的目录</span><br><span class="line">filebrowser config cat # 临时查看</span><br><span class="line">filebrowser config export config.json # 导出 filebrowser 配置信息到 config.json 文件</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果存在多个 db 可以通过 -d 参数导出指定数据库中存储的配置信息(其他命令也是如此，后面不在重复说明举例)</span></span><br><span class="line">filebrowser -d /etc/filebrowser/filebrowser.db config export config.json</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可能用到的其他命令</span></span><br><span class="line">filebrowser users update admin -p admin # 更新 admin 用户的密码为 admin</span><br><span class="line">filebrowser config set --port 18080  # 重新设置端口信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>以下 json 信息是我用到的配置</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;port&quot;</span>: <span class="number">18080</span>,</span><br><span class="line">    <span class="attr">&quot;root&quot;</span>:<span class="string">&quot;/data/file&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;database&quot;</span>:<span class="string">&quot;/etc/filebrowser/filebrowser.db&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;log&quot;</span>:<span class="string">&quot;/etc/filebrowser/log.log&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;plugin&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;baseURL&quot;</span>: <span class="string">&quot;/files&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;allowCommands&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowEdit&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowNew&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;commands&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;ls&quot;</span>,</span><br><span class="line">        <span class="string">&quot;df&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>需要注意的问题：</p>
+<ol type="1">
+<li><strong>baseURL</strong> 配置项的值在后面 nginx 的配置中要使用到，一定要记录下来；如果没有设置，默认值是 files， 强烈建议设置一下；</li>
+<li>使用 vi 或者 vim 写 json 配置文件的时候一定要注意，缩进符号是 空格，而且不能和 tab 混合用；尤其是从网页上面复制 json 文本的时候一定要确保是空格（有些网页上的缩进是 tab，但是默认空白看不到）</li>
+<li>如果在 filebrowser 启动后通过 ui 设置了一些操作，或者添加了一些用户，那么通过上面的命名可能获取不到最新的配置信息，或者出现 timeout 的问题，这时候需要关闭 filebrowser 服务，然后通过 -d 参数执行 db 就可以了；</li>
+</ol>
+</div>
+<h1 id="在-nginx-中配置-filebrowser-服务">3. 在 Nginx 中配置 FileBrowser 服务</h1>
+<p>核心配置如下：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  ai.cbim.com <span class="number">10.80.253.133</span>;</span><br><span class="line">    <span class="attribute">access_log</span>  /var/logs/nginx/filebrowser.access.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># file browser url</span></span><br><span class="line">    <span class="attribute">location</span><span class="regexp"> ^~</span> /files/ &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span>  http://127.0.0.1:18080/;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host $proxy_host;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP $remote_addr;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新增或者修改完 nginx 的配置文件后，可以使用下面的命令测试 / 重新载入配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 测试 配置文件的语法是否正确</span></span><br><span class="line">nginx -t</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新载入修改后的 配置文件</span></span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>最后就可以通过设定的域名或者 IP 访问 filebrowser 了</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220323195000831.png" alt="image-20220323195000831" /><figcaption aria-hidden="true">image-20220323195000831</figcaption>
+</figure>
+<div class="note info"><p>需要注意的问题：</p>
+<ol type="1">
+<li>server_name 不要和 nginx/conf.d 中其他的配置文件中的 server_name 重复，否则可能被忽略；</li>
+<li><strong>location</strong> 后面的匹配项，一定要和 前面 filebrowser 配置文件中的 <strong>baseURL</strong> 配置项保持一致，否则无法代理成功；</li>
+<li><strong>location</strong> 的具体匹配规则视情况而定，我这里通过 ^~ 匹配以 files 开头的所有 api；^~ 如果删除，而又没有其他 location 匹配规则，同样会导致代理失败，无法访问 filebrowser</li>
+<li>最后访问的时候，如果是局域网域名，访问前最好关掉 vpn 或者其他一类的代理软件，否则也可能会访问失败；</li>
+</ol>
+</div>
+<h1 id="相关参考资料">4. 相关参考资料：</h1>
+<p><a href="http://nginx.org/en/docs/">nginx documentation</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser">filebrowser/filebrowser: 📂 Web File Browser (github.com)</a></p>
+<p><a href="https://filebrowser.org/">Welcome - File Browser</a></p>
+<p><a href="https://www.cnblogs.com/shanyu20/p/15477202.html">file browser介绍 - shanyu20 - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser/issues/627">timeout on commands that connect to a locked database · Issue #627 · filebrowser/filebrowser (github.com)</a></p>
+<p><a href="https://github.com/filebrowser/filebrowser/issues/549">Usable configuration for executing command behind NGINX. · Issue #549 · filebrowser/filebrowser (github.com)</a></p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+        <tag>FileBrowsern</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora 设置关联七牛云图床</title>
     <url>/2021/12/06/Typora-%E8%AE%BE%E7%BD%AE%E5%85%B3%E8%81%94%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A/</url>
     <content><![CDATA[<h1 id="七牛云存储环境准备">1. 七牛云存储环境准备</h1>
@@ -1519,6 +1555,30 @@
       </tags>
   </entry>
   <entry>
+    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
+    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
+    <content><![CDATA[<h2 id="问题描述">1. 问题描述</h2>
+<p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+<span id="more"></span>
+<h2 id="原因和解决方法">2. 原因和解决方法</h2>
+<p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
+<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
+<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>WPF</category>
+      </categories>
+      <tags>
+        <tag>.Net</tag>
+        <tag>C#</tag>
+        <tag>WPF</tag>
+        <tag>Style</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Visual Studio 代码格式化工具</title>
     <url>/2022/03/01/Visual-Studio-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<p>Visual Studio 设置 - &gt; 选项 里面自身包含有部分代码格式化的功能，但是比较弱，面对复杂的项目代码，尤其是团队开发的时候，依然存在一些问题，不能够很好的规范，格式化项目代码；比如说 XAML 文件等。</p>
@@ -1636,109 +1696,6 @@
       </tags>
   </entry>
   <entry>
-    <title>WPF 在 Trigger 中修改 Button Content 注意事项</title>
-    <url>/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
-    <content><![CDATA[<h2 id="问题描述">1. 问题描述</h2>
-<p>xaml 代码块如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
-<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
-<span id="more"></span>
-<h2 id="原因和解决方法">2. 原因和解决方法</h2>
-<p>原因：定义 Button 的时候直接指定 Content 相当于定死了 Button 的 Content ，所以在 Style 的 Trigger 中就无法修改了；</p>
-<p>注意： 这个时候如果指定有默认的 Button Style，默认样式也会失效；原因是重写了 Style；</p>
-<p>解决方案：将 Content 的默认值，写进 Button.Style，如下所示：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Button&gt;</span><br><span class="line">     &lt;Button.Style&gt;</span><br><span class="line">         &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Content&quot; Value=&quot;333&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">             &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">             &lt;Style.Triggers&gt;</span><br><span class="line">                 &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                     &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                 &lt;/DataTrigger&gt;</span><br><span class="line">             &lt;/Style.Triggers&gt;</span><br><span class="line">         &lt;/Style&gt;</span><br><span class="line">     &lt;/Button.Style&gt;</span><br><span class="line"> &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>WPF</category>
-      </categories>
-      <tags>
-        <tag>.Net</tag>
-        <tag>C#</tag>
-        <tag>WPF</tag>
-        <tag>Style</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows Terminal 集成 Oh My Posh</title>
-    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
-    <content><![CDATA[<h1 id="准备安装环境">1. 准备安装环境</h1>
-<p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
-<ul>
-<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
-<li><a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
-</ul>
-<p>具体安装这里不做详细说明</p>
-<span id="more"></span>
-<h1 id="安装-oh-my-posh">2. 安装 Oh My Posh</h1>
-<div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
-<p>网上的大部分教程，存在时效性问题，因为 Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
-<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
-</div>
-<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
-<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
-<h2 id="参考文档">2.1 参考文档：</h2>
-<p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
-<p><a href="https://zimmergren.net/making-windows-terminal-look-awesome-with-oh-my-posh/">Making Windows Terminal look awesome with oh-my-posh and new fonts. (zimmergren.net)</a></p>
-<h2 id="可能使用到的命令">2.2 可能使用到的命令</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
-<p>参考链接：</p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
-<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
-<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.2">关于配置文件 - PowerShell | Microsoft Docs</a></p>
-<h2 id="字体选择">2.3 字体选择</h2>
-<p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a></p>
-<p>下载自定后安装方法：</p>
-<p>解压、进入字体目录、全选、右键、安装 即可</p>
-<h1 id="posh-git-安装">3. Posh-Git 安装</h1>
-<p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
-<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
-<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/附录-A%3A-在其它环境中使用-Git-Git-在-PowerShell-中使用-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
-<p>这里不做详细说明</p>
-<h1 id="特殊说明">特殊说明</h1>
-<p>win 10 用户如果修改了用户文件夹的目录，会导致 $PROFILE 信息失效 ；</p>
-<p>这个时候需要确认一下 $PROFILE 的最新路径，以及该路径下时候又相关配置；</p>
-<p>如果需要修改 $PROFILE 的路径，可以参考：</p>
-<p><a href="https://stackoverflow.com/questions/5095509/is-it-possible-to-change-the-default-value-of-profile-to-a-new-value">powershell - Is it possible to change the default value of $profile to a new value? - Stack Overflow</a></p>
-<p><a href="https://ridicurious.com/2020/03/12/powershell-7-profile-paths-and-locations/#:~:text=Profile%20Files%20and%20Directory%20Changes%20,Profile.ps1%20All%20Users%2C%20All%20Hosts">PowerShell 7 Profile Paths and Locations - ridicurious.com</a></p>
-<p>我这边是通过修改注册表修改成功恢复的</p>
-]]></content>
-      <categories>
-        <category>Termianl</category>
-        <category>PowerShell</category>
-      </categories>
-      <tags>
-        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello Hexo</title>
-    <url>/2020/04/12/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>WPF 窗口控件默认键盘焦点设置</title>
     <url>/2022/03/14/WPF-%E7%AA%97%E5%8F%A3%E6%8E%A7%E4%BB%B6%E9%BB%98%E8%AE%A4%E9%94%AE%E7%9B%98%E7%84%A6%E7%82%B9%E8%AE%BE%E7%BD%AE/</url>
     <content><![CDATA[<p>大家经常能够看到 WPF 窗口加载显示后，用户按 Tab 键，就会有一个控价获得焦点，如果这个控件是 Button，那么表现为：在 Button 文本周围有个虚线框；如果是 TextBox，那么表现为：在 TextBox 内部会有光标在闪烁。那么如何在 View 加载后设置默认显示这个效果，本文将会说明。</p>
@@ -1796,6 +1753,74 @@
       </tags>
   </entry>
   <entry>
+    <title>Fist Blog</title>
+    <url>/2020/04/12/test-my-site/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>!<br />
+This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info.<br />
+If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows Terminal 集成 Oh My Posh</title>
+    <url>/2021/12/29/Windows-Terminal-%E9%9B%86%E6%88%90-Oh-My-Posh/</url>
+    <content><![CDATA[<h1 id="准备安装环境">1. 准备安装环境</h1>
+<p>Windows Termianl, PowerShell 都可以从 Microsoft Store 中下载</p>
+<ul>
+<li><a href="https://www.microsoft.com/store/productId/9N0DX20HK701">Windows Terminal</a> (Windows 自带)</li>
+<li><a href="https://www.microsoft.com/store/productId/9MZ1SNWT0N5D">PowerShell</a></li>
+</ul>
+<p>具体安装这里不做详细说明</p>
+<span id="more"></span>
+<h1 id="安装-oh-my-posh">2. 安装 Oh My Posh</h1>
+<div class="note info"><p>这里推荐去 Oh My Posh 官方网站查看最新的安装方法；</p>
+<p>网上的大部分教程，存在时效性问题，因为 Oh My Posh 是不断更新的，不同时间不同版本的安装方法可能不一样</p>
+<p>因此搜索到的二手安装教程不一定使用目前安装的你</p>
+</div>
+<p><a href="https://ohmyposh.dev/">Home | Oh My Posh</a></p>
+<p><a href="https://ohmyposh.dev/docs/">Introduction | Oh My Posh</a></p>
+<h2 id="参考文档">2.1 参考文档：</h2>
+<p><a href="https://blog.walterlv.com/post/beautify-powershell-like-zsh.html">将美化进行到底，使用 Oh My Posh 把 PowerShell 做成 oh-my-zsh 的样子 - walterlv</a></p>
+<p><a href="https://zimmergren.net/making-windows-terminal-look-awesome-with-oh-my-posh/">Making Windows Terminal look awesome with oh-my-posh and new fonts. (zimmergren.net)</a></p>
+<h2 id="可能使用到的命令">2.2 可能使用到的命令</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看已经安装的模块</span></span><br><span class="line">Get-InstalledModule</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前用户安装一个模块 （-Verbose 参数显示细节）全局使用 AllUsers</span> </span><br><span class="line">Install-Module oh-my-posh -Scope CurrentUser -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 导入加载一个模块 （-Verbose 参数显示细节）</span></span><br><span class="line">Import-Module oh-my-posh -Verbose</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载一个模块</span></span><br><span class="line">Uninstall-Module -Name  oh-my-posh</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 PowerShell 安装源 Gallery</span></span><br><span class="line">Get-PSRepository</span><br></pre></td></tr></table></figure>
+<p>参考链接：</p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/install-module?view=powershell-7">Install-Module (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/powershellget/get-psrepository?view=powershell-7">Get-PSRepository (PowerShellGet) - PowerShell | Microsoft Docs</a></p>
+<p><a href="https://www.powershellgallery.com/">PowerShell Gallery | Home</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.2">关于配置文件 - PowerShell | Microsoft Docs</a></p>
+<h2 id="字体选择">2.3 字体选择</h2>
+<p>官方推荐 <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a></p>
+<p>下载自定后安装方法：</p>
+<p>解压、进入字体目录、全选、右键、安装 即可</p>
+<h1 id="posh-git-安装">3. Posh-Git 安装</h1>
+<p><a href="https://github.com/dahlbyk/posh-git">dahlbyk/posh-git: A PowerShell environment for Git (github.com)</a></p>
+<p>Posh-Git 提供了强大的 tab 补全功能， 并针对提示符进行了增强；可以在 Terminal 中使用</p>
+<p>官方文档安装方法： <a href="https://git-scm.com/book/zh/v2/附录-A%3A-在其它环境中使用-Git-Git-在-PowerShell-中使用-Git">Git - Git 在 PowerShell 中使用 Git (git-scm.com)</a></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Install-Module</span> posh<span class="literal">-git</span> <span class="literal">-Scope</span> CurrentUser <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+<p>这里不做详细说明</p>
+<h1 id="特殊说明">特殊说明</h1>
+<p>win 10 用户如果修改了用户文件夹的目录，会导致 $PROFILE 信息失效 ；</p>
+<p>这个时候需要确认一下 $PROFILE 的最新路径，以及该路径下时候又相关配置；</p>
+<p>如果需要修改 $PROFILE 的路径，可以参考：</p>
+<p><a href="https://stackoverflow.com/questions/5095509/is-it-possible-to-change-the-default-value-of-profile-to-a-new-value">powershell - Is it possible to change the default value of $profile to a new value? - Stack Overflow</a></p>
+<p><a href="https://ridicurious.com/2020/03/12/powershell-7-profile-paths-and-locations/#:~:text=Profile%20Files%20and%20Directory%20Changes%20,Profile.ps1%20All%20Users%2C%20All%20Hosts">PowerShell 7 Profile Paths and Locations - ridicurious.com</a></p>
+<p>我这边是通过修改注册表修改成功恢复的</p>
+]]></content>
+      <categories>
+        <category>Termianl</category>
+        <category>PowerShell</category>
+      </categories>
+      <tags>
+        <tag>Termianl,PowerShell,Oh-My-Posh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>wpf control window 范围内默认样式对第一个控件无效</title>
     <url>/2021/12/02/wpf-control-window-%E8%8C%83%E5%9B%B4%E5%86%85%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%E5%AF%B9%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E6%97%A0%E6%95%88/</url>
     <content><![CDATA[<h2 id="问题描述">1、问题描述</h2>
@@ -1824,43 +1849,28 @@
       </tags>
   </entry>
   <entry>
-    <title>Fist Blog</title>
-    <url>/2020/04/12/test-my-site/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>!<br />
-This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info.<br />
-If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+    <title>Hello Hexo</title>
+    <url>/2020/04/12/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用 Windows Server 建立 Web Site 并关联 FTP Server</title>
-    <url>/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/</url>
-    <content><![CDATA[<p>本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容；</p>
-<p>系统环境：window server 2019</p>
-<span id="more"></span>
-<h1 id="开启系统必备的服务组件">1、开启系统必备的服务组件</h1>
-<h1 id="新建-ssl-证书">2、新建 SSL 证书</h1>
-<h1 id="建立-web-site-并关联-ftp-server">3、建立 web site 并关联 FTP Server</h1>
-<h1 id="其他设置">4、其他设置</h1>
-<h2 id="ftp-服务直通网络位置">4.1 ftp 服务直通网络位置</h2>
-<h2 id="web-site-开启浏览文件目录结构的功能">4.2 web site 开启浏览文件目录结构的功能</h2>
-<h2 id="web-site-绑定-https-访问">4.3 web site 绑定 https 访问</h2>
-<p>参考资料：</p>
-]]></content>
-      <categories>
-        <category>windwos</category>
-        <category>web site</category>
-        <category>ftp server</category>
-      </categories>
-      <tags>
-        <tag>windwos</tag>
-        <tag>web site</tag>
-        <tag>ftp</tag>
       </tags>
   </entry>
   <entry>
@@ -1950,6 +1960,248 @@ If you get any problems when using Hexo, you can find the answer in <a href="htt
       </categories>
       <tags>
         <tag>DB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 Windows Server 建立 Web Site 并关联 FTP Server</title>
+    <url>/2022/01/25/%E4%BD%BF%E7%94%A8-Windows-Server-%E5%BB%BA%E7%AB%8B-Web-Site-%E5%B9%B6%E5%85%B3%E8%81%94-FTP-Server/</url>
+    <content><![CDATA[<p>本文主要说明，如何在 windows server 中建立 web site，并关联 ftp 服务；最终达到的效果是，可以通过 https 链接访问 ftp 服务的所有内容；</p>
+<p>系统环境：window server 2019</p>
+<span id="more"></span>
+<h1 id="开启系统必备的服务组件">1、开启系统必备的服务组件</h1>
+<h1 id="新建-ssl-证书">2、新建 SSL 证书</h1>
+<h1 id="建立-web-site-并关联-ftp-server">3、建立 web site 并关联 FTP Server</h1>
+<h1 id="其他设置">4、其他设置</h1>
+<h2 id="ftp-服务直通网络位置">4.1 ftp 服务直通网络位置</h2>
+<h2 id="web-site-开启浏览文件目录结构的功能">4.2 web site 开启浏览文件目录结构的功能</h2>
+<h2 id="web-site-绑定-https-访问">4.3 web site 绑定 https 访问</h2>
+<p>参考资料：</p>
+]]></content>
+      <categories>
+        <category>windwos</category>
+        <category>web site</category>
+        <category>ftp server</category>
+      </categories>
+      <tags>
+        <tag>windwos</tag>
+        <tag>web site</tag>
+        <tag>ftp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络基础</title>
+    <url>/2022/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>本文以科普的性质说明计算机网络是一个什么样的东西，顺便回顾一下自己大学计算机网络的基本知识</p>
+<span id="more"></span>
+<p>自从互联网诞生以来，现在基本上绝大多数的程序都是网络程序或者跟网络有关，很少有单机版的程序了。</p>
+<p>计算机网络本质上就是：多个计算机（网络设置）连载一起，像一张网一样，彼此可以直接或者间接的相互通信；世界上所有的电脑（网络设备）同通过这张网联系在一起，就是计算机网络，通俗讲就是互联网。</p>
+<p>网络编程，就是在计算机网络（互联网）中实现两台或者多台计算机之间的数据通信。</p>
+<p>网络编程按照编程语言的不同又可以划分成不同是编程实现方式，但是他们用到的原理和协议都是一致的。</p>
+<h1 id="网络基础知识">1. 网络基础知识</h1>
+<p>主要介绍，IP 地址，域名，网络模型等基本知识</p>
+<h2 id="ip-地址">1.1 IP 地址</h2>
+<p>在互联网中，一个 IP 地址用于唯一标识一个网络接口（Network Interface）。</p>
+<p>一台联入互联网的计算机肯定有一个 IP 地址，但也可能有多个 IP 地址。</p>
+<p>IP 地址分为 IPv4 和 IPv6 两种。</p>
+<p>IPv4 采用32位地址，类似 <code>192.168.10.1</code>，</p>
+<p>而 IPv6 采用128位地址，类似 <code>2001:0DA8:100A:0000:0000:1020:F2F3:1428</code>。 <span class="math display">\[
+\begin{flalign}
+&amp; IPv4 \,\, 地址总共有\,\, 2^{32}个，而\,\,IPv6 \,\, 地址则总共有\,\, 2^{128} 个（大约340万亿亿亿亿）&amp;
+\end{flalign}
+\]</span> IPv4 的地址目前已耗尽，而 IPv6 的地址是根本用不完的。</p>
+<p>IP 地址又分为公网 IP 地址和内网 IP 地址。公网 IP 地址可以直接被访问，内网 IP 地址只能在内网访问。内网 IP 地址类似于：</p>
+<ul>
+<li>192.168.x.x</li>
+<li>10.x.x.x</li>
+</ul>
+<p>有一个特殊的 IP 地址，称之为本机地址，它总是<code>127.0.0.1</code>。</p>
+<p>IPv4 地址实际上是一个32位整数。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1707762444 = 0x65ca630c</span><br><span class="line">           = 65  ca  63 0c</span><br><span class="line">           = 101.202.99.12</span><br></pre></td></tr></table></figure>
+<p>如果一台计算机只有一个网卡，并且接入了网络，那么，它有一个本机地址<code>127.0.0.1</code>，还有一个 IP 地址，例如<code>101.202.99.12</code>，可以通过这个 IP 地址接入网络。</p>
+<p>如果一台计算机有两块网卡，那么除了本机地址，它可以有两个 IP 地址，可以分别接入两个网络。通常连接两个网络的设备是路由器或者交换机，它至少有两个 IP 地址，分别接入不同的网络，让网络之间连接起来。</p>
+<p>如果两台计算机位于同一个网络，那么他们之间可以直接通信，因为他们的 IP 地址前段是相同的，也就是网络号是相同的。网络号是 IP 地址通过子网掩码过滤后得到的。例如：</p>
+<p>某台计算机的 IP 是<code>101.202.99.2</code>，子网掩码是<code>255.255.255.0</code>，那么计算该计算机的网络号是：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">IP</span> = <span class="number">101.202</span>.<span class="number">99.2</span></span><br><span class="line"><span class="attr">Mask</span> = <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="attr">Network</span> = IP &amp; Mask = <span class="number">101.202</span>.<span class="number">99.0</span></span><br></pre></td></tr></table></figure>
+<p>每台计算机都需要正确配置 IP 地址和子网掩码，根据这两个就可以计算网络号，如果两台计算机计算出的网络号相同，说明两台计算机在同一个网络，可以直接通信。如果两台计算机计算出的网络号不同，那么两台计算机不在同一个网络，不能直接通信，它们之间必须通过路由器或者交换机这样的网络设备间接通信，我们把这种设备称为网关。</p>
+<p>网关的作用就是连接多个网络，负责把来自一个网络的数据包发到另一个网络，这个过程叫路由。</p>
+<p>所以，一台计算机的一个网卡会有3个关键配置：</p>
+<ul>
+<li>IP 地址，例如：<code>10.80.2.24</code></li>
+<li>子网掩码，例如：<code>255.255.255.0</code></li>
+<li>网关的 IP 地址，例如：<code>10.80.2.254</code></li>
+</ul>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220325191123462.png" alt="image-20220325191123462" /><figcaption aria-hidden="true">image-20220325191123462</figcaption>
+</figure>
+<h2 id="域名">1.2 域名</h2>
+<p>因为直接记忆 IP 地址非常困难，所以我们通常使用域名访问某个特定的服务。</p>
+<p>域名解析服务器 DNS 负责把域名翻译成对应的 IP，客户端再根据 IP 地址访问服务器。</p>
+<p>用<code>nslookup</code>可以查看域名对应的 IP 地址：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nslookup buctllx.github.io</span></span><br><span class="line">Server:  bogon</span><br><span class="line">Address:  10.80.253.253</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:    buctllx.github.io</span><br><span class="line">Addresses:  2606:50c0:8002::153</span><br><span class="line">          2606:50c0:8001::153</span><br><span class="line">          2606:50c0:8000::153</span><br><span class="line">          2606:50c0:8003::153</span><br><span class="line">          185.199.110.153</span><br><span class="line">          185.199.109.153</span><br><span class="line">          185.199.111.153</span><br><span class="line">          185.199.108.153</span><br></pre></td></tr></table></figure>
+<p>有一个特殊的本机域名<code>localhost</code>，它对应的 IP 地址总是本机地址<code>127.0.0.1</code>。</p>
+<h2 id="网络模型">1.3 网络模型</h2>
+<p>由于计算机网络从底层的传输到高层的软件设计十分复杂，要合理地设计计算机网络模型，必须采用分层模型，每一层负责处理自己的操作。OSI（Open System Interconnect）网络模型是ISO组织定义的一个计算机互联的标准模型，注意它只是一个定义，目的是为了简化网络各层的操作，提供标准接口便于实现和维护。这个模型从上到下依次是：</p>
+<ul>
+<li>应用层，提供应用程序之间的通信；</li>
+<li>表示层：处理数据格式，加解密等等；</li>
+<li>会话层：负责建立和维护会话；</li>
+<li>传输层：负责提供端到端的可靠传输；</li>
+<li>网络层：负责根据目标地址选择路由来传输数据；</li>
+<li>链路层和物理层负责把数据进行分片并且真正通过物理网络传输，例如，无线网、光纤等。</li>
+</ul>
+<p>互联网实际使用的TCP/IP模型并不是对应到OSI的7层模型，而是大致对应OSI的5层模型：</p>
+<table>
+<tr>
+<th width="200px" height="100px">
+<font color="#0A87F5" size=20>OSI</font>
+</th>
+<th width="201px" height="30">
+<font color="#0A87F5" size=20>TCP/IP</font>
+</th>
+</tr>
+<tr>
+<td>
+应用层
+</td>
+<td rowspan="3">
+应用层
+</td>
+</tr>
+<tr>
+<td>
+表示层
+</td>
+</tr>
+<tr>
+<td>
+会话层
+</td>
+</tr>
+<tr>
+<td>
+传输层
+</td>
+<td>
+传输层
+</td>
+</tr>
+<tr>
+<td>
+网络层
+</td>
+<td>
+IP层
+</td>
+</tr>
+<tr>
+<td>
+链路层
+</td>
+<td rowspan="2">
+网络接口层
+</td>
+</tr>
+<tr>
+<td>
+物理层
+</td>
+</tr>
+</table>
+<h1 id="常用网络协议">2. 常用网络协议</h1>
+<p>虽然大家现在对互联网很熟悉，但是计算机网络的出现比互联网要早很多。</p>
+<p>计算机为了联网，就必须规定通信协议，早期的计算机网络，都是由各厂商自己规定一套协议，IBM、Apple和Microsoft都有各自的网络协议，互不兼容，这就好比一群人有的说英语，有的说中文，有的说德语，说同一种语言的人可以交流，不同的语言之间就不行了。</p>
+<p>为了把全世界的所有不同类型的计算机都连接起来，就必须规定一套全球通用的协议，为了实现互联网这个目标，互联网协议簇（Internet Protocol Suite）就是通用协议标准。Internet是由inter和net两个单词组合起来的，原意就是连接“网络”的网络，有了Internet，任何私有网络，只要支持这个协议，就可以联入互联网。</p>
+<p>UDP 协议（User Datagram Protocol）是一种数据报文协议，它是无连接协议，不保证可靠传输。因为 UDP 协议在通信前不需要建立连接，因此它的传输效率比TCP高，而且UDP协议比TCP协议要简单得多。</p>
+<p>选择 UDP 协议时，传输的数据通常是能容忍丢失的，例如，一些语音视频通信的应用会选择 UDP 协议。</p>
+<h2 id="tcpip-协议">2.1 TCP/IP 协议</h2>
+<p>因为互联网协议包含了上百种协议标准，但是最重要的两个协议是 TCP 和 IP 协议，所以，大家把互联网的协议简称 TCP/IP 协议。</p>
+<p>网络通信的时候，双方必须知道对方的标识，好比发邮件必须知道对方的邮件地址。</p>
+<p>互联网上每个计算机的唯一标识就是 IP 地址。如果一台计算机同时接入到两个或更多的网络，比如路由器，它就会有两个或多个 IP 地址，所以，IP地址对应的实际上是计算机的网络接口，通常是网卡。</p>
+<p>IP 协议负责把数据从一台计算机通过网络发送到另一台计算机。数据被分割成一小块一小块，然后通过 IP 包发送出去。由于互联网链路复杂，两台计算机之间经常有多条线路，因此，路由器就负责决定如何把一个 IP 包转发出去。IP 包的特点是按块发送，途径多个路由，但不保证能到达，也不保证顺序到达。</p>
+<p>IP 协议是一个分组交换，它不保证可靠传输。</p>
+<p>而 TCP 协议是传输控制协议，它是面向连接的协议，支持可靠传输和双向通信。</p>
+<p>TCP 协议是建立在 IP 协议之上的，简单地说，IP 协议只负责发数据包，不保证顺序和正确性，而 TCP 协议负责在两台计算机之间建立可靠连接，保证数据包按顺序到达。</p>
+<p>TCP协议会通过握手建立连接，然后，对每个 IP 包编号，确保对方按顺序收到，如果包丢掉了，就自动重发；传输完后还需要断开连接。</p>
+<p>TCP 协议之所以能保证数据的可靠传输，是通过接收确认、超时重传这些机制实现的。并且，TCP协议允许双向通信，即通信双方可以同时发送和接收数据。</p>
+<p>TCP 协议也是应用最广泛的协议，许多高级协议都是建立在 TCP 协议之上的，例如 HTTP、SMTP 等。</p>
+<p>一个 TCP 报文除了包含要传输的数据外，还包含源 IP 地址和目标 IP 地址，源端口和目标端口。</p>
+<p>端口有什么作用？在两台计算机通信时，只发 IP 地址是不够的，因为同一台计算机上跑着多个网络程序。一个 TCP 报文来了之后，到底是交给浏览器还是 QQ，就需要端口号来区分。每个网络程序都向操作系统申请唯一的端口号，这样，两个进程在两台计算机之间建立网络连接就需要各自的 IP地址和各自的端口号。</p>
+<p>一个进程也可能同时与多个计算机建立链接，因此它会申请很多端口。</p>
+<h2 id="udp-协议">2.2 UDP 协议</h2>
+<p>TCP是建立可靠连接，并且通信双方都可以以流的形式发送数据。相对 TCP，UDP 则是面向无连接的协议。</p>
+<p>使用 UDP 协议时，不需要建立连接，只需要知道对方的 IP 地址和端口号，就可以直接发数据包。但是，能不能到达就不知道了。</p>
+<p><strong>缺点：</strong>传输数据不可靠</p>
+<p><strong>优点：</strong>速度快，对于不要求可靠到达的数据，就可以使用 UDP 协议。</p>
+<p>此外，服务器绑定 UDP 端口和 TCP 端口互不冲突，也就是说，UDP 的 80 端口与 TCP 的 80 端口可以各自绑定。</p>
+<h2 id="http-协议">2.3 HTTP 协议</h2>
+<p>在 Web 应用中，服务器把网页传给浏览器，实际上就是把网页的 HTML 代码发送给浏览器，让浏览器显示出来。</p>
+<p>而浏览器和服务器之间的传输协议是 HTTP，所以：</p>
+<ul>
+<li>HTML 是一种用来定义网页的文本，会 HTML，就可以编写网页；</li>
+<li>HTTP 是在网络上传输 HTML 的协议，用于浏览器和服务器的通信。</li>
+</ul>
+<p>在举例子之前，我们需要安装 Google 的 <a href="http://www.google.com/intl/zh-CN/chrome/">Chrome 浏览器</a>。或者 Microsoft 的 <a href="https://www.microsoft.com/zh-cn">Edge 浏览器</a>。本质上都是基于 Chromium 内核的浏览器</p>
+<p>为什么要使用 Chromium 内核的浏览器而不是 IE 呢？因为 IE 实在是太慢了，并且，IE 对于开发和调试 Web 应用程序完全是一点用也没有。</p>
+<p>我们需要在浏览器很方便地调试我们的 Web 应用，而 Chromium 提供了一套完整地调试工具，非常适合 Web 开发。</p>
+<p>安装好 Chromium 内核的浏览器后，打开浏览器，按 F12，就可以显示开发者工具：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220325193907204.png" alt="image-20220325193907204" /><figcaption aria-hidden="true">image-20220325193907204</figcaption>
+</figure>
+<p><code>Elements</code>显示网页的结构，<code>Network</code>显示浏览器和服务器的通信。我们点<code>Network</code>，确保第一个小红灯亮着，Chrome就会记录所有浏览器和服务器之间的通信：</p>
+<p>当我们在地址栏输入<code>www.sina.com.cn</code>时，浏览器将显示新浪的首页。在这个过程中，浏览器都干了哪些事情呢？通过<code>Network</code>的记录，我们就可以知道。在<code>Network</code>中，定位到第一条记录，点击，右侧将显示<code>Request Headers</code>，点击右侧的<code>view source</code>，我们就可以看到浏览器发给新浪服务器的请求：</p>
+<p>最主要的头两行分析如下，第一行：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br></pre></td></tr></table></figure>
+<p><code>GET</code>表示一个读取请求，将从服务器获得网页数据，<code>/</code>表示URL的路径，URL总是以<code>/</code>开头，<code>/</code>就表示首页，最后的<code>HTTP/1.1</code>指示采用的HTTP协议版本是1.1。目前HTTP协议的版本就是1.1，但是大部分服务器也支持1.0版本，主要区别在于1.1版本允许多个HTTP请求复用一个TCP连接，以加快传输速度。</p>
+<p>从第二行开始，每一行都类似于<code>Xxx: abcdefg</code>：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">Hos<span class="variable">t:</span> www.sina.<span class="keyword">com</span>.<span class="keyword">cn</span></span><br></pre></td></tr></table></figure>
+<p>表示请求的域名是<code>www.sina.com.cn</code>。如果一台服务器有多个网站，服务器就需要通过<code>Host</code>来区分浏览器请求的是哪个网站。</p>
+<p>继续往下找到<code>Response Headers</code>，点击<code>view source</code>，显示服务器返回的原始响应数据：</p>
+<p>HTTP响应分为Header和Body两部分（Body是可选项），我们在<code>Network</code>中看到的Header最重要的几行如下：</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"><span class="symbol">200 </span>OK</span><br></pre></td></tr></table></figure>
+<p><code>200</code>表示一个成功的响应，后面的<code>OK</code>是说明。失败的响应有<code>404 Not Found</code>：网页不存在，<code>500 Internal Server Error</code>：服务器内部出错，等等。</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">Content-<span class="keyword">Type</span>: <span class="type">text</span>/html</span><br></pre></td></tr></table></figure>
+<p><code>Content-Type</code>指示响应的内容，这里是<code>text/html</code>表示HTML网页。请注意，浏览器就是依靠<code>Content-Type</code>来判断响应的内容是网页还是图片，是视频还是音乐。浏览器并不靠URL来判断响应的内容，所以，即使URL是<code>http://example.com/abc.jpg</code>，它也不一定就是图片。</p>
+<p>HTTP响应的Body就是HTML源码，我们在菜单栏选择“视图”，“开发者”，“查看网页源码”就可以在浏览器中直接查看HTML源码：</p>
+<p>当浏览器读取到新浪首页的HTML源码后，它会解析HTML，显示页面，然后，根据HTML里面的各种链接，再发送HTTP请求给新浪服务器，拿到相应的图片、视频、Flash、JavaScript脚本、CSS等各种资源，最终显示出一个完整的页面。所以我们在<code>Network</code>下面能看到很多额外的HTTP请求。</p>
+<h3 id="http-请求">2.3.1 HTTP 请求</h3>
+<p>跟踪了新浪的首页，我们来总结一下HTTP请求的流程：</p>
+<p>步骤1：浏览器首先向服务器发送HTTP请求，请求包括：</p>
+<p>方法：<code>GET</code>还是<code>POST</code>，<code>GET</code>仅请求资源，<code>POST</code>会附带用户数据；</p>
+<p>路径：<code>/full/url/path</code>；</p>
+<p>域名：由Host头指定：<code>Host: www.sina.com.cn</code></p>
+<p>以及其他相关的Header；</p>
+<p>如果是POST，那么请求还包括一个Body，包含用户数据。</p>
+<p>步骤2：服务器向浏览器返回HTTP响应，响应包括：</p>
+<p>响应代码：<code>200</code>表示成功，<code>3xx</code>表示重定向，<code>4xx</code>表示客户端发送的请求有错误，<code>5xx</code>表示服务器端处理时发生了错误；</p>
+<p>响应类型：由<code>Content-Type</code>指定，例如：<code>Content-Type: text/html;charset=utf-8</code>表示响应类型是HTML文本，并且编码是<code>UTF-8</code>，<code>Content-Type: image/jpeg</code>表示响应类型是JPEG格式的图片；</p>
+<p>以及其他相关的Header；</p>
+<p>通常服务器的HTTP响应会携带内容，也就是有一个Body，包含响应的内容，网页的HTML源码就在Body中。</p>
+<p>步骤3：如果浏览器还需要继续向服务器请求其他资源，比如图片，就再次发出HTTP请求，重复步骤1、2。</p>
+<p>Web采用的HTTP协议采用了非常简单的请求-响应模式，从而大大简化了开发。当我们编写一个页面时，我们只需要在HTTP响应中把HTML发送出去，不需要考虑如何附带图片、视频等，浏览器如果需要请求图片和视频，它会发送另一个HTTP请求，因此，一个HTTP请求只处理一个资源。</p>
+<p>HTTP协议同时具备极强的扩展性，虽然浏览器请求的是<code>http://www.sina.com.cn/</code>的首页，但是新浪在HTML中可以链入其他服务器的资源，比如<code>&lt;img src="http://i1.sinaimg.cn/home/2013/1008/U8455P30DT20131008135420.png"&gt;</code>，从而将请求压力分散到各个服务器上，并且，一个站点可以链接到其他站点，无数个站点互相链接起来，就形成了World Wide Web，简称“三达不溜”（WWW）。</p>
+<h3 id="http-格式">2.3.2 HTTP 格式</h3>
+<p>每个HTTP请求和响应都遵循相同的格式，一个HTTP包含Header和Body两部分，其中Body是可选的。</p>
+<p>HTTP协议是一种文本协议，所以，它的格式也非常简单。HTTP GET请求的格式：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/path</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Header1</span><span class="punctuation">: </span>Value1</span><br><span class="line"><span class="attribute">Header2</span><span class="punctuation">: </span>Value2</span><br><span class="line"><span class="attribute">Header3</span><span class="punctuation">: </span>Value3</span><br></pre></td></tr></table></figure>
+<p>每个Header一行一个，换行符是<code>\r\n</code>。</p>
+<p>HTTP POST请求的格式：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/path</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Header1</span><span class="punctuation">: </span>Value1</span><br><span class="line"><span class="attribute">Header2</span><span class="punctuation">: </span>Value2</span><br><span class="line"><span class="attribute">Header3</span><span class="punctuation">: </span>Value3</span><br><span class="line"></span><br><span class="line"><span class="gams"><span class="function"><span class="title">body</span></span> data goes here...</span></span><br></pre></td></tr></table></figure>
+<p>当遇到连续两个<code>\r\n</code>时，Header部分结束，后面的数据全部是Body。</p>
+<p>HTTP响应的格式：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">200</span> OK</span><br><span class="line"><span class="attribute">Header1</span>: Value<span class="number">1</span></span><br><span class="line"><span class="attribute">Header2</span>: Value<span class="number">2</span></span><br><span class="line"><span class="attribute">Header3</span>: Value<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">body</span> data goes here...</span><br></pre></td></tr></table></figure>
+<p>HTTP响应如果包含body，也是通过<code>\r\n\r\n</code>来分隔的。请再次注意，Body的数据类型由<code>Content-Type</code>头来确定，如果是网页，Body就是文本，如果是图片，Body就是图片的二进制数据。</p>
+<p>当存在<code>Content-Encoding</code>时，Body数据是被压缩的，最常见的压缩方式是gzip，所以，看到<code>Content-Encoding: gzip</code>时，需要将Body数据先解压缩，才能得到真正的数据。压缩的目的在于减少Body的大小，加快网络传输。</p>
+<p>要详细了解HTTP协议，推荐“<a href="http://shop.oreilly.com/product/9781565925090.do">HTTP: The Definitive Guide</a>”一书，非常不错，有中文译本：</p>
+<p><a href="http://t.cn/R7FguRq">HTTP权威指南</a></p>
+<p>参考文档：</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1305163149082658">网络编程基础 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
+<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017804782304672">HTTP协议简介 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
+]]></content>
+      <categories>
+        <category>network</category>
+      </categories>
+      <tags>
+        <tag>network</tag>
       </tags>
   </entry>
   <entry>
@@ -2500,219 +2752,51 @@ If you get any problems when using Hexo, you can find the answer in <a href="htt
       </tags>
   </entry>
   <entry>
-    <title>计算机网络基础</title>
-    <url>/2022/03/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>本文以科普的性质说明计算机网络是一个什么样的东西，顺便回顾一下自己大学计算机网络的基本知识</p>
+    <title>给 git 命令行添加 v2ray 代理</title>
+    <url>/2025/02/25/%E7%BB%99-git-%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%B7%BB%E5%8A%A0-v2ray-%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<h1 id="问题背景">1. 问题背景</h1>
+<p>在终端中使用 git clone
+等需要从github中推拉资源命令的时候，经常会遇到网络问题；本片文章就是为了解决
+git 命令遇到的访问 github 的网络问题。</p>
+<p><strong>前提条件：已经使用了 v2ray 一类的代理，可以通过浏览器正常访问
+Github</strong></p>
 <span id="more"></span>
-<p>自从互联网诞生以来，现在基本上绝大多数的程序都是网络程序或者跟网络有关，很少有单机版的程序了。</p>
-<p>计算机网络本质上就是：多个计算机（网络设置）连载一起，像一张网一样，彼此可以直接或者间接的相互通信；世界上所有的电脑（网络设备）同通过这张网联系在一起，就是计算机网络，通俗讲就是互联网。</p>
-<p>网络编程，就是在计算机网络（互联网）中实现两台或者多台计算机之间的数据通信。</p>
-<p>网络编程按照编程语言的不同又可以划分成不同是编程实现方式，但是他们用到的原理和协议都是一致的。</p>
-<h1 id="网络基础知识">1. 网络基础知识</h1>
-<p>主要介绍，IP 地址，域名，网络模型等基本知识</p>
-<h2 id="ip-地址">1.1 IP 地址</h2>
-<p>在互联网中，一个 IP 地址用于唯一标识一个网络接口（Network Interface）。</p>
-<p>一台联入互联网的计算机肯定有一个 IP 地址，但也可能有多个 IP 地址。</p>
-<p>IP 地址分为 IPv4 和 IPv6 两种。</p>
-<p>IPv4 采用32位地址，类似 <code>192.168.10.1</code>，</p>
-<p>而 IPv6 采用128位地址，类似 <code>2001:0DA8:100A:0000:0000:1020:F2F3:1428</code>。 <span class="math display">\[
-\begin{flalign}
-&amp; IPv4 \,\, 地址总共有\,\, 2^{32}个，而\,\,IPv6 \,\, 地址则总共有\,\, 2^{128} 个（大约340万亿亿亿亿）&amp;
-\end{flalign}
-\]</span> IPv4 的地址目前已耗尽，而 IPv6 的地址是根本用不完的。</p>
-<p>IP 地址又分为公网 IP 地址和内网 IP 地址。公网 IP 地址可以直接被访问，内网 IP 地址只能在内网访问。内网 IP 地址类似于：</p>
-<ul>
-<li>192.168.x.x</li>
-<li>10.x.x.x</li>
-</ul>
-<p>有一个特殊的 IP 地址，称之为本机地址，它总是<code>127.0.0.1</code>。</p>
-<p>IPv4 地址实际上是一个32位整数。例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1707762444 = 0x65ca630c</span><br><span class="line">           = 65  ca  63 0c</span><br><span class="line">           = 101.202.99.12</span><br></pre></td></tr></table></figure>
-<p>如果一台计算机只有一个网卡，并且接入了网络，那么，它有一个本机地址<code>127.0.0.1</code>，还有一个 IP 地址，例如<code>101.202.99.12</code>，可以通过这个 IP 地址接入网络。</p>
-<p>如果一台计算机有两块网卡，那么除了本机地址，它可以有两个 IP 地址，可以分别接入两个网络。通常连接两个网络的设备是路由器或者交换机，它至少有两个 IP 地址，分别接入不同的网络，让网络之间连接起来。</p>
-<p>如果两台计算机位于同一个网络，那么他们之间可以直接通信，因为他们的 IP 地址前段是相同的，也就是网络号是相同的。网络号是 IP 地址通过子网掩码过滤后得到的。例如：</p>
-<p>某台计算机的 IP 是<code>101.202.99.2</code>，子网掩码是<code>255.255.255.0</code>，那么计算该计算机的网络号是：</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">IP</span> = <span class="number">101.202</span>.<span class="number">99.2</span></span><br><span class="line"><span class="attr">Mask</span> = <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="attr">Network</span> = IP &amp; Mask = <span class="number">101.202</span>.<span class="number">99.0</span></span><br></pre></td></tr></table></figure>
-<p>每台计算机都需要正确配置 IP 地址和子网掩码，根据这两个就可以计算网络号，如果两台计算机计算出的网络号相同，说明两台计算机在同一个网络，可以直接通信。如果两台计算机计算出的网络号不同，那么两台计算机不在同一个网络，不能直接通信，它们之间必须通过路由器或者交换机这样的网络设备间接通信，我们把这种设备称为网关。</p>
-<p>网关的作用就是连接多个网络，负责把来自一个网络的数据包发到另一个网络，这个过程叫路由。</p>
-<p>所以，一台计算机的一个网卡会有3个关键配置：</p>
-<ul>
-<li>IP 地址，例如：<code>10.80.2.24</code></li>
-<li>子网掩码，例如：<code>255.255.255.0</code></li>
-<li>网关的 IP 地址，例如：<code>10.80.2.254</code></li>
-</ul>
+<h1 id="从-v2ray-中查看需要设置的代理信息">2. 从 v2ray
+中查看需要设置的代理信息</h1>
+<p>查看方式如下：设置 -&gt; 参数设置 -&gt; Core：基础设置</p>
 <figure>
-<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220325191123462.png" alt="image-20220325191123462" /><figcaption aria-hidden="true">image-20220325191123462</figcaption>
+<img
+src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20250225183035070.png"
+alt="image-20250225183035070" />
+<figcaption aria-hidden="true">image-20250225183035070</figcaption>
 </figure>
-<h2 id="域名">1.2 域名</h2>
-<p>因为直接记忆 IP 地址非常困难，所以我们通常使用域名访问某个特定的服务。</p>
-<p>域名解析服务器 DNS 负责把域名翻译成对应的 IP，客户端再根据 IP 地址访问服务器。</p>
-<p>用<code>nslookup</code>可以查看域名对应的 IP 地址：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nslookup buctllx.github.io</span></span><br><span class="line">Server:  bogon</span><br><span class="line">Address:  10.80.253.253</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:    buctllx.github.io</span><br><span class="line">Addresses:  2606:50c0:8002::153</span><br><span class="line">          2606:50c0:8001::153</span><br><span class="line">          2606:50c0:8000::153</span><br><span class="line">          2606:50c0:8003::153</span><br><span class="line">          185.199.110.153</span><br><span class="line">          185.199.109.153</span><br><span class="line">          185.199.111.153</span><br><span class="line">          185.199.108.153</span><br></pre></td></tr></table></figure>
-<p>有一个特殊的本机域名<code>localhost</code>，它对应的 IP 地址总是本机地址<code>127.0.0.1</code>。</p>
-<h2 id="网络模型">1.3 网络模型</h2>
-<p>由于计算机网络从底层的传输到高层的软件设计十分复杂，要合理地设计计算机网络模型，必须采用分层模型，每一层负责处理自己的操作。OSI（Open System Interconnect）网络模型是ISO组织定义的一个计算机互联的标准模型，注意它只是一个定义，目的是为了简化网络各层的操作，提供标准接口便于实现和维护。这个模型从上到下依次是：</p>
-<ul>
-<li>应用层，提供应用程序之间的通信；</li>
-<li>表示层：处理数据格式，加解密等等；</li>
-<li>会话层：负责建立和维护会话；</li>
-<li>传输层：负责提供端到端的可靠传输；</li>
-<li>网络层：负责根据目标地址选择路由来传输数据；</li>
-<li>链路层和物理层负责把数据进行分片并且真正通过物理网络传输，例如，无线网、光纤等。</li>
-</ul>
-<p>互联网实际使用的TCP/IP模型并不是对应到OSI的7层模型，而是大致对应OSI的5层模型：</p>
-<table>
-<tr>
-<th width="200px" height="100px">
-<font color="#0A87F5" size=20>OSI</font>
-</th>
-<th width="201px" height="30">
-<font color="#0A87F5" size=20>TCP/IP</font>
-</th>
-</tr>
-<tr>
-<td>
-应用层
-</td>
-<td rowspan="3">
-应用层
-</td>
-</tr>
-<tr>
-<td>
-表示层
-</td>
-</tr>
-<tr>
-<td>
-会话层
-</td>
-</tr>
-<tr>
-<td>
-传输层
-</td>
-<td>
-传输层
-</td>
-</tr>
-<tr>
-<td>
-网络层
-</td>
-<td>
-IP层
-</td>
-</tr>
-<tr>
-<td>
-链路层
-</td>
-<td rowspan="2">
-网络接口层
-</td>
-</tr>
-<tr>
-<td>
-物理层
-</td>
-</tr>
-</table>
-<h1 id="常用网络协议">2. 常用网络协议</h1>
-<p>虽然大家现在对互联网很熟悉，但是计算机网络的出现比互联网要早很多。</p>
-<p>计算机为了联网，就必须规定通信协议，早期的计算机网络，都是由各厂商自己规定一套协议，IBM、Apple和Microsoft都有各自的网络协议，互不兼容，这就好比一群人有的说英语，有的说中文，有的说德语，说同一种语言的人可以交流，不同的语言之间就不行了。</p>
-<p>为了把全世界的所有不同类型的计算机都连接起来，就必须规定一套全球通用的协议，为了实现互联网这个目标，互联网协议簇（Internet Protocol Suite）就是通用协议标准。Internet是由inter和net两个单词组合起来的，原意就是连接“网络”的网络，有了Internet，任何私有网络，只要支持这个协议，就可以联入互联网。</p>
-<p>UDP 协议（User Datagram Protocol）是一种数据报文协议，它是无连接协议，不保证可靠传输。因为 UDP 协议在通信前不需要建立连接，因此它的传输效率比TCP高，而且UDP协议比TCP协议要简单得多。</p>
-<p>选择 UDP 协议时，传输的数据通常是能容忍丢失的，例如，一些语音视频通信的应用会选择 UDP 协议。</p>
-<h2 id="tcpip-协议">2.1 TCP/IP 协议</h2>
-<p>因为互联网协议包含了上百种协议标准，但是最重要的两个协议是 TCP 和 IP 协议，所以，大家把互联网的协议简称 TCP/IP 协议。</p>
-<p>网络通信的时候，双方必须知道对方的标识，好比发邮件必须知道对方的邮件地址。</p>
-<p>互联网上每个计算机的唯一标识就是 IP 地址。如果一台计算机同时接入到两个或更多的网络，比如路由器，它就会有两个或多个 IP 地址，所以，IP地址对应的实际上是计算机的网络接口，通常是网卡。</p>
-<p>IP 协议负责把数据从一台计算机通过网络发送到另一台计算机。数据被分割成一小块一小块，然后通过 IP 包发送出去。由于互联网链路复杂，两台计算机之间经常有多条线路，因此，路由器就负责决定如何把一个 IP 包转发出去。IP 包的特点是按块发送，途径多个路由，但不保证能到达，也不保证顺序到达。</p>
-<p>IP 协议是一个分组交换，它不保证可靠传输。</p>
-<p>而 TCP 协议是传输控制协议，它是面向连接的协议，支持可靠传输和双向通信。</p>
-<p>TCP 协议是建立在 IP 协议之上的，简单地说，IP 协议只负责发数据包，不保证顺序和正确性，而 TCP 协议负责在两台计算机之间建立可靠连接，保证数据包按顺序到达。</p>
-<p>TCP协议会通过握手建立连接，然后，对每个 IP 包编号，确保对方按顺序收到，如果包丢掉了，就自动重发；传输完后还需要断开连接。</p>
-<p>TCP 协议之所以能保证数据的可靠传输，是通过接收确认、超时重传这些机制实现的。并且，TCP协议允许双向通信，即通信双方可以同时发送和接收数据。</p>
-<p>TCP 协议也是应用最广泛的协议，许多高级协议都是建立在 TCP 协议之上的，例如 HTTP、SMTP 等。</p>
-<p>一个 TCP 报文除了包含要传输的数据外，还包含源 IP 地址和目标 IP 地址，源端口和目标端口。</p>
-<p>端口有什么作用？在两台计算机通信时，只发 IP 地址是不够的，因为同一台计算机上跑着多个网络程序。一个 TCP 报文来了之后，到底是交给浏览器还是 QQ，就需要端口号来区分。每个网络程序都向操作系统申请唯一的端口号，这样，两个进程在两台计算机之间建立网络连接就需要各自的 IP地址和各自的端口号。</p>
-<p>一个进程也可能同时与多个计算机建立链接，因此它会申请很多端口。</p>
-<h2 id="udp-协议">2.2 UDP 协议</h2>
-<p>TCP是建立可靠连接，并且通信双方都可以以流的形式发送数据。相对 TCP，UDP 则是面向无连接的协议。</p>
-<p>使用 UDP 协议时，不需要建立连接，只需要知道对方的 IP 地址和端口号，就可以直接发数据包。但是，能不能到达就不知道了。</p>
-<p><strong>缺点：</strong>传输数据不可靠</p>
-<p><strong>优点：</strong>速度快，对于不要求可靠到达的数据，就可以使用 UDP 协议。</p>
-<p>此外，服务器绑定 UDP 端口和 TCP 端口互不冲突，也就是说，UDP 的 80 端口与 TCP 的 80 端口可以各自绑定。</p>
-<h2 id="http-协议">2.3 HTTP 协议</h2>
-<p>在 Web 应用中，服务器把网页传给浏览器，实际上就是把网页的 HTML 代码发送给浏览器，让浏览器显示出来。</p>
-<p>而浏览器和服务器之间的传输协议是 HTTP，所以：</p>
-<ul>
-<li>HTML 是一种用来定义网页的文本，会 HTML，就可以编写网页；</li>
-<li>HTTP 是在网络上传输 HTML 的协议，用于浏览器和服务器的通信。</li>
-</ul>
-<p>在举例子之前，我们需要安装 Google 的 <a href="http://www.google.com/intl/zh-CN/chrome/">Chrome 浏览器</a>。或者 Microsoft 的 <a href="https://www.microsoft.com/zh-cn">Edge 浏览器</a>。本质上都是基于 Chromium 内核的浏览器</p>
-<p>为什么要使用 Chromium 内核的浏览器而不是 IE 呢？因为 IE 实在是太慢了，并且，IE 对于开发和调试 Web 应用程序完全是一点用也没有。</p>
-<p>我们需要在浏览器很方便地调试我们的 Web 应用，而 Chromium 提供了一套完整地调试工具，非常适合 Web 开发。</p>
-<p>安装好 Chromium 内核的浏览器后，打开浏览器，按 F12，就可以显示开发者工具：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/buctllx/picture_bed/img/image-20220325193907204.png" alt="image-20220325193907204" /><figcaption aria-hidden="true">image-20220325193907204</figcaption>
-</figure>
-<p><code>Elements</code>显示网页的结构，<code>Network</code>显示浏览器和服务器的通信。我们点<code>Network</code>，确保第一个小红灯亮着，Chrome就会记录所有浏览器和服务器之间的通信：</p>
-<p>当我们在地址栏输入<code>www.sina.com.cn</code>时，浏览器将显示新浪的首页。在这个过程中，浏览器都干了哪些事情呢？通过<code>Network</code>的记录，我们就可以知道。在<code>Network</code>中，定位到第一条记录，点击，右侧将显示<code>Request Headers</code>，点击右侧的<code>view source</code>，我们就可以看到浏览器发给新浪服务器的请求：</p>
-<p>最主要的头两行分析如下，第一行：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br></pre></td></tr></table></figure>
-<p><code>GET</code>表示一个读取请求，将从服务器获得网页数据，<code>/</code>表示URL的路径，URL总是以<code>/</code>开头，<code>/</code>就表示首页，最后的<code>HTTP/1.1</code>指示采用的HTTP协议版本是1.1。目前HTTP协议的版本就是1.1，但是大部分服务器也支持1.0版本，主要区别在于1.1版本允许多个HTTP请求复用一个TCP连接，以加快传输速度。</p>
-<p>从第二行开始，每一行都类似于<code>Xxx: abcdefg</code>：</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">Hos<span class="variable">t:</span> www.sina.<span class="keyword">com</span>.<span class="keyword">cn</span></span><br></pre></td></tr></table></figure>
-<p>表示请求的域名是<code>www.sina.com.cn</code>。如果一台服务器有多个网站，服务器就需要通过<code>Host</code>来区分浏览器请求的是哪个网站。</p>
-<p>继续往下找到<code>Response Headers</code>，点击<code>view source</code>，显示服务器返回的原始响应数据：</p>
-<p>HTTP响应分为Header和Body两部分（Body是可选项），我们在<code>Network</code>中看到的Header最重要的几行如下：</p>
-<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"><span class="symbol">200 </span>OK</span><br></pre></td></tr></table></figure>
-<p><code>200</code>表示一个成功的响应，后面的<code>OK</code>是说明。失败的响应有<code>404 Not Found</code>：网页不存在，<code>500 Internal Server Error</code>：服务器内部出错，等等。</p>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">Content-<span class="keyword">Type</span>: <span class="type">text</span>/html</span><br></pre></td></tr></table></figure>
-<p><code>Content-Type</code>指示响应的内容，这里是<code>text/html</code>表示HTML网页。请注意，浏览器就是依靠<code>Content-Type</code>来判断响应的内容是网页还是图片，是视频还是音乐。浏览器并不靠URL来判断响应的内容，所以，即使URL是<code>http://example.com/abc.jpg</code>，它也不一定就是图片。</p>
-<p>HTTP响应的Body就是HTML源码，我们在菜单栏选择“视图”，“开发者”，“查看网页源码”就可以在浏览器中直接查看HTML源码：</p>
-<p>当浏览器读取到新浪首页的HTML源码后，它会解析HTML，显示页面，然后，根据HTML里面的各种链接，再发送HTTP请求给新浪服务器，拿到相应的图片、视频、Flash、JavaScript脚本、CSS等各种资源，最终显示出一个完整的页面。所以我们在<code>Network</code>下面能看到很多额外的HTTP请求。</p>
-<h3 id="http-请求">2.3.1 HTTP 请求</h3>
-<p>跟踪了新浪的首页，我们来总结一下HTTP请求的流程：</p>
-<p>步骤1：浏览器首先向服务器发送HTTP请求，请求包括：</p>
-<p>方法：<code>GET</code>还是<code>POST</code>，<code>GET</code>仅请求资源，<code>POST</code>会附带用户数据；</p>
-<p>路径：<code>/full/url/path</code>；</p>
-<p>域名：由Host头指定：<code>Host: www.sina.com.cn</code></p>
-<p>以及其他相关的Header；</p>
-<p>如果是POST，那么请求还包括一个Body，包含用户数据。</p>
-<p>步骤2：服务器向浏览器返回HTTP响应，响应包括：</p>
-<p>响应代码：<code>200</code>表示成功，<code>3xx</code>表示重定向，<code>4xx</code>表示客户端发送的请求有错误，<code>5xx</code>表示服务器端处理时发生了错误；</p>
-<p>响应类型：由<code>Content-Type</code>指定，例如：<code>Content-Type: text/html;charset=utf-8</code>表示响应类型是HTML文本，并且编码是<code>UTF-8</code>，<code>Content-Type: image/jpeg</code>表示响应类型是JPEG格式的图片；</p>
-<p>以及其他相关的Header；</p>
-<p>通常服务器的HTTP响应会携带内容，也就是有一个Body，包含响应的内容，网页的HTML源码就在Body中。</p>
-<p>步骤3：如果浏览器还需要继续向服务器请求其他资源，比如图片，就再次发出HTTP请求，重复步骤1、2。</p>
-<p>Web采用的HTTP协议采用了非常简单的请求-响应模式，从而大大简化了开发。当我们编写一个页面时，我们只需要在HTTP响应中把HTML发送出去，不需要考虑如何附带图片、视频等，浏览器如果需要请求图片和视频，它会发送另一个HTTP请求，因此，一个HTTP请求只处理一个资源。</p>
-<p>HTTP协议同时具备极强的扩展性，虽然浏览器请求的是<code>http://www.sina.com.cn/</code>的首页，但是新浪在HTML中可以链入其他服务器的资源，比如<code>&lt;img src="http://i1.sinaimg.cn/home/2013/1008/U8455P30DT20131008135420.png"&gt;</code>，从而将请求压力分散到各个服务器上，并且，一个站点可以链接到其他站点，无数个站点互相链接起来，就形成了World Wide Web，简称“三达不溜”（WWW）。</p>
-<h3 id="http-格式">2.3.2 HTTP 格式</h3>
-<p>每个HTTP请求和响应都遵循相同的格式，一个HTTP包含Header和Body两部分，其中Body是可选的。</p>
-<p>HTTP协议是一种文本协议，所以，它的格式也非常简单。HTTP GET请求的格式：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/path</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Header1</span><span class="punctuation">: </span>Value1</span><br><span class="line"><span class="attribute">Header2</span><span class="punctuation">: </span>Value2</span><br><span class="line"><span class="attribute">Header3</span><span class="punctuation">: </span>Value3</span><br></pre></td></tr></table></figure>
-<p>每个Header一行一个，换行符是<code>\r\n</code>。</p>
-<p>HTTP POST请求的格式：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/path</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Header1</span><span class="punctuation">: </span>Value1</span><br><span class="line"><span class="attribute">Header2</span><span class="punctuation">: </span>Value2</span><br><span class="line"><span class="attribute">Header3</span><span class="punctuation">: </span>Value3</span><br><span class="line"></span><br><span class="line"><span class="gams"><span class="function"><span class="title">body</span></span> data goes here...</span></span><br></pre></td></tr></table></figure>
-<p>当遇到连续两个<code>\r\n</code>时，Header部分结束，后面的数据全部是Body。</p>
-<p>HTTP响应的格式：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">200</span> OK</span><br><span class="line"><span class="attribute">Header1</span>: Value<span class="number">1</span></span><br><span class="line"><span class="attribute">Header2</span>: Value<span class="number">2</span></span><br><span class="line"><span class="attribute">Header3</span>: Value<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">body</span> data goes here...</span><br></pre></td></tr></table></figure>
-<p>HTTP响应如果包含body，也是通过<code>\r\n\r\n</code>来分隔的。请再次注意，Body的数据类型由<code>Content-Type</code>头来确定，如果是网页，Body就是文本，如果是图片，Body就是图片的二进制数据。</p>
-<p>当存在<code>Content-Encoding</code>时，Body数据是被压缩的，最常见的压缩方式是gzip，所以，看到<code>Content-Encoding: gzip</code>时，需要将Body数据先解压缩，才能得到真正的数据。压缩的目的在于减少Body的大小，加快网络传输。</p>
-<p>要详细了解HTTP协议，推荐“<a href="http://shop.oreilly.com/product/9781565925090.do">HTTP: The Definitive Guide</a>”一书，非常不错，有中文译本：</p>
-<p><a href="http://t.cn/R7FguRq">HTTP权威指南</a></p>
-<p>参考文档：</p>
-<p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1305163149082658">网络编程基础 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
-<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017804782304672">HTTP协议简介 - 廖雪峰的官方网站 (liaoxuefeng.com)</a></p>
+<p>从上面的信息中我们能看到 http 和 socks
+协议监听的端口费别是：50810，50809</p>
+<h1 id="使用-git-命令设置代理">3. 使用 git 命令设置代理</h1>
+<h2 id="设置scoks代理">3.1 设置<code>scoks</code>代理</h2>
+<p>在<code>参数设置</code>-<code>Core:基础设置</code>中可以查看本地<code>socks</code>端口号，一般为1080。
+在命令行中使用以下命令设置git代理：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy socks5://127.0.0.1:1080</span><br><span class="line">git config --global https.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+<h2 id="设置http代理">3.2 设置<code>http</code>代理</h2>
+<p>不知道本地<code>http</code>端口是在哪设置的，应该是和<code>socks</code>端口号有关。
+把v2rayN设为全局模式，打开win10的设置中代理，可以看到<code>socks</code>端口号，我这里是1081。
+在命令行中使用以下命令设置git代理：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http://127.0.0.1:1081</span><br><span class="line">git config --global https.proxy https://127.0.0.1:1081</span><br></pre></td></tr></table></figure>
+<h2 id="取消代理设置">3.3 取消代理设置</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+<h2 id="注意">注意：</h2>
+<ol type="1">
+<li>在执行<code>git clone</code>时，该方法只适用于http方式，不适用于ssh方式。ssh方式推荐使用proxychains(linux)。</li>
+</ol>
+<p>参考文档：<a href="https://juejin.cn/post/6844903862961176583">一招
+git clone 加速</a></p>
 ]]></content>
       <categories>
-        <category>network</category>
+        <category>git</category>
+        <category>v2ray</category>
       </categories>
       <tags>
-        <tag>network</tag>
+        <tag>git,v2ray</tag>
       </tags>
   </entry>
 </search>

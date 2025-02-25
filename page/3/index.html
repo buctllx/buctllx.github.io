@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -143,18 +143,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -209,6 +209,116 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://buctllx.github.io/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="ConorLuo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ConorLuo 博客">
+      <meta itemprop="description" content="北京化工大学10级，从事工程建设行业开发，擅长.Net, Python。此为博客一枚。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | ConorLuo 博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">WPF 在 Trigger 中修改 Button Content 注意事项</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-02 16:52:58" itemprop="dateCreated datePublished" datetime="2021-12-02T16:52:58+08:00">2021-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-22 11:34:31" itemprop="dateModified" datetime="2021-12-22T11:34:31+08:00">2021-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/WPF/" itemprop="url" rel="index"><span itemprop="name">WPF</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题描述">1. 问题描述</h2>
+<p>xaml 代码块如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button Content=&quot;333&quot;&gt;</span><br><span class="line">                &lt;Button.Style&gt;</span><br><span class="line">                    &lt;Style TargetType=&quot;Button&quot;&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Width&quot; Value=&quot;70&quot;/&gt;</span><br><span class="line">                        &lt;Setter Property=&quot;Height&quot; Value=&quot;27&quot;/&gt;</span><br><span class="line">                        &lt;Style.Triggers&gt;</span><br><span class="line">                            &lt;DataTrigger Binding=&quot;&#123;Binding ElementName=listBox, Path=SelectedIndex&#125;&quot; Value=&quot;2&quot;&gt;</span><br><span class="line">                                &lt;Setter Property=&quot;Content&quot; Value=&quot;three&quot; /&gt;</span><br><span class="line">                            &lt;/DataTrigger&gt;</span><br><span class="line">                        &lt;/Style.Triggers&gt;</span><br><span class="line">                    &lt;/Style&gt;</span><br><span class="line">                &lt;/Button.Style&gt;</span><br><span class="line">            &lt;/Button&gt;</span><br></pre></td></tr></table></figure>
+<p>运行后，触发 DataTrigger 发现 Button 的 Content 没有变化</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/02/WPF-%E5%9C%A8-Trigger-%E4%B8%AD%E4%BF%AE%E6%94%B9-Button-Content-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -564,7 +674,7 @@ If you get any problems when using Hexo, you can find the answer in <a target="_
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -576,14 +686,14 @@ If you get any problems when using Hexo, you can find the answer in <a target="_
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">96k</span>
+    <span title="站点总字数">97k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:27</span>
+    <span title="站点阅读时长">1:28</span>
   </span>
 </div>
 <div class="busuanzi-count">
